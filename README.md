@@ -220,8 +220,15 @@ The sample records are CSV files in `src/main/resources/sample-data/`. Its
 README lists what's in each file and the cases built in on purpose (an
 overspent project, a training run at a loss, Diwali inside the semester...).
 
-Don't deploy this with the default passwords or JWT secret. Change the
-passwords from the Users page and set `JWT_SECRET` (at least 32 chars).
+The default passwords and JWT secret are public (they're in this repo), so the
+app won't use them on a server. If the database isn't on your own machine
+(localhost, 127.0.0.1 or the in-memory test database) and `JWT_SECRET` is
+still the default, it stops at startup and says what to set. The same goes for
+`ADMIN_PASSWORD`, `STAFF_PASSWORD` and `VIEWER_PASSWORD` while the accounts
+haven't been created yet. Locally it just logs a warning. For a throwaway
+demo you can turn the check off with `ALLOW_DEV_DEFAULTS=true`.
+
+After the first start, change the passwords from the Users page.
 
 ### One jar
 
@@ -235,6 +242,10 @@ cd frontend && npm run build && cd .. && ./mvnw package
 ```bash
 java -jar target/campus-erp-0.0.1-SNAPSHOT.jar
 ```
+
+Refreshing a page or opening a link like `/faculty/3` works here too: any
+address that isn't `/api/...` or a file gets the React app, which then shows
+the right page.
 
 ## Tests
 
@@ -250,15 +261,20 @@ budget creation, expense approval/rejection and the utilized/balance numbers,
 and the dashboard. One test loads the full sample data and checks the
 numbers quoted in this README, and that the sample timetable has no clashes.
 
+GitHub Actions (`.github/workflows/ci.yml`) runs these tests and the frontend
+type-check and build on every push to `main` and on every pull request.
+
 ## Config
 
 | Variable | Default | What it's for |
 |---|---|---|
 | `DB_URL` | `jdbc:mysql://localhost:3306/campus_erp?createDatabaseIfNotExist=true` | JDBC URL |
 | `DB_USERNAME` / `DB_PASSWORD` | `root` / empty | MySQL login |
-| `JWT_SECRET` | dev value | signs login tokens, change it outside dev |
+| `JWT_SECRET` | dev value | signs login tokens; required (32+ chars) when the database isn't local |
+| `ADMIN_PASSWORD` / `STAFF_PASSWORD` / `VIEWER_PASSWORD` | dev values | passwords for the accounts created on an empty database |
 | `SEED_DEMO_DATA` | `true` | load sample data into an empty db |
 | `SERVER_PORT` | `8080` | HTTP port |
+| `ALLOW_DEV_DEFAULTS` | `false` | let a non-local deployment start with the public defaults anyway |
 
 Other business settings (like the financial year starting in April) are under
 `app.*` in `application.properties`.
@@ -317,6 +333,7 @@ and local editor settings are left out.
 
 ```text
 campus-erp/
+├── .github/workflows/ci.yml
 ├── .mvn/wrapper/maven-wrapper.properties
 ├── frontend/
 │   ├── index.html
@@ -367,7 +384,8 @@ campus-erp/
 │   │   │   ├── budget/        Budget, Expense, BudgetService, ExpenseService, BudgetController, ...
 │   │   │   ├── calendar/      CalendarService, CalendarController, CalendarEntry
 │   │   │   ├── common/        BaseEntity, ApiError, GlobalExceptionHandler, Finder, Money, Ref, ...
-│   │   │   ├── config/        SecurityConfig, ClockConfig
+│   │   │   ├── config/        SecurityConfig, ClockConfig, SpaForwardController,
+│   │   │   │                  DevDefaultsGuard, JwtSecretCheck
 │   │   │   ├── course/        Course, CourseOffering, OfferingTeacher, TimetableSlot,
 │   │   │   │                  ClassException, OfferingService, CourseController, OfferingController, ...
 │   │   │   ├── dashboard/     DashboardController
@@ -382,6 +400,7 @@ campus-erp/
 │   │   │   └── user/          User, Role, UserService, UserController, ...
 │   │   └── resources/
 │   │       ├── application.properties
+│   │       ├── META-INF/spring.factories
 │   │       └── sample-data/   21 CSV files + README.md
 │   └── test/
 │       ├── java/com/campuserp/
@@ -390,6 +409,7 @@ campus-erp/
 │       │   ├── budget/BudgetAndExpenseTest.java
 │       │   ├── calendar/CalendarTest.java
 │       │   ├── common/HealthAndErrorsTest.java
+│       │   ├── config/DevDefaultsGuardTest.java, SpaForwardTest.java
 │       │   ├── course/OfferingsTest.java
 │       │   ├── seed/SampleDataTest.java
 │       │   ├── student/EnrolmentTest.java
@@ -545,7 +565,7 @@ flowchart TD
     ROOT --> SEED["seed"]
 
     AUTH --> A1["AuthController, JwtService, JwtAuthFilter"]
-    CONFIG --> C1["SecurityConfig, ClockConfig"]
+    CONFIG --> C1["SecurityConfig, ClockConfig,<br/>SpaForwardController, DevDefaultsGuard,<br/>JwtSecretCheck"]
     COMMON --> CM1["BaseEntity, ApiError, GlobalExceptionHandler,<br/>NotFoundException, BusinessRuleException,<br/>Finder, Money, Ref, HealthController"]
     USER --> U1["UserController, UserService,<br/>UserRepository, User, Role"]
     SETUP --> SE1["SetupController, AcademicCalendar,<br/>Department, Programme, Section,<br/>AcademicYear, Holiday + repositories"]
