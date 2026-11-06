@@ -1,9 +1,11 @@
 import { NavLink, Outlet } from 'react-router'
+import { useAuth } from '../auth'
 
 export interface NavItem {
   path: string
   label: string
   phase: number // build plan phase that fills this page in
+  adminOnly?: boolean
 }
 
 export const NAV_ITEMS: NavItem[] = [
@@ -17,21 +19,32 @@ export const NAV_ITEMS: NavItem[] = [
   { path: '/training', label: 'Training programs', phase: 8 },
   { path: '/events', label: 'Events', phase: 9 },
   { path: '/setup', label: 'Academic setup', phase: 2 },
-  { path: '/users', label: 'Users', phase: 1 },
+  { path: '/users', label: 'Users', phase: 1, adminOnly: true },
 ]
 
 export default function Layout() {
+  const { user, isAdmin, logout } = useAuth()
+
   return (
     <div className="app">
       <aside className="sidebar">
         <div className="brand">Campus ERP</div>
         <nav>
-          {NAV_ITEMS.map((item) => (
+          {NAV_ITEMS.filter((item) => !item.adminOnly || isAdmin).map((item) => (
             <NavLink key={item.path} to={item.path}>
               {item.label}
             </NavLink>
           ))}
         </nav>
+        {user && (
+          <div className="sidebar-user">
+            <div>{user.fullName}</div>
+            <div className="role">{user.role.toLowerCase()}</div>
+            <button className="link-btn" onClick={logout}>
+              Log out
+            </button>
+          </div>
+        )}
       </aside>
       <main className="content">
         <Outlet />

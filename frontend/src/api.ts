@@ -12,6 +12,13 @@ export function setToken(token: string | null) {
   else localStorage.removeItem(TOKEN_KEY)
 }
 
+let onUnauthorized: (() => void) | null = null
+
+/** Called when the server rejects our token (see auth.tsx). */
+export function setUnauthorizedHandler(fn: (() => void) | null) {
+  onUnauthorized = fn
+}
+
 // Matches com.campuserp.common.ApiError on the backend
 export class ApiError extends Error {
   status: number
@@ -39,6 +46,12 @@ async function request<T>(method: string, path: string, body?: unknown): Promise
     })
   } catch {
     throw new ApiError(0, 'Could not reach the server')
+  }
+
+  // Token expired or user disabled: drop the token and let the app show the login page
+  if (res.status === 401 && path !== '/auth/login' && token) {
+    setToken(null)
+    onUnauthorized?.()
   }
 
   if (res.status === 204) return undefined as T
