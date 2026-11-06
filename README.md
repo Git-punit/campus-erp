@@ -185,20 +185,30 @@ Faculty and students don't have logins. Admin/staff open their pages instead.
 
 ## Running it locally
 
-Needs Java 25+, Node 20+ and MySQL 8.
+Needs Java 25 and Node 20+. MySQL 8 is optional for trying it out.
 
-Set your MySQL login (the `campus_erp` database gets created on first run):
+**Quickest: no MySQL.** The `dev` profile uses a built-in database stored in
+`data/` in the project folder (kept between runs; delete the folder to start
+over from the sample data). Backend, on port 8080:
 
 ```bash
-export DB_USERNAME=root
-export DB_PASSWORD='your-mysql-password'
+./mvnw spring-boot:run -Dspring-boot.run.profiles=dev
 ```
 
-Backend, on port 8080:
+**With MySQL.** Set your MySQL login (the `campus_erp` database gets created on
+first run). Use your real MySQL password; if it's wrong the backend stops
+straight away with `Access denied for user 'root'`.
+
+```bash
+export DB_PASSWORD='your-mysql-password'
+```
 
 ```bash
 ./mvnw spring-boot:run
 ```
+
+Wait for `Started CampusErpApplication` in the backend terminal. You can check
+it's up at http://localhost:8080/api/health.
 
 Frontend dev server, on port 5173 (proxies `/api` to 8080):
 
@@ -400,6 +410,7 @@ campus-erp/
 │   │   │   └── user/          User, Role, UserService, UserController, ...
 │   │   └── resources/
 │   │       ├── application.properties
+│   │       ├── application-dev.properties
 │   │       ├── META-INF/spring.factories
 │   │       └── sample-data/   21 CSV files + README.md
 │   └── test/
