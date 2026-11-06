@@ -10,847 +10,6 @@ Frontend is React 19 + TypeScript with Vite, in the `frontend` folder.
 Fee management, attendance and library were in an older version and have been
 dropped for now.
 
-## 1. Overall system architecture
-
-```mermaid
-flowchart TB
-    USERS["Campus ERP Users<br/>Admin | Faculty | Students"]
-
-    subgraph FE["Frontend – React + TypeScript"]
-        APP["React Application"]
-        ROUTES["Application Routes"]
-        PAGES["Pages"]
-        COMPONENTS["Reusable Components"]
-        API["API Client"]
-        AUTH["Authentication Context"]
-        APP --> ROUTES
-        ROUTES --> PAGES
-        PAGES --> COMPONENTS
-        PAGES --> API
-        AUTH --> API
-    end
-
-    subgraph BE["Backend – Spring Boot"]
-        FILTER["JWT Authentication Filter"]
-        SECURITY["Spring Security"]
-        CONTROLLERS["REST Controllers"]
-        SERVICES["Business Services"]
-        REPOSITORIES["JPA Repositories"]
-        FILTER --> SECURITY
-        SECURITY --> CONTROLLERS
-        CONTROLLERS --> SERVICES
-        SERVICES --> REPOSITORIES
-    end
-
-    subgraph MODULES["Business Modules"]
-        STUDENT["Student"]
-        FACULTY["Faculty"]
-        COURSE["Course"]
-        CALENDAR["Calendar"]
-        TRAINING["Training"]
-        PROJECT["Research Project"]
-        BUDGET["Budget"]
-        EVENT["Events"]
-        SETUP["Academic Setup"]
-        USER["User Management"]
-        DASH["Dashboard"]
-    end
-
-    DB[("MySQL Database")]
-
-    USERS --> APP
-    API <-->|"REST / JSON"| FILTER
-    SERVICES --> MODULES
-    REPOSITORIES --> DB
-```
-
-## 2. Complete project directory structure
-
-Generated frontend bundles, `node_modules`, and Maven build output are omitted
-from this source tree because they are generated locally and are ignored by
-Git.
-
-```text
-campus-erp/
-├── .mvn/
-│   └── wrapper/
-│       └── maven-wrapper.properties
-├── .vscode/
-│   └── tasks.json
-├── frontend/
-│   ├── index.html
-│   ├── package.json
-│   ├── package-lock.json
-│   ├── tsconfig.json
-│   ├── vite.config.ts
-│   └── src/
-│       ├── App.tsx
-│       ├── api.ts
-│       ├── auth.tsx
-│       ├── main.tsx
-│       ├── styles.css
-│       ├── components/
-│       │   ├── CalendarView.tsx
-│       │   ├── CrudSection.tsx
-│       │   ├── ExpenseTable.tsx
-│       │   └── ui.tsx
-│       ├── layout/
-│       │   └── Layout.tsx
-│       ├── lib/
-│       │   ├── format.ts
-│       │   ├── types.ts
-│       │   └── useLoad.ts
-│       └── pages/
-│           ├── BudgetDetailPage.tsx
-│           ├── BudgetsPage.tsx
-│           ├── CalendarPage.tsx
-│           ├── CoursesPage.tsx
-│           ├── DashboardPage.tsx
-│           ├── EventsPage.tsx
-│           ├── FacultyDetailPage.tsx
-│           ├── FacultyPage.tsx
-│           ├── LoginPage.tsx
-│           ├── PlaceholderPage.tsx
-│           ├── ProjectsPage.tsx
-│           ├── SetupPage.tsx
-│           ├── StudentDetailPage.tsx
-│           ├── StudentsPage.tsx
-│           ├── TrainingPage.tsx
-│           ├── TrainingProgramPage.tsx
-│           └── UsersPage.tsx
-├── src/
-│   ├── main/
-│   │   ├── java/com/campuserp/
-│   │   │   ├── CampusErpApplication.java
-│   │   │   ├── auth/
-│   │   │   │   ├── AuthController.java
-│   │   │   │   ├── JwtAuthFilter.java
-│   │   │   │   └── JwtService.java
-│   │   │   ├── budget/
-│   │   │   │   ├── Budget.java
-│   │   │   │   ├── BudgetController.java
-│   │   │   │   ├── BudgetDtos.java
-│   │   │   │   ├── BudgetRepository.java
-│   │   │   │   ├── BudgetService.java
-│   │   │   │   ├── BudgetType.java
-│   │   │   │   ├── Expense.java
-│   │   │   │   ├── ExpenseCategory.java
-│   │   │   │   ├── ExpenseRepository.java
-│   │   │   │   ├── ExpenseService.java
-│   │   │   │   └── ExpenseStatus.java
-│   │   │   ├── calendar/
-│   │   │   │   ├── CalendarController.java
-│   │   │   │   ├── CalendarEntry.java
-│   │   │   │   └── CalendarService.java
-│   │   │   ├── common/
-│   │   │   │   ├── ApiError.java
-│   │   │   │   ├── BaseEntity.java
-│   │   │   │   ├── BusinessRuleException.java
-│   │   │   │   ├── Finder.java
-│   │   │   │   ├── GlobalExceptionHandler.java
-│   │   │   │   ├── HealthController.java
-│   │   │   │   ├── Money.java
-│   │   │   │   ├── NotFoundException.java
-│   │   │   │   └── Ref.java
-│   │   │   ├── config/
-│   │   │   │   ├── ClockConfig.java
-│   │   │   │   └── SecurityConfig.java
-│   │   │   ├── course/
-│   │   │   │   ├── ClassException.java
-│   │   │   │   ├── ClassExceptionRepository.java
-│   │   │   │   ├── Course.java
-│   │   │   │   ├── CourseController.java
-│   │   │   │   ├── CourseOffering.java
-│   │   │   │   ├── CourseOfferingRepository.java
-│   │   │   │   ├── CourseRepository.java
-│   │   │   │   ├── ExceptionType.java
-│   │   │   │   ├── OfferingController.java
-│   │   │   │   ├── OfferingDtos.java
-│   │   │   │   ├── OfferingService.java
-│   │   │   │   ├── OfferingTeacher.java
-│   │   │   │   ├── OfferingTeacherRepository.java
-│   │   │   │   ├── TeachingRole.java
-│   │   │   │   └── TimetableSlot.java
-│   │   │   ├── dashboard/
-│   │   │   │   └── DashboardController.java
-│   │   │   ├── event/
-│   │   │   │   ├── Event.java
-│   │   │   │   ├── EventController.java
-│   │   │   │   ├── EventRepository.java
-│   │   │   │   └── EventStatus.java
-│   │   │   ├── faculty/
-│   │   │   │   ├── Faculty.java
-│   │   │   │   ├── FacultyController.java
-│   │   │   │   ├── FacultyRepository.java
-│   │   │   │   └── FacultyStatus.java
-│   │   │   ├── project/
-│   │   │   │   ├── MemberRole.java
-│   │   │   │   ├── ProjectController.java
-│   │   │   │   ├── ProjectMember.java
-│   │   │   │   ├── ProjectMemberRepository.java
-│   │   │   │   ├── ProjectStatus.java
-│   │   │   │   ├── ResearchProject.java
-│   │   │   │   └── ResearchProjectRepository.java
-│   │   │   ├── seed/
-│   │   │   │   ├── Csv.java
-│   │   │   │   ├── DemoAccountsSeeder.java
-│   │   │   │   └── DemoDataSeeder.java
-│   │   │   ├── setup/
-│   │   │   │   ├── AcademicCalendar.java
-│   │   │   │   ├── AcademicYear.java
-│   │   │   │   ├── AcademicYearRepository.java
-│   │   │   │   ├── Department.java
-│   │   │   │   ├── DepartmentRepository.java
-│   │   │   │   ├── Holiday.java
-│   │   │   │   ├── HolidayRepository.java
-│   │   │   │   ├── Programme.java
-│   │   │   │   ├── ProgrammeRepository.java
-│   │   │   │   ├── Section.java
-│   │   │   │   ├── SectionRepository.java
-│   │   │   │   └── SetupController.java
-│   │   │   ├── student/
-│   │   │   │   ├── Enrolment.java
-│   │   │   │   ├── EnrolmentRepository.java
-│   │   │   │   ├── Student.java
-│   │   │   │   ├── StudentController.java
-│   │   │   │   ├── StudentRepository.java
-│   │   │   │   └── StudentStatus.java
-│   │   │   ├── training/
-│   │   │   │   ├── Acceptance.java
-│   │   │   │   ├── AcceptanceChange.java
-│   │   │   │   ├── AcceptanceChangeRepository.java
-│   │   │   │   ├── TrainingClient.java
-│   │   │   │   ├── TrainingClientRepository.java
-│   │   │   │   ├── TrainingController.java
-│   │   │   │   ├── TrainingDtos.java
-│   │   │   │   ├── TrainingProgram.java
-│   │   │   │   ├── TrainingProgramRepository.java
-│   │   │   │   └── TrainingService.java
-│   │   │   └── user/
-│   │   │       ├── Role.java
-│   │   │       ├── User.java
-│   │   │       ├── UserController.java
-│   │   │       ├── UserRepository.java
-│   │   │       ├── UserRequests.java
-│   │   │       ├── UserResponse.java
-│   │   │       └── UserService.java
-│   │   └── resources/
-│   │       ├── application.properties
-│   │       └── sample-data/
-│   │           ├── academic_years.csv
-│   │           ├── class_exceptions.csv
-│   │           ├── course_offerings.csv
-│   │           ├── courses.csv
-│   │           ├── department_budgets.csv
-│   │           ├── departments.csv
-│   │           ├── enrolments.csv
-│   │           ├── events.csv
-│   │           ├── faculty.csv
-│   │           ├── holidays.csv
-│   │           ├── offering_teachers.csv
-│   │           ├── programmes.csv
-│   │           ├── project_team.csv
-│   │           ├── research_projects.csv
-│   │           ├── sections.csv
-│   │           ├── students.csv
-│   │           ├── training_acceptance_history.csv
-│   │           ├── training_clients.csv
-│   │           ├── training_programs.csv
-│   │           ├── timetable_slots.csv
-│   │           └── README.md
-│   └── test/
-│       ├── java/com/campuserp/
-│       │   ├── ApiTest.java
-│       │   ├── CampusErpApplicationTests.java
-│       │   ├── Fixtures.java
-│       │   ├── TestClock.java
-│       │   ├── TestLogins.java
-│       │   ├── budget/BudgetAndExpenseTest.java
-│       │   ├── calendar/CalendarTest.java
-│       │   ├── common/HealthAndErrorsTest.java
-│       │   ├── course/OfferingsTest.java
-│       │   ├── seed/SampleDataTest.java
-│       │   ├── student/EnrolmentTest.java
-│       │   ├── training/TrainingTest.java
-│       │   └── user/AuthAndRolesTest.java
-│       └── resources/application.properties
-├── .gitattributes
-├── .gitignore
-├── HELP.md
-├── README.md
-├── mvnw
-├── mvnw.cmd
-├── package-lock.json
-└── pom.xml
-```
-
-## 3. Frontend architecture
-
-The frontend follows a component-based React architecture.
-
-```mermaid
-flowchart TD
-    MAIN["main.tsx"]
-    APP["App.tsx"]
-    AUTH["auth.tsx"]
-    LAYOUT["Layout.tsx"]
-
-    MAIN --> APP
-    APP --> AUTH
-    AUTH --> LAYOUT
-
-    LAYOUT --> PAGES["Pages"]
-    PAGES --> DASH["Dashboard"]
-    PAGES --> STUDENT["Students"]
-    PAGES --> FACULTY["Faculty"]
-    PAGES --> COURSE["Courses"]
-    PAGES --> TRAINING["Training"]
-    PAGES --> PROJECT["Projects"]
-    PAGES --> BUDGET["Budgets"]
-    PAGES --> EVENT["Events"]
-    PAGES --> CALENDAR["Calendar"]
-    PAGES --> SETUP["Setup"]
-    PAGES --> USERS["Users"]
-
-    PAGES --> COMPONENTS["Reusable Components"]
-    COMPONENTS --> CRUD["CrudSection"]
-    COMPONENTS --> CALVIEW["CalendarView"]
-    COMPONENTS --> EXPENSE["ExpenseTable"]
-    COMPONENTS --> UI["UI Components"]
-
-    PAGES --> LIB["Utility Library"]
-    LIB --> TYPES["types.ts"]
-    LIB --> FORMAT["format.ts"]
-    LIB --> LOAD["useLoad.ts"]
-
-    PAGES --> API["api.ts"]
-    API --> SERVER["Spring Boot REST API"]
-```
-
-## 4. Frontend component and page structure
-
-```mermaid
-flowchart TB
-    A["Frontend Application"]
-
-    A --> B["Authentication"]
-    A --> C["Layout"]
-    A --> D["Pages"]
-    A --> E["Shared Components"]
-    A --> F["Utilities"]
-    A --> G["API Integration"]
-
-    B --> B1["auth.tsx"]
-    B1 --> B2["LoginPage.tsx"]
-
-    C --> C1["Layout.tsx"]
-
-    D --> D1["DashboardPage"]
-    D --> D2["Student Pages"]
-    D --> D3["Faculty Pages"]
-    D --> D4["CoursesPage"]
-    D --> D5["Training Pages"]
-    D --> D6["ProjectsPage"]
-    D --> D7["Budget Pages"]
-    D --> D8["EventsPage"]
-    D --> D9["CalendarPage"]
-    D --> D10["SetupPage"]
-    D --> D11["UsersPage"]
-
-    E --> E1["CrudSection"]
-    E --> E2["CalendarView"]
-    E --> E3["ExpenseTable"]
-    E --> E4["ui.tsx"]
-
-    F --> F1["types.ts"]
-    F --> F2["format.ts"]
-    F --> F3["useLoad.ts"]
-
-    G --> G1["api.ts"]
-    G1 --> G2["HTTP Requests"]
-```
-
-## 5. Backend architecture
-
-```mermaid
-flowchart TB
-    A["CampusErpApplication.java"]
-
-    A --> B["Configuration"]
-    A --> C["Authentication"]
-    A --> D["Business Modules"]
-    A --> E["Common Infrastructure"]
-    A --> F["Data Initialization"]
-
-    B --> B1["SecurityConfig"]
-    B --> B2["ClockConfig"]
-
-    C --> C1["AuthController"]
-    C --> C2["JwtService"]
-    C --> C3["JwtAuthFilter"]
-
-    D --> D1["Controllers"]
-    D1 --> D2["Services"]
-    D2 --> D3["Repositories"]
-    D3 --> D4["Entities"]
-
-    E --> E1["BaseEntity"]
-    E --> E2["Finder"]
-    E --> E3["Money"]
-    E --> E4["Exception Handler"]
-    E --> E5["API Error"]
-
-    F --> F1["DemoAccountsSeeder"]
-    F --> F2["DemoDataSeeder"]
-    F --> F3["CSV Utility"]
-
-    D4 --> DB[("MySQL")]
-```
-
-## 6. Backend package/module structure
-
-```mermaid
-flowchart TD
-    ROOT["com.campuserp"]
-
-    ROOT --> AUTH["auth"]
-    ROOT --> CONFIG["config"]
-    ROOT --> COMMON["common"]
-    ROOT --> USER["user"]
-    ROOT --> STUDENT["student"]
-    ROOT --> FACULTY["faculty"]
-    ROOT --> COURSE["course"]
-    ROOT --> CALENDAR["calendar"]
-    ROOT --> TRAINING["training"]
-    ROOT --> PROJECT["project"]
-    ROOT --> BUDGET["budget"]
-    ROOT --> EVENT["event"]
-    ROOT --> SETUP["setup"]
-    ROOT --> DASH["dashboard"]
-    ROOT --> SEED["seed"]
-
-    AUTH --> A1["AuthController"]
-    AUTH --> A2["JwtService"]
-    AUTH --> A3["JwtAuthFilter"]
-
-    CONFIG --> C1["SecurityConfig"]
-    CONFIG --> C2["ClockConfig"]
-
-    COMMON --> CM1["BaseEntity"]
-    COMMON --> CM2["GlobalExceptionHandler"]
-    COMMON --> CM3["Finder / Ref / Money"]
-
-    USER --> U1["UserController"]
-    USER --> U2["UserService"]
-    USER --> U3["UserRepository"]
-    USER --> U4["User / Role"]
-
-    STUDENT --> S1["StudentController"]
-    STUDENT --> S2["StudentRepository"]
-    STUDENT --> S3["EnrolmentRepository"]
-    STUDENT --> S4["Student / Enrolment"]
-
-    COURSE --> CR1["CourseController"]
-    COURSE --> CR2["OfferingController"]
-    COURSE --> CR3["OfferingService"]
-    COURSE --> CR4["Course Repositories"]
-
-    CALENDAR --> CA1["CalendarController"]
-    CALENDAR --> CA2["CalendarService"]
-    CALENDAR --> CA3["CalendarEntry"]
-
-    TRAINING --> T1["TrainingController"]
-    TRAINING --> T2["TrainingService"]
-    TRAINING --> T3["Training Repositories"]
-
-    PROJECT --> P1["ProjectController"]
-    PROJECT --> P2["ResearchProjectRepository"]
-    PROJECT --> P3["ProjectMemberRepository"]
-
-    BUDGET --> BU1["BudgetController"]
-    BUDGET --> BU2["BudgetService"]
-    BUDGET --> BU3["ExpenseService"]
-    BUDGET --> BU4["Repositories"]
-
-    EVENT --> EV1["EventController"]
-    EVENT --> EV2["EventRepository"]
-
-    SETUP --> SE1["SetupController"]
-    SETUP --> SE2["Academic Setup Repositories"]
-
-    DASH --> D1["DashboardController"]
-
-    SEED --> SD1["DemoDataSeeder"]
-    SEED --> SD2["DemoAccountsSeeder"]
-```
-
-## 7. Authentication and authorization flow
-
-This diagram explains the JWT-based security architecture.
-
-```mermaid
-sequenceDiagram
-    actor User
-    participant FE as React Frontend
-    participant AC as AuthController
-    participant JS as JwtService
-    participant SF as JwtAuthFilter
-    participant SC as Spring Security
-    participant API as REST API
-
-    User->>FE: Enter login credentials
-    FE->>AC: Authentication request
-    AC->>JS: Generate JWT
-    JS-->>AC: JWT token
-    AC-->>FE: Authentication response
-    FE->>FE: Store authentication state
-
-    User->>FE: Request protected resource
-    FE->>SF: Request with Bearer token
-    SF->>JS: Validate JWT
-    JS-->>SF: Token validation result
-    SF->>SC: Set authentication context
-    SC->>API: Authorize request
-    API-->>FE: Response
-    FE-->>User: Display requested data
-```
-
-## 8. REST API request lifecycle
-
-```mermaid
-flowchart TD
-    A["User Action"]
-    B["React Page"]
-    C["api.ts"]
-    D["HTTP Request"]
-    E["JWT Filter"]
-    F["Spring Security"]
-    G["REST Controller"]
-    H["Business Service"]
-    I["JPA Repository"]
-    J[("MySQL Database")]
-
-    A --> B --> C --> D
-    D --> E --> F --> G
-    G --> H --> I --> J
-
-    J --> I
-    I --> H
-    H --> G
-    G --> D
-    D --> C
-    C --> B
-```
-
-## 9. Academic management module
-
-This diagram shows how the main academic areas fit together.
-
-```mermaid
-flowchart TB
-    A["Academic Management"]
-
-    A --> B["Departments"]
-    A --> C["Programmes"]
-    A --> D["Academic Years"]
-    A --> E["Sections"]
-    A --> F["Courses"]
-    A --> G["Course Offerings"]
-    A --> H["Enrolments"]
-    A --> I["Timetable Slots"]
-    A --> J["Holidays"]
-
-    B --> C
-    C --> E
-    D --> G
-    F --> G
-    G --> H
-    G --> I
-    D --> J
-```
-
-## 10. Student and enrolment module
-
-```mermaid
-flowchart TD
-    A["Student Management"]
-
-    A --> B["StudentController"]
-    B --> C["StudentRepository"]
-    B --> D["EnrolmentRepository"]
-
-    C --> E["Student Entity"]
-    D --> F["Enrolment Entity"]
-
-    E --> G["Student Information"]
-    E --> H["Student Status"]
-    F --> I["Course Enrolment"]
-    F --> J["Academic Records"]
-
-    I --> K["Course Offering"]
-    K --> L["Course"]
-```
-
-## 11. Course and timetable module
-
-```mermaid
-flowchart TD
-    A["Course Management"]
-
-    A --> B["CourseController"]
-    A --> C["OfferingController"]
-
-    B --> D["Course Repository"]
-    C --> E["OfferingService"]
-
-    E --> F["CourseOfferingRepository"]
-    E --> G["OfferingTeacherRepository"]
-    E --> H["ClassExceptionRepository"]
-
-    D --> I["Course"]
-    F --> J["CourseOffering"]
-    G --> K["OfferingTeacher"]
-    H --> L["ClassException"]
-
-    J --> M["TimetableSlot"]
-    K --> N["Faculty / Teaching Role"]
-    L --> O["Exception Type"]
-```
-
-## 12. Faculty management module
-
-```mermaid
-flowchart TD
-    A["Faculty Management"]
-    A --> B["FacultyController"]
-    B --> C["FacultyRepository"]
-
-    C --> D["Faculty Entity"]
-    D --> E["Faculty Status"]
-
-    D --> F["Teaching Assignments"]
-    F --> G["Course Offering"]
-    G --> H["Course"]
-    G --> I["Timetable"]
-```
-
-## 13. Training management module
-
-```mermaid
-flowchart TD
-    A["Training Management"]
-
-    A --> B["TrainingController"]
-    B --> C["TrainingService"]
-
-    C --> D["TrainingProgramRepository"]
-    C --> E["TrainingClientRepository"]
-    C --> F["AcceptanceChangeRepository"]
-
-    D --> G["TrainingProgram"]
-    E --> H["TrainingClient"]
-    F --> I["AcceptanceChange"]
-
-    G --> J["Acceptance"]
-    J --> K["Training Acceptance History"]
-```
-
-## 14. Research project management module
-
-```mermaid
-flowchart TD
-    A["Research Project Management"]
-
-    A --> B["ProjectController"]
-    B --> C["ResearchProjectRepository"]
-    B --> D["ProjectMemberRepository"]
-
-    C --> E["ResearchProject"]
-    D --> F["ProjectMember"]
-
-    E --> G["Project Status"]
-    F --> H["Member Role"]
-    F --> I["Project Team"]
-```
-
-## 15. Budget and expense management module
-
-```mermaid
-flowchart TD
-    A["Budget Management"]
-
-    A --> B["BudgetController"]
-    B --> C["BudgetService"]
-    B --> D["ExpenseService"]
-
-    C --> E["BudgetRepository"]
-    D --> F["ExpenseRepository"]
-
-    E --> G["Budget Entity"]
-    F --> H["Expense Entity"]
-
-    G --> I["Budget Type"]
-    H --> J["Expense Category"]
-    H --> K["Expense Status"]
-
-    G --> L["Department Budget"]
-    L --> H
-```
-
-## 16. Events and calendar module
-
-```mermaid
-flowchart TD
-    A["Events & Calendar"]
-
-    A --> B["Event Management"]
-    A --> C["Calendar Management"]
-
-    B --> D["EventController"]
-    D --> E["EventRepository"]
-    E --> F["Event Entity"]
-    F --> G["Event Status"]
-
-    C --> H["CalendarController"]
-    H --> I["CalendarService"]
-    I --> J["CalendarEntry"]
-
-    K["Academic Setup"] --> L["Holidays"]
-    K --> M["Academic Calendar"]
-    L --> J
-    M --> J
-```
-
-## 17. Dashboard and reporting module
-
-```mermaid
-flowchart TD
-    A["Dashboard Page"]
-    A --> B["DashboardController"]
-
-    B --> C["Student Data"]
-    B --> D["Faculty Data"]
-    B --> E["Course Data"]
-    B --> F["Training Data"]
-    B --> G["Project Data"]
-    B --> H["Budget Data"]
-    B --> I["Event Data"]
-
-    C --> J["Dashboard Metrics"]
-    D --> J
-    E --> J
-    F --> J
-    G --> J
-    H --> J
-    I --> J
-
-    J --> K["Dashboard API Response"]
-    K --> L["React Dashboard"]
-```
-
-## 18. Academic setup module
-
-```mermaid
-flowchart TD
-    A["Academic Setup"]
-
-    A --> B["SetupController"]
-
-    B --> C["DepartmentRepository"]
-    B --> D["ProgrammeRepository"]
-    B --> E["SectionRepository"]
-    B --> F["AcademicYearRepository"]
-    B --> G["HolidayRepository"]
-
-    C --> H["Department"]
-    D --> I["Programme"]
-    E --> J["Section"]
-    F --> K["AcademicYear"]
-    G --> L["Holiday"]
-
-    H --> I
-    I --> J
-    K --> M["Academic Scheduling"]
-    L --> M
-```
-
-## 19. Database entity relationship overview
-
-The following is a conceptual domain relationship diagram based on the entity
-classes in this project. It is not a substitute for the exact MySQL
-foreign-key schema.
-
-```mermaid
-erDiagram
-    USER ||--o| STUDENT : associated_with
-    USER ||--o| FACULTY : associated_with
-
-    DEPARTMENT ||--o{ STUDENT : contains
-    DEPARTMENT ||--o{ FACULTY : contains
-    DEPARTMENT ||--o{ PROGRAMME : offers
-
-    PROGRAMME ||--o{ SECTION : organizes
-    ACADEMIC_YEAR ||--o{ COURSE_OFFERING : schedules
-
-    COURSE ||--o{ COURSE_OFFERING : offered_as
-    COURSE_OFFERING ||--o{ ENROLMENT : receives
-    STUDENT ||--o{ ENROLMENT : registers
-
-    COURSE_OFFERING ||--o{ OFFERING_TEACHER : assigned
-    FACULTY ||--o{ OFFERING_TEACHER : teaches
-
-    COURSE_OFFERING ||--o{ TIMETABLE_SLOT : schedules
-    COURSE_OFFERING ||--o{ CLASS_EXCEPTION : modifies
-
-    RESEARCH_PROJECT ||--o{ PROJECT_MEMBER : includes
-    TRAINING_PROGRAM ||--o{ ACCEPTANCE : tracks
-    TRAINING_CLIENT ||--o{ TRAINING_PROGRAM : provides
-
-    DEPARTMENT ||--o{ BUDGET : allocated
-    BUDGET ||--o{ EXPENSE : records
-
-    EVENT ||--o{ CALENDAR_ENTRY : represented_by
-```
-
-## 20. Application startup and sample data initialization
-
-```mermaid
-flowchart TD
-    A["Application Startup"]
-    A --> B["CampusErpApplication.java"]
-    B --> C["Spring Boot Initialization"]
-    C --> D["Load application.properties"]
-    D --> E["Configure Database"]
-    E --> F["Configure Spring Security"]
-    F --> G["Initialize JPA"]
-    G --> H["Seeder Components"]
-
-    H --> I["DemoAccountsSeeder"]
-    H --> J["DemoDataSeeder"]
-
-    J --> K["CSV Utility"]
-    K --> L["Read sample-data CSV files"]
-
-    L --> M["Students"]
-    L --> N["Faculty"]
-    L --> O["Courses"]
-    L --> P["Departments"]
-    L --> Q["Training Programs"]
-    L --> R["Research Projects"]
-    L --> S["Budgets & Expenses"]
-    L --> T["Events & Timetable"]
-
-    I --> U[("Database")]
-    M --> U
-    N --> U
-    O --> U
-    P --> U
-    Q --> U
-    R --> U
-    S --> U
-    T --> U
-```
-
 ## Modules
 
 - **Dashboard** - faculty and student counts, courses running this semester,
@@ -1103,3 +262,634 @@ numbers quoted in this README, and that the sample timetable has no clashes.
 
 Other business settings (like the financial year starting in April) are under
 `app.*` in `application.properties`.
+
+## Architecture
+
+Diagrams of how the code is put together. They're written in Mermaid, which
+GitHub draws as pictures.
+
+### 1. Overall system
+
+Faculty and students don't log in. Admin, staff and viewers open their pages.
+
+```mermaid
+flowchart TB
+    USERS["Users<br/>Admin | Staff | Viewer"]
+
+    subgraph FE["Frontend - React + TypeScript (Vite)"]
+        ROUTES["Routes (App.tsx)"]
+        AUTH["Login state (auth.tsx)"]
+        PAGES["Pages"]
+        COMPONENTS["Shared components"]
+        API["API client (api.ts)"]
+        ROUTES --> PAGES
+        PAGES --> COMPONENTS
+        PAGES --> API
+        AUTH --> API
+    end
+
+    subgraph BE["Backend - Spring Boot"]
+        FILTER["JWT filter"]
+        SECURITY["Spring Security<br/>role rules"]
+        CONTROLLERS["REST controllers"]
+        SERVICES["Services"]
+        REPOSITORIES["JPA repositories"]
+        ERRORS["GlobalExceptionHandler"]
+        FILTER --> SECURITY
+        SECURITY --> CONTROLLERS
+        CONTROLLERS --> SERVICES
+        CONTROLLERS --> REPOSITORIES
+        SERVICES --> REPOSITORIES
+        CONTROLLERS -. errors .-> ERRORS
+    end
+
+    DB[("MySQL")]
+
+    USERS --> ROUTES
+    API <-->|"REST / JSON + Bearer token"| FILTER
+    REPOSITORIES --> DB
+```
+
+### 2. Project directory structure
+
+Build output (`frontend/node_modules`, `target/`, `src/main/resources/static/`)
+and local editor settings are left out.
+
+```text
+campus-erp/
+├── .mvn/wrapper/maven-wrapper.properties
+├── frontend/
+│   ├── index.html
+│   ├── package.json
+│   ├── package-lock.json
+│   ├── tsconfig.json
+│   ├── vite.config.ts
+│   └── src/
+│       ├── main.tsx
+│       ├── App.tsx
+│       ├── auth.tsx
+│       ├── api.ts
+│       ├── styles.css
+│       ├── components/
+│       │   ├── CalendarView.tsx
+│       │   ├── CrudSection.tsx
+│       │   ├── ExpenseTable.tsx
+│       │   └── ui.tsx
+│       ├── layout/
+│       │   └── Layout.tsx
+│       ├── lib/
+│       │   ├── format.ts
+│       │   ├── types.ts
+│       │   └── useLoad.ts
+│       └── pages/
+│           ├── BudgetDetailPage.tsx
+│           ├── BudgetsPage.tsx
+│           ├── CalendarPage.tsx
+│           ├── CoursesPage.tsx
+│           ├── DashboardPage.tsx
+│           ├── EventsPage.tsx
+│           ├── FacultyDetailPage.tsx
+│           ├── FacultyPage.tsx
+│           ├── LoginPage.tsx
+│           ├── PlaceholderPage.tsx
+│           ├── ProjectsPage.tsx
+│           ├── SetupPage.tsx
+│           ├── StudentDetailPage.tsx
+│           ├── StudentsPage.tsx
+│           ├── TrainingPage.tsx
+│           ├── TrainingProgramPage.tsx
+│           └── UsersPage.tsx
+├── src/
+│   ├── main/
+│   │   ├── java/com/campuserp/
+│   │   │   ├── CampusErpApplication.java
+│   │   │   ├── auth/          AuthController, JwtService, JwtAuthFilter
+│   │   │   ├── budget/        Budget, Expense, BudgetService, ExpenseService, BudgetController, ...
+│   │   │   ├── calendar/      CalendarService, CalendarController, CalendarEntry
+│   │   │   ├── common/        BaseEntity, ApiError, GlobalExceptionHandler, Finder, Money, Ref, ...
+│   │   │   ├── config/        SecurityConfig, ClockConfig
+│   │   │   ├── course/        Course, CourseOffering, OfferingTeacher, TimetableSlot,
+│   │   │   │                  ClassException, OfferingService, CourseController, OfferingController, ...
+│   │   │   ├── dashboard/     DashboardController
+│   │   │   ├── event/         Event, EventController, EventRepository, EventStatus
+│   │   │   ├── faculty/       Faculty, FacultyController, FacultyRepository, FacultyStatus
+│   │   │   ├── project/       ResearchProject, ProjectMember, ProjectController, ...
+│   │   │   ├── seed/          DemoAccountsSeeder, DemoDataSeeder, Csv
+│   │   │   ├── setup/         Department, Programme, Section, AcademicYear, Holiday,
+│   │   │   │                  AcademicCalendar, SetupController, ...
+│   │   │   ├── student/       Student, Enrolment, StudentController, ...
+│   │   │   ├── training/      TrainingProgram, TrainingClient, AcceptanceChange, TrainingService, ...
+│   │   │   └── user/          User, Role, UserService, UserController, ...
+│   │   └── resources/
+│   │       ├── application.properties
+│   │       └── sample-data/   21 CSV files + README.md
+│   └── test/
+│       ├── java/com/campuserp/
+│       │   ├── ApiTest.java, Fixtures.java, TestClock.java, TestLogins.java
+│       │   ├── CampusErpApplicationTests.java
+│       │   ├── budget/BudgetAndExpenseTest.java
+│       │   ├── calendar/CalendarTest.java
+│       │   ├── common/HealthAndErrorsTest.java
+│       │   ├── course/OfferingsTest.java
+│       │   ├── seed/SampleDataTest.java
+│       │   ├── student/EnrolmentTest.java
+│       │   ├── training/TrainingTest.java
+│       │   └── user/AuthAndRolesTest.java
+│       └── resources/application.properties
+├── .gitattributes
+├── .gitignore
+├── HELP.md
+├── README.md
+├── mvnw, mvnw.cmd
+└── pom.xml
+```
+
+### 3. Frontend startup and routing
+
+`main.tsx` wraps the whole app in the router and the login state. The login
+page sits outside the layout; every other page needs a login, and Users also
+needs the admin role.
+
+```mermaid
+flowchart TD
+    MAIN["main.tsx"] --> ROUTER["BrowserRouter"]
+    ROUTER --> AUTH["AuthProvider (auth.tsx)"]
+    AUTH --> APP["App.tsx - routes"]
+
+    APP --> LOGIN["/login - LoginPage"]
+    APP --> REQ["RequireLogin"]
+    REQ --> LAYOUT["Layout.tsx - sidebar"]
+
+    LAYOUT --> PAGES["Pages"]
+    PAGES --> DASH["Dashboard"]
+    PAGES --> FAC["Faculty + teacher page"]
+    PAGES --> CRS["Courses"]
+    PAGES --> STU["Students + student page"]
+    PAGES --> CAL["Calendar"]
+    PAGES --> BUD["Budgets + budget page"]
+    PAGES --> PRJ["Research projects"]
+    PAGES --> TRN["Training + program page"]
+    PAGES --> EVT["Events"]
+    PAGES --> SET["Academic setup"]
+    LAYOUT --> ADMIN["RequireAdmin"] --> USERS["Users"]
+
+    PAGES --> COMPONENTS["components/"]
+    PAGES --> LIB["lib/ (types, format, useLoad)"]
+    LIB --> API["api.ts"]
+    API --> SERVER["Spring Boot REST API"]
+```
+
+### 4. Frontend files by role
+
+```mermaid
+flowchart TB
+    A["Frontend"]
+
+    A --> B["Login"]
+    A --> C["Layout"]
+    A --> D["Pages"]
+    A --> E["Shared components"]
+    A --> F["Utilities"]
+    A --> G["Talking to the API"]
+
+    B --> B1["auth.tsx - who is logged in, role checks"]
+    B --> B2["LoginPage.tsx"]
+
+    C --> C1["Layout.tsx - sidebar, user box"]
+
+    D --> D1["DashboardPage"]
+    D --> D2["StudentsPage, StudentDetailPage"]
+    D --> D3["FacultyPage, FacultyDetailPage"]
+    D --> D4["CoursesPage - catalogue and offerings"]
+    D --> D5["TrainingPage, TrainingProgramPage"]
+    D --> D6["ProjectsPage"]
+    D --> D7["BudgetsPage, BudgetDetailPage"]
+    D --> D8["EventsPage"]
+    D --> D9["CalendarPage"]
+    D --> D10["SetupPage"]
+    D --> D11["UsersPage"]
+
+    E --> E1["CrudSection - list + add/edit/delete form"]
+    E --> E2["CalendarView - FullCalendar day/week/month"]
+    E --> E3["ExpenseTable - approve / reject"]
+    E --> E4["ui.tsx - badges, usage bar, tabs, messages"]
+
+    F --> F1["types.ts - API shapes"]
+    F --> F2["format.ts - rupees, dates, times"]
+    F --> F3["useLoad.ts - load an endpoint"]
+
+    G --> G1["api.ts - fetch, token, error messages"]
+```
+
+### 5. Backend layers
+
+Bigger modules (courses, budgets, training, users) have a service class.
+Simpler ones (setup, faculty, students, events, projects) call their
+repositories straight from the controller.
+
+```mermaid
+flowchart TB
+    A["CampusErpApplication.java"]
+
+    A --> B["config/"]
+    A --> C["auth/"]
+    A --> D["Module packages"]
+    A --> E["common/"]
+    A --> F["seed/"]
+
+    B --> B1["SecurityConfig - who can call what"]
+    B --> B2["ClockConfig - one clock for 'today'"]
+
+    C --> C1["AuthController - login, me"]
+    C --> C2["JwtService - make and read tokens"]
+    C --> C3["JwtAuthFilter - checks the token on each request"]
+
+    D --> D1["Controllers"]
+    D1 --> D2["Services (some modules)"]
+    D1 --> D3["Repositories"]
+    D2 --> D3
+    D3 --> D4["Entities"]
+
+    E --> E1["BaseEntity - id + timestamps"]
+    E --> E2["GlobalExceptionHandler + ApiError"]
+    E --> E3["Finder, Money, Ref"]
+    E --> E4["HealthController - /api/health"]
+
+    F --> F1["DemoAccountsSeeder"]
+    F --> F2["DemoDataSeeder"]
+    F --> F3["Csv"]
+
+    D4 --> DB[("MySQL")]
+```
+
+### 6. Backend packages
+
+```mermaid
+flowchart TD
+    ROOT["com.campuserp"]
+
+    ROOT --> AUTH["auth"]
+    ROOT --> CONFIG["config"]
+    ROOT --> COMMON["common"]
+    ROOT --> USER["user"]
+    ROOT --> SETUP["setup"]
+    ROOT --> FACULTY["faculty"]
+    ROOT --> COURSE["course"]
+    ROOT --> STUDENT["student"]
+    ROOT --> CALENDAR["calendar"]
+    ROOT --> BUDGET["budget"]
+    ROOT --> PROJECT["project"]
+    ROOT --> TRAINING["training"]
+    ROOT --> EVENT["event"]
+    ROOT --> DASH["dashboard"]
+    ROOT --> SEED["seed"]
+
+    AUTH --> A1["AuthController, JwtService, JwtAuthFilter"]
+    CONFIG --> C1["SecurityConfig, ClockConfig"]
+    COMMON --> CM1["BaseEntity, ApiError, GlobalExceptionHandler,<br/>NotFoundException, BusinessRuleException,<br/>Finder, Money, Ref, HealthController"]
+    USER --> U1["UserController, UserService,<br/>UserRepository, User, Role"]
+    SETUP --> SE1["SetupController, AcademicCalendar,<br/>Department, Programme, Section,<br/>AcademicYear, Holiday + repositories"]
+    FACULTY --> F1["FacultyController, FacultyRepository,<br/>Faculty, FacultyStatus"]
+    COURSE --> CR1["CourseController, OfferingController,<br/>OfferingService, Course, CourseOffering,<br/>OfferingTeacher, TimetableSlot, ClassException + repositories"]
+    STUDENT --> S1["StudentController, Student,<br/>Enrolment + repositories"]
+    CALENDAR --> CA1["CalendarController, CalendarService,<br/>CalendarEntry"]
+    BUDGET --> BU1["BudgetController, BudgetService,<br/>ExpenseService, Budget, Expense + repositories"]
+    PROJECT --> P1["ProjectController, ResearchProject,<br/>ProjectMember + repositories"]
+    TRAINING --> T1["TrainingController, TrainingService,<br/>TrainingProgram, TrainingClient,<br/>AcceptanceChange + repositories"]
+    EVENT --> EV1["EventController, EventRepository, Event"]
+    DASH --> D1["DashboardController"]
+    SEED --> SD1["DemoAccountsSeeder, DemoDataSeeder, Csv"]
+```
+
+### 7. Login and access checks
+
+The password is checked against the BCrypt hash in the database. After that,
+every request carries the token, and the user's role is looked up again each
+time, so a role change or disabled account takes effect straight away.
+
+```mermaid
+sequenceDiagram
+    actor User
+    participant FE as React frontend
+    participant AC as AuthController
+    participant DB as UserRepository
+    participant JS as JwtService
+    participant SF as JwtAuthFilter
+    participant SC as Spring Security
+    participant API as Controller
+
+    User->>FE: Username and password
+    FE->>AC: POST /api/auth/login
+    AC->>DB: Find user (must be enabled)
+    AC->>AC: Check password (BCrypt)
+    AC->>JS: Create token
+    JS-->>AC: JWT
+    AC-->>FE: Token + user
+    FE->>FE: Keep token in localStorage
+
+    User->>FE: Open a page
+    FE->>SF: Request with Authorization: Bearer token
+    SF->>JS: Read token
+    JS-->>SF: Username (or invalid)
+    SF->>DB: Load user and current role
+    SF->>SC: Mark request as logged in with that role
+    SC->>SC: Check role rules (viewer reads, staff writes, admin users/approvals)
+    alt Allowed
+        SC->>API: Handle request
+        API-->>FE: JSON
+    else Not logged in or not allowed
+        SC-->>FE: 401 or 403 with an error message
+    end
+```
+
+### 8. One request from click to database
+
+```mermaid
+flowchart TD
+    A["User action"] --> B["React page"]
+    B --> C["api.ts adds the token"]
+    C --> E["JwtAuthFilter"]
+    E --> F["Spring Security role rules"]
+    F --> G["REST controller<br/>(request is validated)"]
+    G --> H["Service, if the module has one"]
+    G --> I["JPA repository"]
+    H --> I
+    I --> J[("MySQL")]
+
+    J -. rows .-> I
+    I -. entities .-> G
+    G -. JSON .-> C
+    C -. data or error message .-> B
+
+    G -. exception .-> X["GlobalExceptionHandler<br/>400 / 404 / 409 as ApiError"]
+    X -. JSON .-> C
+```
+
+### 9. Academic structure
+
+```mermaid
+flowchart TB
+    DEPT["Department"] --> PROG["Programme<br/>(e.g. B.Tech CSE, 8 semesters)"]
+    PROG --> SEC["Section<br/>(e.g. CSE-A)"]
+    DEPT --> COURSE["Course"]
+
+    YEAR["Academic year<br/>odd + even semester dates"] --> OFF["Course offering<br/>course + year + semester + section"]
+    COURSE --> OFF
+    SEC --> OFF
+
+    SEC --> STU["Student<br/>(programme, semester, section)"]
+    STU --> ENR["Enrolment"]
+    OFF --> ENR
+    OFF --> SLOT["Weekly timetable slots"]
+    OFF --> EXC["Cancelled / extra classes"]
+
+    HOL["Holidays<br/>(by date)"] -.-> CAL["Calendar"]
+    SLOT --> CAL
+    EXC --> CAL
+    ENR --> CAL
+```
+
+### 10. Students and enrolment
+
+```mermaid
+flowchart TD
+    A["StudentController"]
+
+    A --> B["StudentRepository"]
+    A --> C["EnrolmentRepository"]
+    A --> D["CourseOfferingRepository"]
+
+    B --> E["Student<br/>roll no, programme, semester, section, status"]
+    C --> F["Enrolment<br/>student + offering"]
+
+    A --> G["Whole section:<br/>enrol every active student of a<br/>section + semester into its offerings"]
+    A --> H["Single student:<br/>add or remove one course"]
+    G --> F
+    H --> F
+
+    F --> K["Course offering"]
+    K --> L["Course"]
+    K --> M["Teachers and weekly times<br/>(shown on the student page)"]
+```
+
+### 11. Courses and timetable
+
+```mermaid
+flowchart TD
+    A["Course management"]
+
+    A --> B["CourseController - catalogue"]
+    A --> C["OfferingController"]
+
+    B --> D["CourseRepository"] --> I["Course"]
+    C --> E["OfferingService"]
+
+    E --> F["CourseOfferingRepository"] --> J["CourseOffering"]
+    E --> H["ClassExceptionRepository"] --> L["ClassException<br/>CANCELLED or EXTRA"]
+    E --> W["Clash check on save:<br/>teacher, room, section"]
+
+    J --> K["OfferingTeacher<br/>faculty + THEORY / LAB / TUTORIAL"]
+    J --> M["TimetableSlot<br/>day, start, end, room, type"]
+    K --> N["Faculty"]
+```
+
+### 12. Faculty
+
+```mermaid
+flowchart TD
+    A["FacultyController"] --> C["FacultyRepository"] --> D["Faculty<br/>employee ID, department, status"]
+
+    A --> CNT["List shows two counts per teacher"]
+    CNT --> F["Courses this year<br/>(OfferingTeacherRepository)"]
+    CNT --> P["Projects<br/>(ProjectMemberRepository)"]
+
+    F --> G["Course offerings they teach"]
+    G --> H["Course"]
+    G --> I["Weekly timetable<br/>(teacher's own calendar)"]
+    P --> R["Research projects<br/>as PI or co-investigator"]
+```
+
+### 13. Training programs
+
+```mermaid
+flowchart TD
+    A["TrainingController"] --> B["TrainingService"]
+
+    B --> D["TrainingProgramRepository"] --> G["TrainingProgram<br/>coordinator = a teacher"]
+    B --> E["TrainingClientRepository"] --> H["TrainingClient<br/>one per client pitched"]
+    B --> F["AcceptanceChangeRepository"] --> I["AcceptanceChange<br/>history of 'accepted'"]
+
+    G --> H
+    H --> STEPS["Steps in order:<br/>proposal -> accepted (YES / NO / NEEDS_REVISION) -> conducted"]
+    H --> I
+    STEPS -->|"accepted = YES"| BUD["BudgetService creates a<br/>training budget (budget required)"]
+    BUD --> PL["Profit / loss = fee - approved expenses"]
+```
+
+### 14. Research projects
+
+```mermaid
+flowchart TD
+    A["ProjectController"]
+
+    A --> C["ResearchProjectRepository"] --> E["ResearchProject<br/>agency, sanctioned amount, dates, status"]
+    A --> D["ProjectMemberRepository"] --> F["ProjectMember<br/>faculty + PI / CO_INVESTIGATOR"]
+    E --> F
+    A --> B["BudgetService"]
+    B --> G["Project budget<br/>created with the project,<br/>allocated = sanctioned amount"]
+    G --> H["Utilized = approved expenses<br/>Balance = sanctioned - utilized"]
+```
+
+### 15. Budgets and expenses
+
+```mermaid
+flowchart TD
+    A["BudgetController"]
+
+    A --> C["BudgetService"] --> E["BudgetRepository"] --> G["Budget<br/>allocated, financial year"]
+    A --> D["ExpenseService"] --> F["ExpenseRepository"] --> H["Expense<br/>amount, category, status"]
+
+    G --> T["Type"]
+    T --> T1["DEPARTMENT - added by hand"]
+    T --> T2["EVENT - from the event"]
+    T --> T3["TRAINING - when a client accepts"]
+    T --> T4["PROJECT - when a project is created"]
+
+    G --> H
+    H --> S["PENDING -> APPROVED or REJECTED<br/>(admin only, overspend needs a confirm)"]
+    S --> U["Only APPROVED counts as utilized"]
+```
+
+### 16. Events and the calendar
+
+These are separate. Events can have a budget. The calendar only shows
+classes, worked out on request; nothing calendar-related is stored.
+
+```mermaid
+flowchart TD
+    subgraph EV["Events"]
+        D["EventController"] --> E["EventRepository"] --> F["Event<br/>type, dates, venue, status"]
+        D --> B["BudgetService"] --> BG["Event budget<br/>(only if an amount is entered)"]
+    end
+
+    subgraph CA["Calendar"]
+        H["CalendarController<br/>/api/calendar/student/{id}<br/>/api/calendar/faculty/{id}"] --> I["CalendarService"]
+        I --> J["CalendarEntry list<br/>CLASS / CANCELLED / EXTRA"]
+    end
+
+    ENR["Enrolments (student)<br/>or teaching (faculty)"] --> I
+    SLOT["Timetable slots"] --> I
+    SEM["Semester dates<br/>(academic year)"] --> I
+    HOL["Holidays - skipped"] --> I
+    EXC["Cancelled / extra classes"] --> I
+```
+
+### 17. Dashboard
+
+```mermaid
+flowchart TD
+    A["DashboardPage"] --> B["GET /api/dashboard<br/>DashboardController"]
+
+    B --> C["Active students"]
+    B --> D["Active faculty"]
+    B --> E["Courses this semester"]
+    B --> T["Today's classes<br/>(CalendarService)"]
+    B --> F["Training pipeline"]
+    B --> G["Project funds used"]
+    B --> H["Budgets this financial year"]
+    B --> P["Pending approvals"]
+    B --> I["Upcoming events"]
+
+    C & D & E & T & F & G & H & P & I --> K["One JSON response"]
+    K --> L["Dashboard cards"]
+```
+
+### 18. Academic setup
+
+```mermaid
+flowchart TD
+    A["SetupController"]
+
+    A --> C["DepartmentRepository"] --> H["Department"]
+    A --> D["ProgrammeRepository"] --> I["Programme"]
+    A --> E["SectionRepository"] --> J["Section"]
+    A --> F["AcademicYearRepository"] --> K["AcademicYear"]
+    A --> G["HolidayRepository"] --> L["Holiday"]
+
+    H --> I
+    I --> J
+    K --> M["AcademicCalendar<br/>current year and semester half,<br/>financial year (April-March)"]
+    K --> N["Semester dates for offerings<br/>and the calendar"]
+    L --> N
+```
+
+### 19. Database tables and links
+
+Every table also has `id`, `created_at` and `updated_at`. App users are
+separate from faculty and students.
+
+```mermaid
+erDiagram
+    DEPARTMENT ||--o{ PROGRAMME : offers
+    PROGRAMME ||--o{ SECTION : has
+    DEPARTMENT ||--o{ COURSE : owns
+    DEPARTMENT ||--o{ FACULTY : employs
+
+    PROGRAMME ||--o{ STUDENT : studies
+    SECTION ||--o{ STUDENT : groups
+
+    COURSE ||--o{ COURSE_OFFERING : "runs as"
+    ACADEMIC_YEAR ||--o{ COURSE_OFFERING : "in"
+    SECTION ||--o{ COURSE_OFFERING : "for"
+
+    COURSE_OFFERING ||--o{ OFFERING_TEACHER : "taught by"
+    FACULTY ||--o{ OFFERING_TEACHER : teaches
+    COURSE_OFFERING ||--o{ TIMETABLE_SLOT : "meets in"
+    COURSE_OFFERING ||--o{ CLASS_EXCEPTION : "changed by"
+    COURSE_OFFERING ||--o{ ENROLMENT : has
+    STUDENT ||--o{ ENROLMENT : "enrolled in"
+
+    RESEARCH_PROJECT ||--o{ PROJECT_MEMBER : team
+    FACULTY ||--o{ PROJECT_MEMBER : "works on"
+
+    FACULTY |o--o{ TRAINING_PROGRAM : coordinates
+    TRAINING_PROGRAM ||--o{ TRAINING_CLIENT : "pitched to"
+    TRAINING_CLIENT ||--o{ ACCEPTANCE_CHANGE : history
+
+    DEPARTMENT |o--o{ BUDGET : "department budget"
+    CAMPUS_EVENT |o--o| BUDGET : "event budget"
+    RESEARCH_PROJECT |o--o| BUDGET : "project budget"
+    TRAINING_CLIENT |o--o| BUDGET : "training budget"
+    BUDGET ||--o{ EXPENSE : records
+
+    APP_USER {
+        string username
+        string role
+    }
+    HOLIDAY {
+        date date
+        string name
+    }
+```
+
+### 20. Startup and sample data
+
+```mermaid
+flowchart TD
+    A["CampusErpApplication starts"] --> D["application.properties<br/>+ environment variables"]
+    D --> E["Connect to MySQL,<br/>create / update tables (JPA)"]
+    E --> F["Security config, JWT secret check (32+ chars)"]
+    F --> H["Startup runners"]
+
+    H --> I["1. DemoAccountsSeeder"]
+    I --> I2{"User table empty?"}
+    I2 -->|yes| I3["Create admin, staff, viewer<br/>(app.seed.*-password)"]
+
+    H --> J["2. DemoDataSeeder"]
+    J --> J2{"SEED_DEMO_DATA on<br/>and no departments yet?"}
+    J2 -->|yes| K["Csv reads sample-data/*.csv"]
+    K --> L["Setup -> faculty -> courses and offerings -><br/>students and enrolments -> class changes -><br/>budgets, projects, training, events -> expenses"]
+
+    I3 --> U[("MySQL")]
+    L --> U
+```
