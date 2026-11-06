@@ -1,0 +1,11 @@
+program_code,client_name,contact_person,phone,email,date_contacted,proposal_submitted,proposal_date,accepted,accepted_date,accepted_remarks,conducted,conducted_from,conducted_to,budget_required,fee_charged
+TP-01,Northfield Steel Pvt Ltd,Rakesh Bhalla,+91 90000 00120,rakesh.bhalla@client.example.com,2026-05-12,YES,2026-05-30,YES,2026-06-15,Approved for 25 engineers,YES,2026-07-06,2026-07-10,50000,80000
+TP-01,Ganga Valley Sugars Ltd,Meenal Joshi,+91 90000 00121,meenal.joshi@client.example.com,2026-08-02,YES,2026-08-20,NEEDS_REVISION,2026-09-05,Wants two days on-site instead of all at campus,NO,,,40000,60000
+TP-01,Shakti Textiles,Vikram Oberoi,+91 90000 00122,vikram.oberoi@client.example.com,2026-10-01,NO,,,,,NO,,,35000,50000
+TP-02,Bluewater Logistics,Sana Qureshi,+91 90000 00123,sana.qureshi@client.example.com,2026-04-18,YES,2026-05-02,YES,2026-05-20,Batch of 20,YES,2026-06-08,2026-06-11,30000,45000
+TP-02,Orchid Finance Services,Amit Khanna,+91 90000 00124,amit.khanna@client.example.com,2026-07-10,YES,2026-07-25,YES,2026-08-12,Two batches agreed,NO,,,55000,90000
+TP-02,Metro Health Clinics,Farah Siddiqui,+91 90000 00125,farah.siddiqui@client.example.com,2026-09-14,YES,2026-09-28,NO,2026-10-15,No budget this year,NO,,,30000,45000
+TP-03,Sunrise Infra Builders,Hemant Rathore,+91 90000 00126,hemant.rathore@client.example.com,2026-03-03,YES,2026-03-20,YES,2026-04-02,,YES,2026-04-20,2026-04-22,45000,40000
+TP-03,City Public Works Division,Lata Deshmukh,+91 90000 00127,lata.deshmukh@client.example.com,2026-10-20,NO,,,,,NO,,,30000,45000
+TP-04,Precision Tools Co,Arvind Pillai,+91 90000 00128,arvind.pillai@client.example.com,2026-06-01,YES,2026-06-18,YES,2026-07-01,,YES,2026-08-03,2026-08-07,25000,42000
+TP-04,Kaveri Engineering Works,Sunita Hegde,+91 90000 00129,sunita.hegde@client.example.com,2026-09-22,YES,2026-10-08,,,,NO,,,28000,40000

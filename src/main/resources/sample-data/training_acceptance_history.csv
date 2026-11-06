@@ -1,0 +1,9 @@
+program_code,client_name,date,accepted,remarks
+TP-01,Northfield Steel Pvt Ltd,2026-06-05,NEEDS_REVISION,"Asked for a shorter, 5-day version"
+TP-01,Northfield Steel Pvt Ltd,2026-06-15,YES,Approved for 25 engineers
+TP-01,Ganga Valley Sugars Ltd,2026-09-05,NEEDS_REVISION,Wants two days on-site instead of all at campus
+TP-02,Bluewater Logistics,2026-05-20,YES,Batch of 20
+TP-02,Orchid Finance Services,2026-08-12,YES,Two batches agreed
+TP-02,Metro Health Clinics,2026-10-15,NO,No budget this year
+TP-03,Sunrise Infra Builders,2026-04-02,YES,
+TP-04,Precision Tools Co,2026-07-01,YES,

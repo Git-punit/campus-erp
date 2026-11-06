@@ -1,0 +1,31 @@
+code,name,credits,department_code
+MA101,Mathematics I,4,ASH
+MA102,Mathematics II,4,ASH
+PH101,Engineering Physics,4,ASH
+CH101,Engineering Chemistry,4,ASH
+HS101,Communication Skills,2,ASH
+CS101,Programming in C,4,CSE
+ME101,Engineering Graphics,3,ME
+MA201,Discrete Mathematics,4,ASH
+MA203,Engineering Mathematics III,4,ASH
+HS201,Engineering Economics,3,ASH
+CS201,Data Structures,4,CSE
+CS203,Computer Organisation,3,CSE
+EC201,Network Analysis,4,ECE
+EC203,Electronic Devices,4,ECE
+ME201,Thermodynamics,4,ME
+ME203,Strength of Materials,4,ME
+CE201,Surveying,4,CE
+CE203,Building Materials,3,CE
+CS301,Operating Systems,4,CSE
+CS303,Database Management Systems,4,CSE
+CS305,Computer Networks,4,CSE
+EC301,Signals and Systems,4,ECE
+EC303,Microprocessors,4,ECE
+ME301,Fluid Mechanics,4,ME
+ME303,Machine Design,4,ME
+CE301,Structural Analysis,4,CE
+CE303,Geotechnical Engineering,4,CE
+CS501,Advanced Algorithms,4,CSE
+CS503,Machine Learning,4,CSE
+CS505,Research Methodology,2,CSE

@@ -1,0 +1,9 @@
+code,title,funding_agency,sanctioned_amount,sanction_date,start_date,end_date,status
+RP-01,Low-cost soil moisture sensing for small farms,DST,500000,2025-06-10,2025-07-01,2027-06-30,ONGOING
+RP-02,Edge computing for rural telemedicine kiosks,SERB,300000,2024-05-15,2024-07-01,2026-06-30,COMPLETED
+RP-03,Machine learning for early crop disease detection,SERB,800000,2025-09-01,2025-10-01,2028-09-30,ONGOING
+RP-04,Recycled aggregate in low-rise concrete structures,AICTE,200000,2026-01-20,2026-02-01,2027-07-31,ONGOING
+RP-05,Solar-assisted drying for agricultural produce,DST,600000,2026-08-05,2026-09-01,2028-08-31,ONGOING
+RP-06,Low-power wireless sensor network for bridges,AICTE,450000,2025-03-01,2025-04-01,2027-03-31,ONGOING
+RP-07,Improving heat transfer in small radiators,SERB,350000,2023-04-01,2023-05-01,2025-04-30,CLOSED
+RP-08,Teaching tool for data structures visualisation,AICTE,150000,2026-02-10,2026-03-01,2027-02-28,ONGOING
