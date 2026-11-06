@@ -1,0 +1,5 @@
+code,name,description,duration_days,coordinator_employee_id
+TP-01,Industrial IoT for plant engineers,"Sensors, PLC data collection and dashboards for factory staff",5,FAC014
+TP-02,Python for data analysis,"Python, pandas and charts for office and analyst teams",4,FAC009
+TP-03,Concrete quality testing,"Site and lab tests for concrete, for contractor engineers",3,FAC019
+TP-04,AutoCAD and drawing standards,2D drafting for technicians,5,FAC017

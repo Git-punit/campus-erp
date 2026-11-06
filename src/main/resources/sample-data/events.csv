@@ -1,0 +1,9 @@
+code,name,type,start_date,end_date,venue,status,budget_amount
+EV-01,Freshers' Orientation 2026,ORIENTATION,2026-07-20,2026-07-21,Main Auditorium,COMPLETED,60000
+EV-02,TechFest 2026,FESTIVAL,2026-10-09,2026-10-11,Campus grounds,COMPLETED,250000
+EV-03,Workshop on Research Paper Writing,WORKSHOP,2026-09-18,2026-09-18,Seminar Hall 1,COMPLETED,20000
+EV-04,Annual Sports Meet,SPORTS,2026-11-05,2026-11-07,Sports Complex,ONGOING,120000
+EV-05,Alumni Meet 2026,ALUMNI,2026-12-19,2026-12-19,Main Auditorium,PLANNED,80000
+EV-06,National Conference on Sustainable Construction,CONFERENCE,2027-02-11,2027-02-12,Seminar Hall 1,PLANNED,150000
+EV-07,Blood Donation Camp,SOCIAL,2026-08-25,2026-08-25,Health Centre,COMPLETED,0
+EV-08,Guest Lecture Series: Industry 4.0,LECTURE,2026-09-30,2026-09-30,Seminar Hall 2,CANCELLED,15000

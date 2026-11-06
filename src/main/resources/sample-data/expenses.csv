@@ -1,0 +1,48 @@
+budget_type,budget_ref,date,amount,category,description,status,raised_by,decided_by,decision_remark
+PROJECT,RP-01,2025-08-14,85000,EQUIPMENT,"Soil moisture sensors, 40 units",APPROVED,staff,admin,OK
+PROJECT,RP-01,2025-11-03,20000,TRAVEL,Field visits to three villages,APPROVED,staff,admin,OK
+PROJECT,RP-01,2026-03-22,15000,CONSUMABLES,Batteries and enclosures,APPROVED,staff,admin,OK
+PROJECT,RP-01,2026-10-28,30000,HONORARIUM,"Field assistant, Sep-Oct",PENDING,staff,,
+PROJECT,RP-02,2024-08-10,180000,EQUIPMENT,Edge computing boards and kiosk hardware,APPROVED,staff,admin,OK
+PROJECT,RP-02,2025-01-15,70000,TRAVEL,Pilot site installation trips,APPROVED,staff,admin,OK
+PROJECT,RP-02,2025-09-02,50000,HONORARIUM,"Project assistant, 10 months",APPROVED,staff,admin,OK
+PROJECT,RP-03,2025-11-20,150000,EQUIPMENT,GPU workstation,APPROVED,staff,admin,OK
+PROJECT,RP-03,2026-02-11,60000,TRAVEL,"Data collection, two seasons",APPROVED,staff,admin,OK
+PROJECT,RP-03,2026-07-30,40000,CONSUMABLES,Cloud storage and labelled images,APPROVED,staff,admin,OK
+PROJECT,RP-03,2026-10-12,25000,OTHER,Conference registration,REJECTED,staff,admin,Paper not yet accepted. Raise again once it is.
+PROJECT,RP-04,2026-03-18,40000,CONSUMABLES,"Cement, aggregate and test cubes",APPROVED,staff,admin,OK
+PROJECT,RP-06,2025-05-12,300000,EQUIPMENT,Wireless sensor nodes and gateways,APPROVED,staff,admin,OK
+PROJECT,RP-06,2025-12-04,120000,TRAVEL,Bridge site installations,APPROVED,staff,admin,OK
+PROJECT,RP-06,2026-09-15,60000,CONSUMABLES,Replacement batteries and mounts,APPROVED,staff,admin,"Approved, goes over the sanctioned amount. PI to get extra funds from the agency."
+PROJECT,RP-07,2023-07-01,210000,EQUIPMENT,Heat exchanger test rig,APPROVED,staff,admin,OK
+PROJECT,RP-07,2024-06-20,90000,CONSUMABLES,Coolant and sensors,APPROVED,staff,admin,OK
+PROJECT,RP-08,2026-04-05,30000,HONORARIUM,"Student developers, summer",APPROVED,staff,admin,OK
+DEPARTMENT,CSE:2026-27,2026-05-06,420000,EQUIPMENT,30 desktops for Computer Lab 2,APPROVED,staff,admin,OK
+DEPARTMENT,CSE:2026-27,2026-08-19,60000,CONSUMABLES,Networking lab cables and switches,APPROVED,staff,admin,OK
+DEPARTMENT,CSE:2026-27,2026-10-30,150000,EQUIPMENT,Projectors for 5 classrooms,PENDING,staff,,
+DEPARTMENT,ECE:2026-27,2026-06-10,280000,EQUIPMENT,Oscilloscopes and function generators,APPROVED,staff,admin,OK
+DEPARTMENT,ECE:2026-27,2026-09-01,45000,CONSUMABLES,Components for lab kits,APPROVED,staff,admin,OK
+DEPARTMENT,ME:2026-27,2026-04-22,610000,EQUIPMENT,CNC trainer machine,APPROVED,staff,admin,OK
+DEPARTMENT,ME:2026-27,2026-11-02,80000,CONSUMABLES,Workshop raw material,PENDING,staff,,
+DEPARTMENT,CE:2026-27,2026-07-14,95000,EQUIPMENT,Total station for surveying,APPROVED,staff,admin,OK
+DEPARTMENT,ASH:2026-27,2026-06-25,70000,EQUIPMENT,Physics lab optics kits,APPROVED,staff,admin,OK
+DEPARTMENT,ASH:2026-27,2026-09-09,12000,OTHER,Guest lecture honorarium,REJECTED,staff,admin,Should be raised under the event budget
+DEPARTMENT,CSE:2025-26,2025-06-12,520000,EQUIPMENT,Servers for the data lab,APPROVED,staff,admin,OK
+DEPARTMENT,CSE:2025-26,2026-01-20,240000,CONSUMABLES,Software licences,APPROVED,staff,admin,OK
+DEPARTMENT,ME:2025-26,2025-09-08,380000,EQUIPMENT,Lathe overhaul,APPROVED,staff,admin,OK
+EVENT,EV-01,2026-07-18,52000,OTHER,"Stage, sound and refreshments",APPROVED,staff,admin,OK
+EVENT,EV-02,2026-10-05,160000,OTHER,"Stage, lights and sound",APPROVED,staff,admin,OK
+EVENT,EV-02,2026-10-08,60000,HONORARIUM,Judges and guest speakers,APPROVED,staff,admin,OK
+EVENT,EV-02,2026-10-12,45000,CONSUMABLES,Prizes and certificates,APPROVED,staff,admin,OK
+EVENT,EV-03,2026-09-18,18000,HONORARIUM,Resource person,APPROVED,staff,admin,OK
+EVENT,EV-04,2026-11-01,70000,CONSUMABLES,Sports equipment and medals,APPROVED,staff,admin,OK
+EVENT,EV-04,2026-11-04,25000,OTHER,Ground preparation,PENDING,staff,,
+EVENT,EV-05,2026-11-03,30000,OTHER,Venue decoration advance,PENDING,staff,,
+TRAINING,TP-01:Northfield Steel Pvt Ltd,2026-07-03,28000,CONSUMABLES,IoT kits for participants,APPROVED,staff,admin,OK
+TRAINING,TP-01:Northfield Steel Pvt Ltd,2026-07-10,15000,HONORARIUM,"Industry trainer, 2 days",APPROVED,staff,admin,OK
+TRAINING,TP-02:Bluewater Logistics,2026-06-05,12000,CONSUMABLES,Course material and lunch,APPROVED,staff,admin,OK
+TRAINING,TP-02:Bluewater Logistics,2026-06-11,10000,HONORARIUM,Lab assistants,APPROVED,staff,admin,OK
+TRAINING,TP-02:Orchid Finance Services,2026-10-22,20000,CONSUMABLES,"Laptops on rent, first batch",PENDING,staff,,
+TRAINING,TP-03:Sunrise Infra Builders,2026-04-18,35000,CONSUMABLES,Test materials,APPROVED,staff,admin,OK
+TRAINING,TP-03:Sunrise Infra Builders,2026-04-22,12000,TRAVEL,Site visit bus,APPROVED,staff,admin,OK
+TRAINING,TP-04:Precision Tools Co,2026-08-01,18000,OTHER,"AutoCAD licences, 1 week",APPROVED,staff,admin,OK

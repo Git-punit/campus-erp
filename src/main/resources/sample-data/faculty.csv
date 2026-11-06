@@ -1,0 +1,24 @@
+employee_id,name,department_code,designation,email,phone,status
+FAC001,Dr. Karan Nair,ASH,Associate Professor,karan.nair@campus.example.edu,+91 90000 00001,ACTIVE
+FAC002,Aditi Agarwal,ASH,Assistant Professor,aditi.agarwal@campus.example.edu,+91 90000 00002,ACTIVE
+FAC003,Ishaan Kulkarni,ASH,Assistant Professor,ishaan.kulkarni@campus.example.edu,+91 90000 00003,ACTIVE
+FAC004,Deepak Kulkarni,ASH,Assistant Professor,deepak.kulkarni@campus.example.edu,+91 90000 00004,ACTIVE
+FAC005,Simran Malhotra,ASH,Assistant Professor,simran.malhotra@campus.example.edu,+91 90000 00005,ACTIVE
+FAC006,Ritika Mishra,ASH,Lab Instructor,ritika.mishra@campus.example.edu,+91 90000 00006,ACTIVE
+FAC007,Dr. Swati Bansal,CSE,Professor,swati.bansal@campus.example.edu,+91 90000 00007,ACTIVE
+FAC008,Dr. Shreya Rawat,CSE,Associate Professor,shreya.rawat@campus.example.edu,+91 90000 00008,ACTIVE
+FAC009,Divya Pandey,CSE,Assistant Professor,divya.pandey@campus.example.edu,+91 90000 00009,ACTIVE
+FAC010,Harsh Sharma,CSE,Assistant Professor,harsh.sharma@campus.example.edu,+91 90000 00010,ACTIVE
+FAC011,Komal Gupta,CSE,Assistant Professor,komal.gupta@campus.example.edu,+91 90000 00011,ACTIVE
+FAC012,Karan Reddy,CSE,Lab Instructor,karan.reddy@campus.example.edu,+91 90000 00012,ACTIVE
+FAC013,Dr. Ishaan Pandey,ECE,Professor,ishaan.pandey@campus.example.edu,+91 90000 00013,ACTIVE
+FAC014,Dr. Aarav Tiwari,ECE,Associate Professor,aarav.tiwari@campus.example.edu,+91 90000 00014,ACTIVE
+FAC015,Shreya Das,ECE,Assistant Professor,shreya.das@campus.example.edu,+91 90000 00015,ACTIVE
+FAC016,Dr. Ananya Mehta,ME,Professor,ananya.mehta@campus.example.edu,+91 90000 00016,ACTIVE
+FAC017,Neha Patel,ME,Assistant Professor,neha.patel@campus.example.edu,+91 90000 00017,ACTIVE
+FAC018,Isha Menon,ME,Assistant Professor,isha.menon@campus.example.edu,+91 90000 00018,ACTIVE
+FAC019,Dr. Isha Chaudhary,CE,Associate Professor,isha.chaudhary@campus.example.edu,+91 90000 00019,ACTIVE
+FAC020,Meera Thakur,CE,Assistant Professor,meera.thakur@campus.example.edu,+91 90000 00020,ACTIVE
+FAC021,Aditi Rao,CE,Assistant Professor,aditi.rao@campus.example.edu,+91 90000 00021,ACTIVE
+FAC022,Kabir Thakur,CSE,Assistant Professor,kabir.thakur@campus.example.edu,+91 90000 00022,ON_LEAVE
+FAC023,Diya Gupta,ECE,Assistant Professor,diya.gupta@campus.example.edu,+91 90000 00023,LEFT
