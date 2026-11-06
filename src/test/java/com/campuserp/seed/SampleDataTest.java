@@ -24,7 +24,7 @@ import static org.hamcrest.Matchers.not;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-/** Loads the real sample data and checks the numbers the README and sample-data/README.md promise. */
+/** Loads the real sample data and checks the numbers sample-data/README.md promises. */
 @SpringBootTest(properties = "app.seed.demo-data=true")
 @AutoConfigureMockMvc
 @Import(TestClock.class)

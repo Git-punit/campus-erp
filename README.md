@@ -7,9 +7,6 @@ dashboard on top so you can see what's going on without opening every page.
 Backend is Spring Boot 4.1 on Java 25 (JPA, Spring Security + JWT, MySQL).
 Frontend is React 19 + TypeScript with Vite, in the `frontend` folder.
 
-Fee management, attendance and library were in an older version and have been
-dropped for now.
-
 ## Modules
 
 - **Dashboard** - faculty and student counts, courses running this semester,
@@ -42,40 +39,20 @@ against those budgets.
 Faculty record: employee ID, name, department, designation, email, phone and
 status (Active / On leave / Left).
 
-The faculty list has a Courses count and a Projects count for each teacher.
-Click either one to see the actual list. For example, a maths teacher's
-courses might look like:
-
-| Course | Semester | Section | Year |
-|---|---|---|---|
-| Maths I | 1 | CSE-A | 2026-27 |
-| Maths II | 2 | CSE-A | 2026-27 |
-| Maths I | 3 | Civil-A | 2026-27 |
-| Maths I | 4 | Mech-A | 2026-27 |
-
-A few things to know:
-
-- The same course running for two branches is two separate offerings.
-- An offering can have more than one teacher (e.g. theory + lab), and it
-  shows up for each of them.
-- Old academic years aren't deleted. The list defaults to the current year
-  and you can filter back.
-
-The projects list shows funding agency, amount, utilized and balance for each
-project (see Research projects below for how those are calculated).
+The faculty list has a Courses count (this academic year) and a Projects
+count for each teacher; click either to see the list. Past years stay
+available through a year filter. An offering with two teachers (e.g. theory +
+lab) shows up for both.
 
 ## Courses
 
 A course is just code, name, credits and department.
 
-An offering is one run of a course:
-
-- course, academic year, semester (1-8), programme, section
-- one or more teachers, optionally tagged Theory / Lab / Tutorial
-- weekly timetable slots (day, start, end, room)
-
-When you save a timetable it warns you if a teacher or room is double booked,
-or if a section has two classes at the same time.
+An offering is one run of a course for an academic year, semester and
+section, with one or more teachers (Theory / Lab / Tutorial) and weekly
+timetable slots. The same course for two branches is two offerings. Saving a
+timetable warns if a teacher or room is double booked, or a section has two
+classes at once.
 
 ## Students
 
@@ -87,58 +64,25 @@ CSE-A into its offerings) or one student at a time.
 
 ### Calendar
 
-Nobody types in the calendar. It's generated from the student's enrolments
-and the timetables of those offerings:
-
-- weekly classes repeat from semester start to semester end
-- holidays from Academic setup are skipped
-- a single class can be cancelled for one date, with a reason
-- extra one-off classes can be added for a date/time/room
-- day, week and month views
-
-Teachers get the same calendar for the classes they teach.
+Built from enrolments and timetables, never typed in. Weekly classes repeat
+through the semester, holidays are skipped, and a single class can be
+cancelled or an extra one added for a date. Day, week and month views, for
+students and for teachers.
 
 ## Research projects
 
-Each project has a title, funding agency (DST, SERB, AICTE etc.), sanctioned
-amount, sanction/start/end dates, status (Ongoing / Completed / Closed) and a
-team: one PI plus any co-investigators. The project shows up under every team
-member.
-
-We assume the full sanctioned amount comes in at once.
-
-- Utilized = sum of approved expenses
-- Balance = sanctioned - utilized
-- the progress bar goes red past 100%
-
-Expenses go through the normal approval flow in Budgets. Pending ones are
-shown but not counted.
+Title, funding agency (DST, SERB, AICTE...), sanctioned amount, dates, status
+and a team of one PI plus co-investigators. Creating a project creates its
+budget. Utilized is the total of approved expenses, balance is sanctioned
+minus utilized, and the bar turns red past 100%.
 
 ## Training programs
 
-A program has a name, description, duration and a coordinator (one of the
-teachers). The same program can be pitched to lots of clients, and each
-client gets its own record:
-
-- client name, contact person, phone, email
-- date contacted
-- proposal submitted (yes/no + date)
-- accepted (yes / no / needs revision, with date and remarks)
-- conducted (yes/no + dates)
-- budget required
-- fee charged
-
-The steps have to happen in order: you can't mark it accepted before the
-proposal is submitted, or conducted before it's accepted. "Needs revision"
-means the proposal went back for changes. Every change to the accepted field
-is kept as history.
-
-Once a client accepts, a training budget is created automatically for the
-budget required amount. Actual cost is whatever's been approved against that
-budget, and profit/loss is fee charged minus actual cost.
-
-The program list shows how many clients were contacted, how many proposals
-went out, how many were accepted and how many were conducted.
+A program (with a coordinator teacher) is pitched to many clients. Each
+client moves through the steps in order: proposal submitted, then accepted
+(yes / no / needs revision), then conducted. Every change to "accepted" is
+kept as history. When a client accepts, a training budget is created for the
+budget required; profit/loss is the fee minus approved expenses.
 
 ## Events
 
@@ -156,17 +100,10 @@ Any money spent goes through here, against exactly one budget.
 | Training | automatically when a client accepts | budget required |
 | Research project | automatically when the project is added | sanctioned amount |
 
-Expense flow:
-
-1. Staff raise a request: budget, date, amount, category (Equipment / Travel /
-   Consumables / Honorarium / Other), description.
-2. It sits as Pending until an admin approves or rejects it with a remark.
-3. Only approved expenses count as utilized.
-4. If approving would push the budget over its allocation, the admin gets a
-   warning first.
-
-Each budget shows allocated, utilized, pending and balance, with a usage bar
-and an overspend flag. You can filter by type, department and financial year.
+Staff raise expense requests; an admin approves or rejects each one, and is
+warned first if approving would go over the allocation. Only approved
+expenses count as utilized. Each budget shows allocated, utilized, pending
+and balance, with an overspend flag.
 
 ## Academic setup
 
@@ -207,10 +144,10 @@ export DB_PASSWORD='your-mysql-password'
 ./mvnw spring-boot:run
 ```
 
-Wait for `Started CampusErpApplication` in the backend terminal. You can check
-it's up at http://localhost:8080/api/health.
+Wait for `Started CampusErpApplication`; http://localhost:8080/api/health
+should then show `"status":"ok"`.
 
-Frontend dev server, on port 5173 (proxies `/api` to 8080):
+Frontend, on port 5173 (proxies `/api` to 8080):
 
 ```bash
 cd frontend && npm install && npm run dev
@@ -220,25 +157,13 @@ Then go to http://localhost:5173.
 
 ### Demo data
 
-If the database is empty on startup it creates three users (`admin`, `staff`,
-`viewer`) and fills everything with made-up sample data. The passwords are
-the `app.seed.*-password` entries in `src/main/resources/application.properties`,
-or you can set `ADMIN_PASSWORD`, `STAFF_PASSWORD` and `VIEWER_PASSWORD`.
-`SEED_DEMO_DATA=false` turns the sample data off.
+On an empty database it creates three users (`admin`, `staff`, `viewer`) and
+loads made-up sample data from `src/main/resources/sample-data/` (see its
+README). The passwords are the `app.seed.*-password` entries in
+`application.properties`. `SEED_DEMO_DATA=false` skips the sample data.
 
-The sample records are CSV files in `src/main/resources/sample-data/`. Its
-README lists what's in each file and the cases built in on purpose (an
-overspent project, a training run at a loss, Diwali inside the semester...).
-
-The default passwords and JWT secret are public (they're in this repo), so the
-app won't use them on a server. If the database isn't on your own machine
-(localhost, 127.0.0.1 or the in-memory test database) and `JWT_SECRET` is
-still the default, it stops at startup and says what to set. The same goes for
-`ADMIN_PASSWORD`, `STAFF_PASSWORD` and `VIEWER_PASSWORD` while the accounts
-haven't been created yet. Locally it just logs a warning. For a throwaway
-demo you can turn the check off with `ALLOW_DEV_DEFAULTS=true`.
-
-After the first start, change the passwords from the Users page.
+Those defaults are public, so on a server (a database that isn't local) the
+app refuses to start until `JWT_SECRET` and the three passwords are set.
 
 ### One jar
 
@@ -253,9 +178,6 @@ cd frontend && npm run build && cd .. && ./mvnw package
 java -jar target/campus-erp-0.0.1-SNAPSHOT.jar
 ```
 
-Refreshing a page or opening a link like `/faculty/3` works here too: any
-address that isn't `/api/...` or a file gets the React app, which then shows
-the right page.
 
 ## Tests
 
@@ -263,16 +185,8 @@ the right page.
 ./mvnw test
 ```
 
-Tests use in-memory H2, so you don't need MySQL for them. They cover login
-and roles (including not being able to remove the last admin), validation,
-offerings with multiple teachers and clash warnings, enrolment, the calendar
-(weekly classes, holidays, cancelled/extra classes), training step order and
-budget creation, expense approval/rejection and the utilized/balance numbers,
-and the dashboard. One test loads the full sample data and checks the
-numbers quoted in this README, and that the sample timetable has no clashes.
-
-GitHub Actions (`.github/workflows/ci.yml`) runs these tests and the frontend
-type-check and build on every push to `main` and on every pull request.
+Tests use an in-memory database, so no MySQL is needed. GitHub Actions runs
+them, plus the frontend build, on every push to `main` and every pull request.
 
 ## Config
 
@@ -291,8 +205,7 @@ Other business settings (like the financial year starting in April) are under
 
 ## Architecture
 
-Diagrams of how the code is put together. They're written in Mermaid, which
-GitHub draws as pictures.
+Diagrams are in Mermaid, which GitHub draws as pictures.
 
 ### 1. Overall system
 
@@ -470,49 +383,7 @@ flowchart TD
     API --> SERVER["Spring Boot REST API"]
 ```
 
-### 4. Frontend files by role
-
-```mermaid
-flowchart TB
-    A["Frontend"]
-
-    A --> B["Login"]
-    A --> C["Layout"]
-    A --> D["Pages"]
-    A --> E["Shared components"]
-    A --> F["Utilities"]
-    A --> G["Talking to the API"]
-
-    B --> B1["auth.tsx - who is logged in, role checks"]
-    B --> B2["LoginPage.tsx"]
-
-    C --> C1["Layout.tsx - sidebar, user box"]
-
-    D --> D1["DashboardPage"]
-    D --> D2["StudentsPage, StudentDetailPage"]
-    D --> D3["FacultyPage, FacultyDetailPage"]
-    D --> D4["CoursesPage - catalogue and offerings"]
-    D --> D5["TrainingPage, TrainingProgramPage"]
-    D --> D6["ProjectsPage"]
-    D --> D7["BudgetsPage, BudgetDetailPage"]
-    D --> D8["EventsPage"]
-    D --> D9["CalendarPage"]
-    D --> D10["SetupPage"]
-    D --> D11["UsersPage"]
-
-    E --> E1["CrudSection - list + add/edit/delete form"]
-    E --> E2["CalendarView - FullCalendar day/week/month"]
-    E --> E3["ExpenseTable - approve / reject"]
-    E --> E4["ui.tsx - badges, usage bar, tabs, messages"]
-
-    F --> F1["types.ts - API shapes"]
-    F --> F2["format.ts - rupees, dates, times"]
-    F --> F3["useLoad.ts - load an endpoint"]
-
-    G --> G1["api.ts - fetch, token, error messages"]
-```
-
-### 5. Backend layers
+### 4. Backend layers
 
 Bigger modules (courses, budgets, training, users) have a service class.
 Simpler ones (setup, faculty, students, events, projects) call their
@@ -553,46 +424,7 @@ flowchart TB
     D4 --> DB[("MySQL")]
 ```
 
-### 6. Backend packages
-
-```mermaid
-flowchart TD
-    ROOT["com.campuserp"]
-
-    ROOT --> AUTH["auth"]
-    ROOT --> CONFIG["config"]
-    ROOT --> COMMON["common"]
-    ROOT --> USER["user"]
-    ROOT --> SETUP["setup"]
-    ROOT --> FACULTY["faculty"]
-    ROOT --> COURSE["course"]
-    ROOT --> STUDENT["student"]
-    ROOT --> CALENDAR["calendar"]
-    ROOT --> BUDGET["budget"]
-    ROOT --> PROJECT["project"]
-    ROOT --> TRAINING["training"]
-    ROOT --> EVENT["event"]
-    ROOT --> DASH["dashboard"]
-    ROOT --> SEED["seed"]
-
-    AUTH --> A1["AuthController, JwtService, JwtAuthFilter"]
-    CONFIG --> C1["SecurityConfig, ClockConfig,<br/>SpaForwardController, DevDefaultsGuard,<br/>JwtSecretCheck"]
-    COMMON --> CM1["BaseEntity, ApiError, GlobalExceptionHandler,<br/>NotFoundException, BusinessRuleException,<br/>Finder, Money, Ref, HealthController"]
-    USER --> U1["UserController, UserService,<br/>UserRepository, User, Role"]
-    SETUP --> SE1["SetupController, AcademicCalendar,<br/>Department, Programme, Section,<br/>AcademicYear, Holiday + repositories"]
-    FACULTY --> F1["FacultyController, FacultyRepository,<br/>Faculty, FacultyStatus"]
-    COURSE --> CR1["CourseController, OfferingController,<br/>OfferingService, Course, CourseOffering,<br/>OfferingTeacher, TimetableSlot, ClassException + repositories"]
-    STUDENT --> S1["StudentController, Student,<br/>Enrolment + repositories"]
-    CALENDAR --> CA1["CalendarController, CalendarService,<br/>CalendarEntry"]
-    BUDGET --> BU1["BudgetController, BudgetService,<br/>ExpenseService, Budget, Expense + repositories"]
-    PROJECT --> P1["ProjectController, ResearchProject,<br/>ProjectMember + repositories"]
-    TRAINING --> T1["TrainingController, TrainingService,<br/>TrainingProgram, TrainingClient,<br/>AcceptanceChange + repositories"]
-    EVENT --> EV1["EventController, EventRepository, Event"]
-    DASH --> D1["DashboardController"]
-    SEED --> SD1["DemoAccountsSeeder, DemoDataSeeder, Csv"]
-```
-
-### 7. Login and access checks
+### 5. Login and access checks
 
 The password is checked against the BCrypt hash in the database. After that,
 every request carries the token, and the user's role is looked up again each
@@ -633,7 +465,7 @@ sequenceDiagram
     end
 ```
 
-### 8. One request from click to database
+### 6. One request from click to database
 
 ```mermaid
 flowchart TD
@@ -656,7 +488,7 @@ flowchart TD
     X -. JSON .-> C
 ```
 
-### 9. Academic structure
+### 7. Academic structure
 
 ```mermaid
 flowchart TB
@@ -680,181 +512,7 @@ flowchart TB
     ENR --> CAL
 ```
 
-### 10. Students and enrolment
-
-```mermaid
-flowchart TD
-    A["StudentController"]
-
-    A --> B["StudentRepository"]
-    A --> C["EnrolmentRepository"]
-    A --> D["CourseOfferingRepository"]
-
-    B --> E["Student<br/>roll no, programme, semester, section, status"]
-    C --> F["Enrolment<br/>student + offering"]
-
-    A --> G["Whole section:<br/>enrol every active student of a<br/>section + semester into its offerings"]
-    A --> H["Single student:<br/>add or remove one course"]
-    G --> F
-    H --> F
-
-    F --> K["Course offering"]
-    K --> L["Course"]
-    K --> M["Teachers and weekly times<br/>(shown on the student page)"]
-```
-
-### 11. Courses and timetable
-
-```mermaid
-flowchart TD
-    A["Course management"]
-
-    A --> B["CourseController - catalogue"]
-    A --> C["OfferingController"]
-
-    B --> D["CourseRepository"] --> I["Course"]
-    C --> E["OfferingService"]
-
-    E --> F["CourseOfferingRepository"] --> J["CourseOffering"]
-    E --> H["ClassExceptionRepository"] --> L["ClassException<br/>CANCELLED or EXTRA"]
-    E --> W["Clash check on save:<br/>teacher, room, section"]
-
-    J --> K["OfferingTeacher<br/>faculty + THEORY / LAB / TUTORIAL"]
-    J --> M["TimetableSlot<br/>day, start, end, room, type"]
-    K --> N["Faculty"]
-```
-
-### 12. Faculty
-
-```mermaid
-flowchart TD
-    A["FacultyController"] --> C["FacultyRepository"] --> D["Faculty<br/>employee ID, department, status"]
-
-    A --> CNT["List shows two counts per teacher"]
-    CNT --> F["Courses this year<br/>(OfferingTeacherRepository)"]
-    CNT --> P["Projects<br/>(ProjectMemberRepository)"]
-
-    F --> G["Course offerings they teach"]
-    G --> H["Course"]
-    G --> I["Weekly timetable<br/>(teacher's own calendar)"]
-    P --> R["Research projects<br/>as PI or co-investigator"]
-```
-
-### 13. Training programs
-
-```mermaid
-flowchart TD
-    A["TrainingController"] --> B["TrainingService"]
-
-    B --> D["TrainingProgramRepository"] --> G["TrainingProgram<br/>coordinator = a teacher"]
-    B --> E["TrainingClientRepository"] --> H["TrainingClient<br/>one per client pitched"]
-    B --> F["AcceptanceChangeRepository"] --> I["AcceptanceChange<br/>history of 'accepted'"]
-
-    G --> H
-    H --> STEPS["Steps in order:<br/>proposal -> accepted (YES / NO / NEEDS_REVISION) -> conducted"]
-    H --> I
-    STEPS -->|"accepted = YES"| BUD["BudgetService creates a<br/>training budget (budget required)"]
-    BUD --> PL["Profit / loss = fee - approved expenses"]
-```
-
-### 14. Research projects
-
-```mermaid
-flowchart TD
-    A["ProjectController"]
-
-    A --> C["ResearchProjectRepository"] --> E["ResearchProject<br/>agency, sanctioned amount, dates, status"]
-    A --> D["ProjectMemberRepository"] --> F["ProjectMember<br/>faculty + PI / CO_INVESTIGATOR"]
-    E --> F
-    A --> B["BudgetService"]
-    B --> G["Project budget<br/>created with the project,<br/>allocated = sanctioned amount"]
-    G --> H["Utilized = approved expenses<br/>Balance = sanctioned - utilized"]
-```
-
-### 15. Budgets and expenses
-
-```mermaid
-flowchart TD
-    A["BudgetController"]
-
-    A --> C["BudgetService"] --> E["BudgetRepository"] --> G["Budget<br/>allocated, financial year"]
-    A --> D["ExpenseService"] --> F["ExpenseRepository"] --> H["Expense<br/>amount, category, status"]
-
-    G --> T["Type"]
-    T --> T1["DEPARTMENT - added by hand"]
-    T --> T2["EVENT - from the event"]
-    T --> T3["TRAINING - when a client accepts"]
-    T --> T4["PROJECT - when a project is created"]
-
-    G --> H
-    H --> S["PENDING -> APPROVED or REJECTED<br/>(admin only, overspend needs a confirm)"]
-    S --> U["Only APPROVED counts as utilized"]
-```
-
-### 16. Events and the calendar
-
-These are separate. Events can have a budget. The calendar only shows
-classes, worked out on request; nothing calendar-related is stored.
-
-```mermaid
-flowchart TD
-    subgraph EV["Events"]
-        D["EventController"] --> E["EventRepository"] --> F["Event<br/>type, dates, venue, status"]
-        D --> B["BudgetService"] --> BG["Event budget<br/>(only if an amount is entered)"]
-    end
-
-    subgraph CA["Calendar"]
-        H["CalendarController<br/>/api/calendar/student/{id}<br/>/api/calendar/faculty/{id}"] --> I["CalendarService"]
-        I --> J["CalendarEntry list<br/>CLASS / CANCELLED / EXTRA"]
-    end
-
-    ENR["Enrolments (student)<br/>or teaching (faculty)"] --> I
-    SLOT["Timetable slots"] --> I
-    SEM["Semester dates<br/>(academic year)"] --> I
-    HOL["Holidays - skipped"] --> I
-    EXC["Cancelled / extra classes"] --> I
-```
-
-### 17. Dashboard
-
-```mermaid
-flowchart TD
-    A["DashboardPage"] --> B["GET /api/dashboard<br/>DashboardController"]
-
-    B --> C["Active students"]
-    B --> D["Active faculty"]
-    B --> E["Courses this semester"]
-    B --> T["Today's classes<br/>(CalendarService)"]
-    B --> F["Training pipeline"]
-    B --> G["Project funds used"]
-    B --> H["Budgets this financial year"]
-    B --> P["Pending approvals"]
-    B --> I["Upcoming events"]
-
-    C & D & E & T & F & G & H & P & I --> K["One JSON response"]
-    K --> L["Dashboard cards"]
-```
-
-### 18. Academic setup
-
-```mermaid
-flowchart TD
-    A["SetupController"]
-
-    A --> C["DepartmentRepository"] --> H["Department"]
-    A --> D["ProgrammeRepository"] --> I["Programme"]
-    A --> E["SectionRepository"] --> J["Section"]
-    A --> F["AcademicYearRepository"] --> K["AcademicYear"]
-    A --> G["HolidayRepository"] --> L["Holiday"]
-
-    H --> I
-    I --> J
-    K --> M["AcademicCalendar<br/>current year and semester half,<br/>financial year (April-March)"]
-    K --> N["Semester dates for offerings<br/>and the calendar"]
-    L --> N
-```
-
-### 19. Database tables and links
+### 8. Database tables and links
 
 Every table also has `id`, `created_at` and `updated_at`. App users are
 separate from faculty and students.
@@ -901,26 +559,4 @@ erDiagram
         date date
         string name
     }
-```
-
-### 20. Startup and sample data
-
-```mermaid
-flowchart TD
-    A["CampusErpApplication starts"] --> D["application.properties<br/>+ environment variables"]
-    D --> E["Connect to MySQL,<br/>create / update tables (JPA)"]
-    E --> F["Security config, JWT secret check (32+ chars)"]
-    F --> H["Startup runners"]
-
-    H --> I["1. DemoAccountsSeeder"]
-    I --> I2{"User table empty?"}
-    I2 -->|yes| I3["Create admin, staff, viewer<br/>(app.seed.*-password)"]
-
-    H --> J["2. DemoDataSeeder"]
-    J --> J2{"SEED_DEMO_DATA on<br/>and no departments yet?"}
-    J2 -->|yes| K["Csv reads sample-data/*.csv"]
-    K --> L["Setup -> faculty -> courses and offerings -><br/>students and enrolments -> class changes -><br/>budgets, projects, training, events -> expenses"]
-
-    I3 --> U[("MySQL")]
-    L --> U
 ```

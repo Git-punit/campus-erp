@@ -58,8 +58,7 @@ These are in the data on purpose, so each screen has something to show.
 
 **Faculty and courses**
 - FAC001 (maths) teaches 5 courses this year across CSE-A, ECE-A, ME-A and
-  CIVIL-A, and is on 5 research projects. This matches the example in the main
-  README.
+  CIVIL-A, and is on 5 research projects.
 - FAC001 also has 2025-26 offerings, to try the year filter.
 - Several offerings have two teachers (theory + lab), e.g. Programming in C.
 - OFF-2526-008 was taught by FAC023, who has since left.
