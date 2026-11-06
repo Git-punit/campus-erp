@@ -1,7 +1,7 @@
 # Sample data
 
-Made-up data for every module, as CSV files. Each phase loads the files it
-needs when the database is empty (unless `SEED_DEMO_DATA=false`).
+Made-up data for every module, as CSV files. `DemoDataSeeder` loads all of
+them when the database is empty (unless `SEED_DEMO_DATA=false`).
 
 Everything here is fictional: people, companies, projects and phone numbers
 (`+91 90000 xxxxx`). Emails use `example.edu` / `example.com`. Festival
@@ -15,29 +15,29 @@ odd semester of 2026-27 (20 Jul to 4 Dec 2026).
 Rows refer to each other by code (department code, employee ID, roll number,
 course code, offering ref), not by database id.
 
-| File | What's in it | Used in phase |
+| File | What's in it | Module |
 |---|---|---|
-| `departments.csv` | 5 departments | 2 |
-| `programmes.csv` | 4 B.Tech + 1 M.Tech, with number of semesters | 2 |
-| `sections.csv` | CSE-A, CSE-B, ECE-A, ME-A, CIVIL-A, MTCSE-A | 2 |
-| `academic_years.csv` | 2025-26 and 2026-27, odd/even semester dates | 2 |
-| `holidays.csv` | 13 holidays in 2026-27 | 2 |
-| `faculty.csv` | 23 teachers (one on leave, one who has left) | 3 |
-| `courses.csv` | 30 courses | 3 |
-| `course_offerings.csv` | 46 offerings for 2026-27 plus 8 from 2025-26 | 3 |
-| `offering_teachers.csv` | who teaches each offering, as THEORY / LAB / TUTORIAL | 3 |
-| `students.csv` | 96 students in semesters 1, 3 and 5 (plus M.Tech sem 1) | 4 |
-| `enrolments.csv` | which student is in which offering | 4 |
-| `timetable_slots.csv` | weekly slots: day, start, end, room | 5 |
-| `class_exceptions.csv` | 4 cancelled classes and 2 extra classes | 5 |
-| `department_budgets.csv` | one per department per financial year | 6 |
-| `expenses.csv` | 47 expense requests (approved, pending, rejected) | 6 |
-| `research_projects.csv` | 8 funded projects | 7 |
-| `project_team.csv` | PI and co-investigators for each project | 7 |
-| `training_programs.csv` | 4 programs with a coordinator | 8 |
-| `training_clients.csv` | 10 clients at different steps | 8 |
-| `training_acceptance_history.csv` | every change to "accepted" | 8 |
-| `events.csv` | 8 events with a budget amount (0 = no budget) | 9 |
+| `departments.csv` | 5 departments | Academic setup |
+| `programmes.csv` | 4 B.Tech + 1 M.Tech, with number of semesters | Academic setup |
+| `sections.csv` | CSE-A, CSE-B, ECE-A, ME-A, CIVIL-A, MTCSE-A | Academic setup |
+| `academic_years.csv` | 2025-26 and 2026-27, odd/even semester dates | Academic setup |
+| `holidays.csv` | 13 holidays in 2026-27 | Academic setup |
+| `faculty.csv` | 23 teachers (one on leave, one who has left) | Faculty / courses |
+| `courses.csv` | 30 courses | Faculty / courses |
+| `course_offerings.csv` | 46 offerings for 2026-27 plus 8 from 2025-26 | Faculty / courses |
+| `offering_teachers.csv` | who teaches each offering, as THEORY / LAB / TUTORIAL | Faculty / courses |
+| `students.csv` | 96 students in semesters 1, 3 and 5 (plus M.Tech sem 1) | Students |
+| `enrolments.csv` | which student is in which offering | Students |
+| `timetable_slots.csv` | weekly slots: day, start, end, room | Calendar |
+| `class_exceptions.csv` | 4 cancelled classes and 2 extra classes | Calendar |
+| `department_budgets.csv` | one per department per financial year | Budgets |
+| `expenses.csv` | 47 expense requests (approved, pending, rejected) | Budgets |
+| `research_projects.csv` | 8 funded projects | Research projects |
+| `project_team.csv` | PI and co-investigators for each project | Research projects |
+| `training_programs.csv` | 4 programs with a coordinator | Training |
+| `training_clients.csv` | 10 clients at different steps | Training |
+| `training_acceptance_history.csv` | every change to "accepted" | Training |
+| `events.csv` | 8 events with a budget amount (0 = no budget) | Events |
 
 ## How the budget references work
 

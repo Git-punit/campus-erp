@@ -4,22 +4,21 @@ import { useAuth } from '../auth'
 export interface NavItem {
   path: string
   label: string
-  phase: number // build plan phase that fills this page in
   adminOnly?: boolean
 }
 
 export const NAV_ITEMS: NavItem[] = [
-  { path: '/dashboard', label: 'Dashboard', phase: 10 },
-  { path: '/faculty', label: 'Faculty', phase: 3 },
-  { path: '/courses', label: 'Courses', phase: 3 },
-  { path: '/students', label: 'Students', phase: 4 },
-  { path: '/calendar', label: 'Calendar', phase: 5 },
-  { path: '/budgets', label: 'Budgets', phase: 6 },
-  { path: '/projects', label: 'Research projects', phase: 7 },
-  { path: '/training', label: 'Training programs', phase: 8 },
-  { path: '/events', label: 'Events', phase: 9 },
-  { path: '/setup', label: 'Academic setup', phase: 2 },
-  { path: '/users', label: 'Users', phase: 1, adminOnly: true },
+  { path: '/dashboard', label: 'Dashboard' },
+  { path: '/faculty', label: 'Faculty' },
+  { path: '/courses', label: 'Courses' },
+  { path: '/students', label: 'Students' },
+  { path: '/calendar', label: 'Calendar' },
+  { path: '/budgets', label: 'Budgets' },
+  { path: '/projects', label: 'Research projects' },
+  { path: '/training', label: 'Training programs' },
+  { path: '/events', label: 'Events' },
+  { path: '/setup', label: 'Academic setup' },
+  { path: '/users', label: 'Users', adminOnly: true },
 ]
 
 export default function Layout() {

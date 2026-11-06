@@ -31,6 +31,9 @@ export class ApiError extends Error {
   }
 }
 
+const SERVER_DOWN =
+  "Can't reach the server. Check that the backend is running (./mvnw spring-boot:run) and didn't stop with an error."
+
 async function request<T>(method: string, path: string, body?: unknown): Promise<T> {
   const headers: Record<string, string> = {}
   if (body !== undefined) headers['Content-Type'] = 'application/json'
@@ -45,7 +48,12 @@ async function request<T>(method: string, path: string, body?: unknown): Promise
       body: body === undefined ? undefined : JSON.stringify(body),
     })
   } catch {
-    throw new ApiError(0, 'Could not reach the server')
+    throw new ApiError(0, SERVER_DOWN)
+  }
+
+  // The dev server answers 502/503/504 itself when the backend on port 8080 isn't up
+  if (res.status === 502 || res.status === 503 || res.status === 504) {
+    throw new ApiError(res.status, SERVER_DOWN)
   }
 
   // Token expired or user disabled: drop the token and let the app show the login page
@@ -57,7 +65,13 @@ async function request<T>(method: string, path: string, body?: unknown): Promise
   if (res.status === 204) return undefined as T
 
   const text = await res.text()
-  const data = text ? JSON.parse(text) : undefined
+  let data
+  try {
+    data = text ? JSON.parse(text) : undefined
+  } catch {
+    // not JSON (e.g. an HTML error page): fall back to a generic message below
+    data = undefined
+  }
 
   if (!res.ok) {
     const message = data?.message ?? `Request failed (${res.status})`
