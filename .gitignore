@@ -43,3 +43,10 @@ src/main/resources/static/
 
 ### Local dev database (dev profile) ###
 data/
+
+### Environment files and private keys ###
+.env
+.env.*
+!.env.example
+*.pem
+*.key
