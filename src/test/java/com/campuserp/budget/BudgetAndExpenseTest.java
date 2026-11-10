@@ -215,4 +215,16 @@ class BudgetAndExpenseTest extends ApiTest {
         deleteAs(staff(), "/api/expenses/" + other).andExpect(status().isNoContent());
         getAs(viewer(), "/api/expenses/" + other + "/receipt").andExpect(status().isNotFound());
     }
+
+    @Test
+    void departmentExpenseMustBeInTheBudgetsFinancialYear() throws Exception {
+        // 31 March 2026 belongs to 2025-26; the budget is 2026-27 (April to March)
+        postAs(staff(), "/api/expenses", """
+                {"budgetId":%d,"date":"2026-03-31","amount":10,"category":"OTHER","description":"x"}""".formatted(budget))
+                .andExpect(status().isConflict())
+                .andExpect(jsonPath("$.message").value("The date 2026-03-31 is outside this budget's financial year (2026-27)"));
+        postAs(staff(), "/api/expenses", """
+                {"budgetId":%d,"date":"2026-04-01","amount":10,"category":"OTHER","description":"x"}""".formatted(budget))
+                .andExpect(status().isCreated());
+    }
 }

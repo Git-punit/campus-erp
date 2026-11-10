@@ -116,4 +116,17 @@ class EnrolmentTest extends ApiTest {
         deleteAs(staff(), "/api/offerings/" + maths).andExpect(status().isConflict());
         deleteAs(staff(), "/api/offerings/" + firstYearCourse).andExpect(status().isNoContent());
     }
+
+    @Test
+    void offeringListShowsEachOfferingsOwnEnrolmentCount() throws Exception {
+        postAs(staff(), "/api/students/" + s1.getId() + "/courses", "{\"offeringId\":" + maths + "}");
+        postAs(staff(), "/api/students/" + s2.getId() + "/courses", "{\"offeringId\":" + maths + "}");
+        postAs(staff(), "/api/students/" + s1.getId() + "/courses", "{\"offeringId\":" + physics + "}");
+
+        // counted for the whole list in one query; each offering must still get its own number
+        getAs(viewer(), "/api/offerings?sectionId=" + sec.getId())
+                .andExpect(jsonPath("$[?(@.id == %d)].enrolled".formatted(maths)).value(2))
+                .andExpect(jsonPath("$[?(@.id == %d)].enrolled".formatted(physics)).value(1))
+                .andExpect(jsonPath("$[?(@.id == %d)].enrolled".formatted(firstYearCourse)).value(0));
+    }
 }

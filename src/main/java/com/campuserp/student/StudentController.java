@@ -168,10 +168,11 @@ public class StudentController {
     @Transactional(readOnly = true)
     public List<OfferingView> courses(@PathVariable Long id, @RequestParam(required = false) String year) {
         Finder.find(students, id, "Student");
-        return enrolments.findOfferingsOfStudent(id, year == null || year.isBlank() ? null : year).stream()
+        return offeringService.views(enrolments.findOfferingsOfStudent(id, year == null || year.isBlank() ? null : year)
+                .stream()
                 .sorted(Comparator.comparing((CourseOffering o) -> o.getAcademicYear().getOddSemStart()).reversed()
                         .thenComparing(o -> o.getCourse().getCode()))
-                .map(offeringService::view).toList();
+                .toList());
     }
 
     @PostMapping("/students/{id}/courses")

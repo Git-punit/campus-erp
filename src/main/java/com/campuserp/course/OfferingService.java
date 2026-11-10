@@ -57,13 +57,13 @@ public class OfferingService {
 
     @Transactional(readOnly = true)
     public List<OfferingView> search(String year, Integer semester, Long sectionId) {
-        return offerings.search(blank(year), semester, sectionId).stream().map(this::view).toList();
+        return views(offerings.search(blank(year), semester, sectionId));
     }
 
     @Transactional(readOnly = true)
     public List<OfferingView> taughtBy(Long facultyId, String year) {
         Finder.find(faculty, facultyId, "Faculty");
-        return offerings.findByTeacher(facultyId, blank(year)).stream().map(this::view).toList();
+        return views(offerings.findByTeacher(facultyId, blank(year)));
     }
 
     @Transactional(readOnly = true)
@@ -250,6 +250,20 @@ public class OfferingService {
     // ---------- mapping
 
     public OfferingView view(CourseOffering o) {
+        return view(o, o.getId() == null ? 0 : enrolments.countByOfferingId(o.getId()));
+    }
+
+    /** Many offerings at once: enrolment counts come from one query instead of one per offering. */
+    public List<OfferingView> views(List<CourseOffering> list) {
+        java.util.Map<Long, Long> counts = new java.util.HashMap<>();
+        if (!list.isEmpty()) {
+            enrolments.countPerOffering(list.stream().map(CourseOffering::getId).toList())
+                    .forEach(r -> counts.put((Long) r[0], (Long) r[1]));
+        }
+        return list.stream().map(o -> view(o, counts.getOrDefault(o.getId(), 0L))).toList();
+    }
+
+    private OfferingView view(CourseOffering o, long enrolled) {
         List<TeacherView> teachers = o.getTeachers().stream()
                 .map(t -> new TeacherView(t.getFaculty().getId(), t.getFaculty().getEmployeeId(),
                         t.getFaculty().getName(), t.getRole()))
@@ -259,8 +273,7 @@ public class OfferingService {
                 .map(s -> new SlotView(s.getId(), s.getDay(), s.getStartTime(), s.getEndTime(), s.getRoom(), s.getType()))
                 .toList();
         return new OfferingView(o.getId(), o.getCourse().ref(), o.getCourse().getCredits(), o.getAcademicYear().ref(),
-                o.getSemester(), o.getSection().ref(), o.getSection().getProgramme().ref(), teachers, slots,
-                o.getId() == null ? 0 : enrolments.countByOfferingId(o.getId()));
+                o.getSemester(), o.getSection().ref(), o.getSection().getProgramme().ref(), teachers, slots, enrolled);
     }
 
     private static String blank(String s) {

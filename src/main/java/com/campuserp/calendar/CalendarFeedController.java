@@ -33,8 +33,14 @@ public class CalendarFeedController {
     private final CalendarService calendar;
     private final JwtService jwt;
     private final Clock clock;
+    private final com.campuserp.student.StudentRepository students;
+    private final com.campuserp.faculty.FacultyRepository faculty;
 
-    public CalendarFeedController(CalendarService calendar, JwtService jwt, Clock clock) {
+    public CalendarFeedController(CalendarService calendar, JwtService jwt, Clock clock,
+                                  com.campuserp.student.StudentRepository students,
+                                  com.campuserp.faculty.FacultyRepository faculty) {
+        this.students = students;
+        this.faculty = faculty;
         this.calendar = calendar;
         this.jwt = jwt;
         this.clock = clock;
@@ -44,7 +50,10 @@ public class CalendarFeedController {
     @GetMapping("/feed-link/{kind}/{id}")
     public Map<String, String> link(@PathVariable String kind, @PathVariable Long id) {
         checkKind(kind);
-        view(kind, id); // 404 if the student / teacher doesn't exist
+        boolean exists = kind.equals("student") ? students.existsById(id) : faculty.existsById(id);
+        if (!exists) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No such " + kind);
+        }
         return Map.of("path", "/api/calendar/feed/" + kind + "/" + id + ".ics?key=" + jwt.sign(kind + ":" + id));
     }
 
