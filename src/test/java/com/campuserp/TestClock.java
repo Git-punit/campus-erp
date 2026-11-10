@@ -17,7 +17,7 @@ public class TestClock {
     @Bean
     @Primary
     Clock testClock() {
-        ZoneId zone = ZoneId.of("Asia/Kolkata");
+        ZoneId zone = ZoneId.systemDefault();
         return Clock.fixed(TODAY.atTime(10, 0).atZone(zone).toInstant(), zone);
     }
 }
