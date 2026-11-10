@@ -2,6 +2,7 @@ import type { ReactNode } from 'react'
 import { Navigate, Route, Routes, useLocation } from 'react-router'
 import { useAuth } from './auth'
 import Layout from './layout/Layout'
+import ThemeToggle from './components/ThemeToggle'
 import AccountPage from './pages/AccountPage'
 import BudgetDetailPage from './pages/BudgetDetailPage'
 import BudgetsPage from './pages/BudgetsPage'
@@ -37,41 +38,44 @@ function RequireAdmin({ children }: { children: ReactNode }) {
 
 export default function App() {
   return (
-    <Routes>
-      <Route path="/login" element={<LoginPage />} />
-      <Route
-        element={
-          <RequireLogin>
-            <Layout />
-          </RequireLogin>
-        }
-      >
-        <Route index element={<Navigate to="/dashboard" replace />} />
-        <Route path="dashboard" element={<DashboardPage />} />
-        <Route path="account" element={<AccountPage />} />
-        <Route path="faculty" element={<FacultyPage />} />
-        <Route path="faculty/:id" element={<FacultyDetailPage />} />
-        <Route path="courses" element={<CoursesPage />} />
-        <Route path="students" element={<StudentsPage />} />
-        <Route path="students/:id" element={<StudentDetailPage />} />
-        <Route path="calendar" element={<CalendarPage />} />
-        <Route path="budgets" element={<BudgetsPage />} />
-        <Route path="budgets/:id" element={<BudgetDetailPage />} />
-        <Route path="projects" element={<ProjectsPage />} />
-        <Route path="training" element={<TrainingPage />} />
-        <Route path="training/:id" element={<TrainingProgramPage />} />
-        <Route path="events" element={<EventsPage />} />
-        <Route path="setup" element={<SetupPage />} />
+    <>
+      <ThemeToggle />
+      <Routes>
+        <Route path="/login" element={<LoginPage />} />
         <Route
-          path="users"
           element={
-            <RequireAdmin>
-              <UsersPage />
-            </RequireAdmin>
+            <RequireLogin>
+              <Layout />
+            </RequireLogin>
           }
-        />
-        <Route path="*" element={<PlaceholderPage title="Page not found" />} />
-      </Route>
-    </Routes>
+        >
+          <Route index element={<Navigate to="/dashboard" replace />} />
+          <Route path="dashboard" element={<DashboardPage />} />
+          <Route path="account" element={<AccountPage />} />
+          <Route path="faculty" element={<FacultyPage />} />
+          <Route path="faculty/:id" element={<FacultyDetailPage />} />
+          <Route path="courses" element={<CoursesPage />} />
+          <Route path="students" element={<StudentsPage />} />
+          <Route path="students/:id" element={<StudentDetailPage />} />
+          <Route path="calendar" element={<CalendarPage />} />
+          <Route path="budgets" element={<BudgetsPage />} />
+          <Route path="budgets/:id" element={<BudgetDetailPage />} />
+          <Route path="projects" element={<ProjectsPage />} />
+          <Route path="training" element={<TrainingPage />} />
+          <Route path="training/:id" element={<TrainingProgramPage />} />
+          <Route path="events" element={<EventsPage />} />
+          <Route path="setup" element={<SetupPage />} />
+          <Route
+            path="users"
+            element={
+              <RequireAdmin>
+                <UsersPage />
+              </RequireAdmin>
+            }
+          />
+          <Route path="*" element={<PlaceholderPage title="Page not found" />} />
+        </Route>
+      </Routes>
+    </>
   )
 }

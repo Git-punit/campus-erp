@@ -4,6 +4,8 @@ ERP for running a college campus. It keeps track of faculty, students,
 courses, research projects, training programs, events and budgets, and has a
 dashboard on top so you can see what's going on without opening every page.
 
+**Live demo:** https://campus-erp-production.up.railway.app/
+
 Backend is Spring Boot 4.1 on Java 25 (JPA, Spring Security + JWT, MySQL).
 Frontend is React 19 + TypeScript with Vite, in the `frontend` folder.
 
@@ -133,6 +135,8 @@ passwords in a row, a username is locked for 15 minutes.
 - **Add to phone calendar** on a student's or teacher's calendar gives a
   private link for Google Calendar, Outlook or a phone. It stays up to date
   by itself. Anyone with the link can see those classes.
+- **Dark mode:** follows your computer's setting; the sun / moon button in the
+  top-right corner switches it and remembers your choice.
 - **Receipts:** attach the bill (PDF, JPG or PNG, up to 5 MB) when raising an
   expense or later, while it's pending. Admins see it before approving.
 

@@ -1,4 +1,4 @@
-import { NavLink, Outlet } from 'react-router'
+import { NavLink, Outlet, useLocation } from 'react-router'
 import Avatar from '../components/Avatar'
 import { useAuth } from '../auth'
 
@@ -24,6 +24,7 @@ export const NAV_ITEMS: NavItem[] = [
 
 export default function Layout() {
   const { user, isAdmin, logout } = useAuth()
+  const { pathname } = useLocation()
 
   return (
     <div className="app">
@@ -39,10 +40,12 @@ export default function Layout() {
         {user && (
           <div className="sidebar-user">
             <div className="sidebar-name">
-              <Avatar user={user} size={28} />
+              <div className="sidebar-avatar">
+                <Avatar user={user} size={40} />
+                <div className="role">{user.role.toLowerCase()}</div>
+              </div>
               <span>{user.fullName}</span>
             </div>
-            <div className="role">{user.role.toLowerCase()}</div>
             <NavLink to="/account" className="link-btn">
               My account
             </NavLink>
@@ -53,7 +56,10 @@ export default function Layout() {
         )}
       </aside>
       <main className="content">
-        <Outlet />
+        {/* keyed by address so each page fades in when you open it */}
+        <div className="page" key={pathname}>
+          <Outlet />
+        </div>
       </main>
     </div>
   )
