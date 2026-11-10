@@ -38,8 +38,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         if (header != null && header.startsWith("Bearer ")) {
             jwtService.read(header.substring(7)).ifPresent(claims -> users.findByUsername(claims.getSubject())
                     .filter(u -> u.isEnabled())
-                    // a password change since the token was issued logs that token out
-                    .filter(u -> jwtService.matchesPassword(claims, u.getPasswordHash()))
+                    // a password change or "log out everywhere" since the token was issued ends it
+                    .filter(u -> jwtService.isCurrent(claims, u))
                     .ifPresent(u -> {
                         var auth = new UsernamePasswordAuthenticationToken(
                                 u.getUsername(), null,

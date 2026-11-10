@@ -234,4 +234,25 @@ class AuthAndRolesTest {
                 .andExpect(status().isTooManyRequests())
                 .andExpect(jsonPath("$.message").value("Too many wrong passwords. Try again in 15 minutes."));
     }
+
+    @Test
+    void logOutOthersEndsEveryOtherSessionButKeepsThisOne() throws Exception {
+        String laptop = staff(mvc);
+        String phone = staff(mvc);
+        String body = mvc.perform(post("/api/auth/logout-others").header(HttpHeaders.AUTHORIZATION, bearer(laptop)))
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
+        String fresh = com.jayway.jsonpath.JsonPath.read(body, "$.token");
+
+        mvc.perform(get("/api/auth/me").header(HttpHeaders.AUTHORIZATION, bearer(phone)))
+                .andExpect(status().isUnauthorized());
+        mvc.perform(get("/api/auth/me").header(HttpHeaders.AUTHORIZATION, bearer(laptop)))
+                .andExpect(status().isUnauthorized());
+        mvc.perform(get("/api/auth/me").header(HttpHeaders.AUTHORIZATION, bearer(fresh)))
+                .andExpect(status().isOk());
+        // the password still works for a new login
+        mvc.perform(post("/api/auth/login").contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"username\":\"staff\",\"password\":\"staff-test-pw\"}"))
+                .andExpect(status().isOk());
+    }
 }

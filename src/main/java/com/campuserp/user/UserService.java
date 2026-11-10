@@ -14,9 +14,11 @@ public class UserService {
 
     private final UserRepository users;
     private final PasswordEncoder encoder;
+    private final UserPhotoRepository photos;
 
-    public UserService(UserRepository users, PasswordEncoder encoder) {
+    public UserService(UserRepository users, PasswordEncoder encoder, UserPhotoRepository photos) {
         this.users = users;
+        this.photos = photos;
         this.encoder = encoder;
     }
 
@@ -54,6 +56,7 @@ public class UserService {
     public void delete(Long id) {
         User user = get(id);
         guardLastAdmin(user, "delete");
+        photos.findByUserId(id).ifPresent(photos::delete);
         users.delete(user);
     }
 

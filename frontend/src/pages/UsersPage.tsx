@@ -74,6 +74,8 @@ export default function UsersPage() {
           <tr>
             <th>Username</th>
             <th>Name</th>
+            <th>Designation</th>
+            <th>Contact</th>
             <th>Role</th>
             <th>Status</th>
             <th></th>
@@ -87,6 +89,8 @@ export default function UsersPage() {
                 {u.id === me?.id && <span className="muted"> (you)</span>}
               </td>
               <td>{u.fullName}</td>
+              <td>{u.designation ?? '-'}</td>
+              <td className="small">{[u.email, u.phone].filter(Boolean).join(', ') || '-'}</td>
               <td>
                 <span className={`badge role-${u.role.toLowerCase()}`}>{u.role}</span>
               </td>

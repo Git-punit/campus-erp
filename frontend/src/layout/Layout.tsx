@@ -1,4 +1,5 @@
 import { NavLink, Outlet } from 'react-router'
+import Avatar from '../components/Avatar'
 import { useAuth } from '../auth'
 
 export interface NavItem {
@@ -37,7 +38,10 @@ export default function Layout() {
         </nav>
         {user && (
           <div className="sidebar-user">
-            <div>{user.fullName}</div>
+            <div className="sidebar-name">
+              <Avatar user={user} size={28} />
+              <span>{user.fullName}</span>
+            </div>
             <div className="role">{user.role.toLowerCase()}</div>
             <NavLink to="/account" className="link-btn">
               My account

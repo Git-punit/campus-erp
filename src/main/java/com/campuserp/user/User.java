@@ -33,10 +33,36 @@ public class User extends BaseEntity {
     @Column(nullable = false)
     private boolean enabled = true;
 
+    @Column(length = 100)
+    private String email;
+
+    @Column(length = 20)
+    private String phone;
+
+    /** Job title / department, e.g. "Accounts Officer, Finance" */
+    @Column(length = 100)
+    private String designation;
+
+    /** image/jpeg or image/png when a profile photo is set; the bytes are in UserPhoto */
+    @Column(length = 20)
+    private String photoType;
+
+    /** Raised by "log out of all other devices"; null on accounts made before it existed. */
+    private Integer sessionVersion;
+
     public User(String username, String passwordHash, String fullName, Role role) {
         this.username = username;
         this.passwordHash = passwordHash;
         this.fullName = fullName;
         this.role = role;
+    }
+
+    /** Changes whenever older login tokens must stop working: a new password, or "log out everywhere". */
+    public String tokenKey() {
+        return passwordHash + ":" + (sessionVersion == null ? 0 : sessionVersion);
+    }
+
+    public void logOutEverywhere() {
+        sessionVersion = (sessionVersion == null ? 0 : sessionVersion) + 1;
     }
 }

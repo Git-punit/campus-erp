@@ -947,3 +947,35 @@ ul.plain {
 .file-btn.link-btn {
   display: inline-block;
 }
+
+/* profile photo */
+.avatar {
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatar.initials {
+  background: #3b5bdb;
+  color: #fff;
+  font-weight: 600;
+}
+
+.sidebar-name {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.account-head {
+  align-items: center;
+}
+
+.photo-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}

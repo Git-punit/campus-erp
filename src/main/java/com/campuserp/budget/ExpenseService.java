@@ -114,7 +114,7 @@ public class ExpenseService {
     }
 
     /** The file type from its first bytes, or null if it isn't a PDF, JPEG or PNG. */
-    static String fileType(byte[] d) {
+    public static String fileType(byte[] d) {
         if (d.length >= 4 && d[0] == '%' && d[1] == 'P' && d[2] == 'D' && d[3] == 'F') {
             return "application/pdf";
         }

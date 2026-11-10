@@ -10,6 +10,10 @@ export interface User {
   role: Role
   enabled: boolean
   createdAt: string
+  email: string | null
+  phone: string | null
+  designation: string | null
+  hasPhoto: boolean
 }
 
 interface AuthState {
@@ -17,6 +21,7 @@ interface AuthState {
   loading: boolean // true while checking a saved token on page load
   login: (username: string, password: string) => Promise<void>
   logout: () => void
+  setUser: (user: User) => void // after editing your own account
   isAdmin: boolean
   canEdit: boolean // ADMIN or STAFF
 }
@@ -58,6 +63,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     loading,
     login,
     logout,
+    setUser,
     isAdmin: user?.role === 'ADMIN',
     canEdit: user?.role === 'ADMIN' || user?.role === 'STAFF',
   }

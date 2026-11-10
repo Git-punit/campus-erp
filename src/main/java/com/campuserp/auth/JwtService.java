@@ -31,14 +31,14 @@ public class JwtService {
     }
 
     /**
-     * The token carries a signed fingerprint of the password hash, so changing
-     * the password makes every token issued before it stop working.
+     * The token carries a signed fingerprint of the user's token key (password +
+     * session version), so a new password or "log out everywhere" ends older tokens.
      */
-    public String createToken(String username, String passwordHash) {
+    public String createToken(com.campuserp.user.User user) {
         Instant now = Instant.now();
         return Jwts.builder()
-                .subject(username)
-                .claim("pw", sign(passwordHash))
+                .subject(user.getUsername())
+                .claim("pw", sign(user.tokenKey()))
                 .issuedAt(Date.from(now))
                 .expiration(Date.from(now.plus(lifetime)))
                 .signWith(key)
@@ -74,8 +74,8 @@ public class JwtService {
         }
     }
 
-    /** True if the token was issued for this password (false after a password change). */
-    public boolean matchesPassword(Claims claims, String passwordHash) {
-        return checkSignature(passwordHash, claims.get("pw", String.class));
+    /** False once the user changed their password or logged out everywhere after this token was issued. */
+    public boolean isCurrent(Claims claims, com.campuserp.user.User user) {
+        return checkSignature(user.tokenKey(), claims.get("pw", String.class));
     }
 }
