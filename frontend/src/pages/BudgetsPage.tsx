@@ -3,6 +3,7 @@ import { Link } from 'react-router'
 import { api, ApiError } from '../api'
 import { useAuth } from '../auth'
 import ExpenseTable from '../components/ExpenseTable'
+import { ExportButton } from '../lib/csv'
 import { Badge, Empty, ErrorBox, Loading, Money, Tabs, UsageBar } from '../components/ui'
 import { label } from '../lib/format'
 import type { BudgetSummary, BudgetType, Department, Expense } from '../lib/types'
@@ -93,6 +94,25 @@ function BudgetList() {
           </label>
         </div>
         <span className="spacer" />
+        {list.data && list.data.length > 0 && (
+          <ExportButton
+            fileName={`budgets${fy ? '-' + fy : ''}`}
+            rows={() =>
+              list.data!.map((b) => ({
+                budget: b.name,
+                type: b.type,
+                financial_year: b.financialYear,
+                department: b.department?.code ?? null,
+                allocated: b.allocated,
+                utilized: b.utilized,
+                pending: b.pending,
+                balance: b.balance,
+                percent_used: b.percentUsed,
+                overspent: b.overspent ? 'yes' : 'no',
+              }))
+            }
+          />
+        )}
         {canEdit && (
           <button className="btn primary" onClick={() => setAdding(true)}>
             Add department budget

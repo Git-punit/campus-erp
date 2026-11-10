@@ -39,6 +39,9 @@ export default function Layout() {
           <div className="sidebar-user">
             <div>{user.fullName}</div>
             <div className="role">{user.role.toLowerCase()}</div>
+            <NavLink to="/account" className="link-btn">
+              My account
+            </NavLink>
             <button className="link-btn" onClick={logout}>
               Log out
             </button>

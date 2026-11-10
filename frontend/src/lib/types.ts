@@ -178,6 +178,8 @@ export interface Expense {
   decidedBy: string | null
   decidedAt: string | null
   decisionRemark: string | null
+  receiptName: string | null
+  receiptSize: number | null
 }
 
 export type ProjectStatus = 'ONGOING' | 'COMPLETED' | 'CLOSED'

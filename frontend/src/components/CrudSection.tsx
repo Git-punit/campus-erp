@@ -1,6 +1,7 @@
 import { useState, type FormEvent, type ReactNode } from 'react'
 import { api, ApiError } from '../api'
 import { useAuth } from '../auth'
+import { ExportButton } from '../lib/csv'
 import { useLoad } from '../lib/useLoad'
 import { Empty, ErrorBox, Loading } from './ui'
 
@@ -43,6 +44,8 @@ export interface CrudConfig<T extends { id: number }> {
   headerExtra?: ReactNode
   rowActions?: (row: T) => ReactNode
   emptyText?: string
+  // when set, an "Export CSV" button downloads the rows currently shown
+  csv?: { fileName: string; row: (row: T) => Record<string, string | number | null> }
 }
 
 export default function CrudSection<T extends { id: number }>({ config }: { config: CrudConfig<T> }) {
@@ -67,6 +70,9 @@ export default function CrudSection<T extends { id: number }>({ config }: { conf
       <div className="section-head">
         {config.headerExtra}
         <span className="spacer" />
+        {config.csv && data && data.length > 0 && (
+          <ExportButton fileName={config.csv.fileName} rows={() => data.map(config.csv!.row)} />
+        )}
         {canEdit && (
           <button
             className="btn primary"

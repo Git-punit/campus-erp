@@ -55,6 +55,10 @@ function Catalogue() {
     ],
     empty: { code: '', name: '', credits: '4', departmentId: '' },
     toForm: (c) => ({ code: c.code, name: c.name, credits: str(c.credits), departmentId: str(c.department.id) }),
+    csv: {
+      fileName: 'courses',
+      row: (c) => ({ code: c.code, name: c.name, credits: c.credits, department: c.department.code }),
+    },
   }
   return <CrudSection config={config} />
 }

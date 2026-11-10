@@ -39,11 +39,12 @@ public final class BudgetDtos {
 
     public record ExpenseView(Long id, Long budgetId, String budgetName, BudgetType budgetType, LocalDate date,
                               BigDecimal amount, ExpenseCategory category, String description, ExpenseStatus status,
-                              String raisedBy, String decidedBy, Instant decidedAt, String decisionRemark) {
+                              String raisedBy, String decidedBy, Instant decidedAt, String decisionRemark,
+                              String receiptName, Long receiptSize) {
         public static ExpenseView from(Expense e) {
             return new ExpenseView(e.getId(), e.getBudget().getId(), e.getBudget().getName(), e.getBudget().getType(),
                     e.getDate(), e.getAmount(), e.getCategory(), e.getDescription(), e.getStatus(), e.getRaisedBy(),
-                    e.getDecidedBy(), e.getDecidedAt(), e.getDecisionRemark());
+                    e.getDecidedBy(), e.getDecidedAt(), e.getDecisionRemark(), e.getReceiptName(), e.getReceiptSize());
         }
     }
 }

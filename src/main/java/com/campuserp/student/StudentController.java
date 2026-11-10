@@ -1,6 +1,7 @@
 package com.campuserp.student;
 
 import com.campuserp.common.BusinessRuleException;
+import com.campuserp.common.CsvImporter;
 import com.campuserp.common.Finder;
 import com.campuserp.common.Ref;
 import com.campuserp.course.CourseOffering;
@@ -65,10 +66,12 @@ public class StudentController {
     private final CourseOfferingRepository offerings;
     private final EnrolmentRepository enrolments;
     private final OfferingService offeringService;
+    private final CsvImporter importer;
 
     public StudentController(StudentRepository students, SectionRepository sections, AcademicYearRepository years,
                              CourseOfferingRepository offerings, EnrolmentRepository enrolments,
-                             OfferingService offeringService) {
+                             OfferingService offeringService, CsvImporter importer) {
+        this.importer = importer;
         this.students = students;
         this.sections = sections;
         this.years = years;
@@ -109,6 +112,32 @@ public class StudentController {
         Finder.find(students, id, "Student");
         enrolments.deleteByStudentId(id);
         Finder.delete(students, id, "Student");
+    }
+
+    /**
+     * Adds many students from a CSV file. Columns: roll_no, name, section, semester,
+     * and optionally email, phone, status (ACTIVE when empty). All rows or none.
+     */
+    @PostMapping(value = "/students/import", consumes = "text/csv")
+    public CsvImporter.Result importStudents(@RequestBody String csv) {
+        java.util.Set<String> rollsInFile = new java.util.HashSet<>();
+        List<Student> rows = importer.read(csv, List.of("roll_no", "name", "section", "semester"), row -> {
+            String code = CsvImporter.text(row, "section");
+            Section section = code == null ? null : sections.findByCode(code.toUpperCase()).orElse(null);
+            if (section == null) {
+                throw new BusinessRuleException("unknown section '" + (code == null ? "" : code) + "'");
+            }
+            StudentRequest req = new StudentRequest(CsvImporter.text(row, "roll_no"), CsvImporter.text(row, "name"),
+                    section.getId(), CsvImporter.number(row, "semester"), CsvImporter.text(row, "email"),
+                    CsvImporter.text(row, "phone"), CsvImporter.choice(row, "status", StudentStatus.class, StudentStatus.ACTIVE));
+            importer.check(req);
+            if (!rollsInFile.add(req.rollNo().trim().toUpperCase())) {
+                throw new BusinessRuleException("roll number " + req.rollNo() + " appears twice in the file");
+            }
+            return apply(new Student(), req);
+        });
+        students.saveAll(rows);
+        return new CsvImporter.Result(rows.size());
     }
 
     private Student apply(Student s, StudentRequest req) {

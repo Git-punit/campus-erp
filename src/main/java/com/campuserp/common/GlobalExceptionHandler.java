@@ -73,6 +73,17 @@ public class GlobalExceptionHandler {
         return respond(HttpStatus.METHOD_NOT_ALLOWED, ex.getMessage(), req);
     }
 
+    @ExceptionHandler(org.springframework.web.multipart.MaxUploadSizeExceededException.class)
+    public ResponseEntity<ApiError> tooBig(Exception ex, HttpServletRequest req) {
+        return respond(HttpStatus.PAYLOAD_TOO_LARGE, "The file is too big (at most 5 MB)", req);
+    }
+
+    @ExceptionHandler({org.springframework.web.multipart.support.MissingServletRequestPartException.class,
+            org.springframework.web.multipart.MultipartException.class})
+    public ResponseEntity<ApiError> badUpload(Exception ex, HttpServletRequest req) {
+        return respond(HttpStatus.BAD_REQUEST, "Choose a file to upload", req);
+    }
+
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<ApiError> integrity(DataIntegrityViolationException ex, HttpServletRequest req) {
         return respond(HttpStatus.CONFLICT, "This clashes with an existing record, or is still in use", req);

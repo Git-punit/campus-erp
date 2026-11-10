@@ -34,9 +34,11 @@ export class ApiError extends Error {
 const SERVER_DOWN =
   "Can't reach the server. Check that the backend is running (./mvnw spring-boot:run) and didn't stop with an error."
 
-async function request<T>(method: string, path: string, body?: unknown): Promise<T> {
+async function request<T>(method: string, path: string, body?: unknown, contentType?: string): Promise<T> {
   const headers: Record<string, string> = {}
-  if (body !== undefined) headers['Content-Type'] = 'application/json'
+  // FormData (file uploads) sets its own Content-Type; text bodies (CSV) are sent as-is
+  const raw = body instanceof FormData || contentType !== undefined
+  if (body !== undefined && !(body instanceof FormData)) headers['Content-Type'] = contentType ?? 'application/json'
   const token = getToken()
   if (token) headers['Authorization'] = `Bearer ${token}`
 
@@ -45,7 +47,7 @@ async function request<T>(method: string, path: string, body?: unknown): Promise
     res = await fetch(`/api${path}`, {
       method,
       headers,
-      body: body === undefined ? undefined : JSON.stringify(body),
+      body: body === undefined ? undefined : raw ? (body as BodyInit) : JSON.stringify(body),
     })
   } catch {
     throw new ApiError(0, SERVER_DOWN)
@@ -85,4 +87,26 @@ export const api = {
   post: <T>(path: string, body?: unknown) => request<T>('POST', path, body),
   put: <T>(path: string, body?: unknown) => request<T>('PUT', path, body),
   delete: <T = void>(path: string) => request<T>('DELETE', path),
+  /** Send text such as a CSV file, e.g. api.postText('/students/import', text) */
+  postText: <T>(path: string, text: string, contentType = 'text/csv') => request<T>('POST', path, text, contentType),
+  /** Upload one file as multipart form field "file" */
+  upload: <T>(path: string, file: File) => {
+    const form = new FormData()
+    form.append('file', file)
+    return request<T>('POST', path, form)
+  },
+}
+
+/** Fetch a file that needs the login token (e.g. a receipt) and open it in a new tab. */
+export async function openFile(path: string) {
+  const token = getToken()
+  const res = await fetch(`/api${path}`, { headers: token ? { Authorization: `Bearer ${token}` } : {} })
+  if (!res.ok) throw new ApiError(res.status, `Could not open the file (${res.status})`)
+  const url = URL.createObjectURL(await res.blob())
+  const link = document.createElement('a')
+  link.href = url
+  link.target = '_blank'
+  link.rel = 'noopener'
+  link.click()
+  setTimeout(() => URL.revokeObjectURL(url), 60_000)
 }

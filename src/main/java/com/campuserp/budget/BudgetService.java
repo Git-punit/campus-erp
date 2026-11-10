@@ -191,6 +191,11 @@ public class BudgetService {
     }
 
     @Transactional(readOnly = true)
+    public boolean hasExpenses(Budget b) {
+        return expenses.countByBudgetId(b.getId()) > 0;
+    }
+
+    @Transactional(readOnly = true)
     public BigDecimal approvedTotal(Budget b) {
         return expenses.total(b.getId(), ExpenseStatus.APPROVED);
     }

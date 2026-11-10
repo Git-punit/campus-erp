@@ -40,6 +40,19 @@ export default function EventsPage() {
       { name: 'budgetAmount', label: 'Budget (₹, leave empty for none)', type: 'number' },
     ],
     empty: { name: '', type: '', startDate: '', endDate: '', venue: '', status: 'PLANNED', budgetAmount: '' },
+    csv: {
+      fileName: 'events',
+      row: (e) => ({
+        name: e.name,
+        type: e.type,
+        start_date: e.startDate,
+        end_date: e.endDate,
+        venue: e.venue,
+        status: e.status,
+        budget_allocated: e.budget?.allocated ?? null,
+        budget_utilized: e.budget?.utilized ?? null,
+      }),
+    },
     toForm: (e) => ({
       name: e.name,
       type: e.type,

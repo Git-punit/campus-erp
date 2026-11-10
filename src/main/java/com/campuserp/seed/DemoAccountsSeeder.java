@@ -47,9 +47,20 @@ public class DemoAccountsSeeder implements ApplicationRunner {
         if (users.count() > 0) {
             return;
         }
+        requirePassword("ADMIN_PASSWORD", adminPassword);
+        requirePassword("STAFF_PASSWORD", staffPassword);
+        requirePassword("VIEWER_PASSWORD", viewerPassword);
         users.save(new User("admin", encoder.encode(adminPassword), "Administrator", Role.ADMIN));
         users.save(new User("staff", encoder.encode(staffPassword), "Office Staff", Role.STAFF));
         users.save(new User("viewer", encoder.encode(viewerPassword), "Read Only", Role.VIEWER));
         log.info("Empty database: created the admin, staff and viewer accounts");
+    }
+
+    /** No built-in passwords outside the dev profile: the first start needs real ones. */
+    private static void requirePassword(String variable, String value) {
+        if (value == null || value.length() < 6) {
+            throw new IllegalStateException("The database has no users yet, so " + variable
+                    + " must be set (6+ characters) to create the first accounts");
+        }
     }
 }

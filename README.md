@@ -119,6 +119,20 @@ Departments, programmes (like B.Tech CSE, with number of semesters), sections
 | VIEWER | read only |
 
 Faculty and students don't have logins. Admin/staff open their pages instead.
+Everyone can change their own password under **My account** in the sidebar.
+
+## Extras
+
+- **Export CSV** on the faculty, students, courses, events, budgets and
+  expense lists downloads what's on screen (filters included). Excel opens it.
+- **Import CSV** on Students and Faculty adds many records at once. There's a
+  template to download. Every row is checked first; if any row is wrong,
+  nothing is saved and the rows to fix are listed.
+- **Add to phone calendar** on a student's or teacher's calendar gives a
+  private link for Google Calendar, Outlook or a phone. It stays up to date
+  by itself. Anyone with the link can see those classes.
+- **Receipts:** attach the bill (PDF, JPG or PNG, up to 5 MB) when raising an
+  expense or later, while it's pending. Admins see it before approving.
 
 ## Running it locally
 
@@ -132,16 +146,18 @@ over from the sample data). Backend, on port 8080:
 ./mvnw spring-boot:run -Dspring-boot.run.profiles=dev
 ```
 
-**With MySQL.** Set your MySQL login (the `campus_erp` database gets created on
-first run). Use your real MySQL password; if it's wrong the backend stops
-straight away with `Access denied for user 'root'`.
+**With your local MySQL.** Same `dev` profile, pointed at MySQL (the
+`campus_erp` database is created on first run). Use your real MySQL password;
+if it's wrong the backend stops straight away with `Access denied`.
 
 ```bash
+export DB_URL='jdbc:mysql://localhost:3306/campus_erp?createDatabaseIfNotExist=true'
+export DB_USERNAME=root
 export DB_PASSWORD='your-mysql-password'
 ```
 
 ```bash
-./mvnw spring-boot:run
+./mvnw spring-boot:run -Dspring-boot.run.profiles=dev
 ```
 
 Wait for `Started CampusErpApplication`; http://localhost:8080/api/health
@@ -157,13 +173,16 @@ Then go to http://localhost:5173.
 
 ### Demo data
 
-On an empty database it creates three users (`admin`, `staff`, `viewer`) and
-loads made-up sample data from `src/main/resources/sample-data/` (see its
-README). The passwords are the `app.seed.*-password` entries in
-`application.properties`. `SEED_DEMO_DATA=false` skips the sample data.
+On an empty database it creates three users (`admin`, `staff`, `viewer`). With
+the `dev` profile their passwords are `admin123`, `staff123` and `viewer123`,
+and it also loads made-up sample data from `src/main/resources/sample-data/`
+(see its README).
 
-Those defaults are public, so on a server (a database that isn't local) the
-app refuses to start until `JWT_SECRET` and the three passwords are set.
+Those dev values are public, so they only exist in `application-dev.properties`.
+Without the `dev` profile (on a server) there are no defaults: set `JWT_SECRET`,
+and for the first start `ADMIN_PASSWORD`, `STAFF_PASSWORD` and
+`VIEWER_PASSWORD`, or the app won't start. Sample data is off unless
+`SEED_DEMO_DATA=true`.
 
 ### One jar
 
@@ -194,11 +213,11 @@ them, plus the frontend build, on every push to `main` and every pull request.
 |---|---|---|
 | `DB_URL` | `jdbc:mysql://localhost:3306/campus_erp?createDatabaseIfNotExist=true` | JDBC URL |
 | `DB_USERNAME` / `DB_PASSWORD` | `root` / empty | MySQL login |
-| `JWT_SECRET` | dev value | signs login tokens; required (32+ chars) when the database isn't local |
-| `ADMIN_PASSWORD` / `STAFF_PASSWORD` / `VIEWER_PASSWORD` | dev values | passwords for the accounts created on an empty database |
-| `SEED_DEMO_DATA` | `true` | load sample data into an empty db |
+| `JWT_SECRET` | none (dev profile: a dev value) | signs login tokens and calendar links; required, 32+ characters |
+| `ADMIN_PASSWORD` / `STAFF_PASSWORD` / `VIEWER_PASSWORD` | none (dev profile: dev values) | passwords for the accounts created on an empty database; only needed then |
+| `SEED_DEMO_DATA` | `false` (dev profile: `true`) | load sample data into an empty db |
+| `APP_TIME_ZONE` | `Asia/Kolkata` | the time zone for "today" (dashboard, calendar, financial year), whatever the server's clock is set to |
 | `SERVER_PORT` | `8080` | HTTP port |
-| `ALLOW_DEV_DEFAULTS` | `false` | let a non-local deployment start with the public defaults anyway |
 
 Other business settings (like the financial year starting in April) are under
 `app.*` in `application.properties`.
@@ -305,10 +324,10 @@ campus-erp/
 │   │   │   ├── CampusErpApplication.java
 │   │   │   ├── auth/          AuthController, JwtService, JwtAuthFilter
 │   │   │   ├── budget/        Budget, Expense, BudgetService, ExpenseService, BudgetController, ...
-│   │   │   ├── calendar/      CalendarService, CalendarController, CalendarEntry
-│   │   │   ├── common/        BaseEntity, ApiError, GlobalExceptionHandler, Finder, Money, Ref, ...
-│   │   │   ├── config/        SecurityConfig, ClockConfig, SpaForwardController,
-│   │   │   │                  DevDefaultsGuard, JwtSecretCheck
+│   │   │   ├── calendar/      CalendarService, CalendarController, CalendarFeedController, CalendarEntry
+│   │   │   ├── common/        BaseEntity, ApiError, GlobalExceptionHandler, Csv, CsvImporter,
+│   │   │   │                  Finder, Money, Ref, ...
+│   │   │   ├── config/        SecurityConfig, ClockConfig, SpaForwardController
 │   │   │   ├── course/        Course, CourseOffering, OfferingTeacher, TimetableSlot,
 │   │   │   │                  ClassException, OfferingService, CourseController, OfferingController, ...
 │   │   │   ├── dashboard/     DashboardController
@@ -324,7 +343,6 @@ campus-erp/
 │   │   └── resources/
 │   │       ├── application.properties
 │   │       ├── application-dev.properties
-│   │       ├── META-INF/spring.factories
 │   │       └── sample-data/   21 CSV files + README.md
 │   └── test/
 │       ├── java/com/campuserp/
@@ -333,7 +351,7 @@ campus-erp/
 │       │   ├── budget/BudgetAndExpenseTest.java
 │       │   ├── calendar/CalendarTest.java
 │       │   ├── common/HealthAndErrorsTest.java
-│       │   ├── config/DevDefaultsGuardTest.java, SpaForwardTest.java
+│       │   ├── config/SpaForwardTest.java
 │       │   ├── course/OfferingsTest.java
 │       │   ├── seed/SampleDataTest.java
 │       │   ├── student/EnrolmentTest.java

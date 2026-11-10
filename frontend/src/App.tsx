@@ -2,6 +2,7 @@ import type { ReactNode } from 'react'
 import { Navigate, Route, Routes, useLocation } from 'react-router'
 import { useAuth } from './auth'
 import Layout from './layout/Layout'
+import AccountPage from './pages/AccountPage'
 import BudgetDetailPage from './pages/BudgetDetailPage'
 import BudgetsPage from './pages/BudgetsPage'
 import CalendarPage from './pages/CalendarPage'
@@ -47,6 +48,7 @@ export default function App() {
       >
         <Route index element={<Navigate to="/dashboard" replace />} />
         <Route path="dashboard" element={<DashboardPage />} />
+        <Route path="account" element={<AccountPage />} />
         <Route path="faculty" element={<FacultyPage />} />
         <Route path="faculty/:id" element={<FacultyDetailPage />} />
         <Route path="courses" element={<CoursesPage />} />
