@@ -1,6 +1,7 @@
 package com.campuserp.faculty;
 
 import com.campuserp.common.BusinessRuleException;
+import com.campuserp.common.CsvImporter;
 import com.campuserp.common.Finder;
 import com.campuserp.common.Ref;
 import com.campuserp.course.OfferingTeacherRepository;
@@ -47,10 +48,12 @@ public class FacultyController {
     private final OfferingTeacherRepository offeringTeachers;
     private final ProjectMemberRepository projectMembers;
     private final AcademicCalendar calendar;
+    private final CsvImporter importer;
 
     public FacultyController(FacultyRepository faculty, DepartmentRepository departments,
                              OfferingTeacherRepository offeringTeachers, ProjectMemberRepository projectMembers,
-                             AcademicCalendar calendar) {
+                             AcademicCalendar calendar, CsvImporter importer) {
+        this.importer = importer;
         this.faculty = faculty;
         this.departments = departments;
         this.offeringTeachers = offeringTeachers;
@@ -92,6 +95,32 @@ public class FacultyController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long id) {
         Finder.delete(faculty, id, "Faculty");
+    }
+
+    /**
+     * Adds many teachers from a CSV file. Columns: employee_id, name, department, and
+     * optionally designation, email, phone, status (ACTIVE when empty). All rows or none.
+     */
+    @PostMapping(value = "/import", consumes = "text/csv")
+    public CsvImporter.Result importFaculty(@RequestBody String csv) {
+        java.util.Set<String> idsInFile = new java.util.HashSet<>();
+        List<Faculty> rows = importer.read(csv, List.of("employee_id", "name", "department"), row -> {
+            String code = CsvImporter.text(row, "department");
+            var dept = code == null ? null : departments.findByCode(code.toUpperCase()).orElse(null);
+            if (dept == null) {
+                throw new BusinessRuleException("unknown department '" + (code == null ? "" : code) + "'");
+            }
+            FacultyRequest req = new FacultyRequest(CsvImporter.text(row, "employee_id"), CsvImporter.text(row, "name"),
+                    dept.getId(), CsvImporter.text(row, "designation"), CsvImporter.text(row, "email"),
+                    CsvImporter.text(row, "phone"), CsvImporter.choice(row, "status", FacultyStatus.class, FacultyStatus.ACTIVE));
+            importer.check(req);
+            if (!idsInFile.add(req.employeeId().trim().toUpperCase())) {
+                throw new BusinessRuleException("employee ID " + req.employeeId() + " appears twice in the file");
+            }
+            return apply(new Faculty(), req);
+        });
+        faculty.saveAll(rows);
+        return new CsvImporter.Result(rows.size());
     }
 
     private Faculty apply(Faculty f, FacultyRequest req) {

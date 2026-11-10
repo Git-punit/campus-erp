@@ -17,6 +17,17 @@ export default function CalendarView({ kind, id }: { kind: 'student' | 'faculty'
   const [events, setEvents] = useState<EventInput[]>([])
   const [error, setError] = useState<string | null>(null)
   const [picked, setPicked] = useState<CalendarEntry | null>(null)
+  const [feed, setFeed] = useState<string | null>(null)
+
+  async function showFeed() {
+    setError(null)
+    try {
+      const { path } = await api.get<{ path: string }>(`/calendar/feed-link/${kind}/${id}`)
+      setFeed(window.location.origin + path)
+    } catch (e) {
+      setError((e as Error).message)
+    }
+  }
 
   const load = useCallback(
     (arg: DatesSetArg) => {
@@ -64,6 +75,30 @@ export default function CalendarView({ kind, id }: { kind: 'student' | 'faculty'
   return (
     <div className="card calendar">
       <ErrorBox message={error} />
+      <div className="section-head">
+        <span className="spacer" />
+        <button className="btn" type="button" onClick={() => (feed ? setFeed(null) : showFeed())}>
+          {feed ? 'Hide calendar link' : 'Add to phone calendar'}
+        </button>
+      </div>
+      {feed && (
+        <div className="feed-box ok-box">
+          <p>
+            Copy this private link into Google Calendar (Other calendars, From URL), Outlook (Add calendar, From
+            the internet) or your phone's calendar app. It updates by itself when classes change. Anyone with the
+            link can see these classes, so don't share it.
+          </p>
+          <input readOnly value={feed} onFocus={(e) => e.target.select()} />
+          <button className="link-btn" type="button" onClick={() => navigator.clipboard?.writeText(feed)}>
+            Copy link
+          </button>
+          {window.location.hostname === 'localhost' && (
+            <p className="muted small">
+              This is a localhost address, so it only works on this computer. Phones need the app on a real server.
+            </p>
+          )}
+        </div>
+      )}
       <FullCalendar
         plugins={[dayGridPlugin, timeGridPlugin]}
         locale={enGb}

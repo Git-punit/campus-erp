@@ -11,7 +11,13 @@ import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.context.annotation.Import;
 import org.springframework.transaction.annotation.Transactional;
 
+import org.springframework.http.HttpHeaders;
+import org.springframework.mock.web.MockMultipartFile;
+
 import static org.hamcrest.Matchers.containsString;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -166,5 +172,47 @@ class BudgetAndExpenseTest extends ApiTest {
         putAs(staff(), "/api/events/" + eventId, event.formatted("0"))
                 .andExpect(jsonPath("$.budget").doesNotExist());
         getAs(viewer(), "/api/budgets?type=EVENT").andExpect(jsonPath("$", hasSize(0)));
+    }
+
+    // --- receipts ---
+
+    org.springframework.test.web.servlet.ResultActions attach(String token, Long expense, String name, byte[] data)
+            throws Exception {
+        return mvc.perform(multipart("/api/expenses/" + expense + "/receipt")
+                .file(new MockMultipartFile("file", name, "application/pdf", data))
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + token));
+    }
+
+    @Test
+    void receiptCanBeAttachedViewedAndIsCheckedForType() throws Exception {
+        Long e = raise(1200);
+        byte[] pdf = "%PDF-1.4 fake bill".getBytes();
+
+        attach(staff(), e, "bill-nov.pdf", pdf)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.receiptName").value("bill-nov.pdf"))
+                .andExpect(jsonPath("$.receiptSize").value(pdf.length));
+        getAs(viewer(), "/api/expenses?budgetId=" + budget)
+                .andExpect(jsonPath("$[0].receiptName").value("bill-nov.pdf"));
+        getAs(viewer(), "/api/expenses/" + e + "/receipt")
+                .andExpect(status().isOk())
+                .andExpect(header().string("Content-Type", "application/pdf"))
+                .andExpect(header().string("Content-Disposition", containsString("bill-nov.pdf")))
+                .andExpect(content().bytes(pdf));
+
+        // an HTML page renamed to .pdf is refused: the type comes from the bytes
+        attach(staff(), e, "evil.pdf", "<html><script>x</script>".getBytes())
+                .andExpect(status().isConflict())
+                .andExpect(jsonPath("$.message").value("Only PDF, JPG and PNG files can be attached"));
+        attach(viewer(), e, "x.pdf", pdf).andExpect(status().isForbidden());
+
+        // once decided, the receipt is locked; deleting a pending expense removes its receipt too
+        postAs(admin(), "/api/expenses/" + e + "/approve", "{}").andExpect(status().isOk());
+        attach(staff(), e, "new.pdf", pdf).andExpect(status().isConflict());
+
+        Long other = raise(500);
+        attach(staff(), other, "b.pdf", pdf).andExpect(status().isOk());
+        deleteAs(staff(), "/api/expenses/" + other).andExpect(status().isNoContent());
+        getAs(viewer(), "/api/expenses/" + other + "/receipt").andExpect(status().isNotFound());
     }
 }

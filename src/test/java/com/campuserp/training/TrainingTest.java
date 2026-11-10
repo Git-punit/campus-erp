@@ -104,4 +104,19 @@ class TrainingTest extends ApiTest {
                 .andExpect(jsonPath("$.accepted").value(1))
                 .andExpect(jsonPath("$.conducted").value(1));
     }
+
+    @Test
+    void clientCanChangeTheirMindWhileAnExpenseIsPending() throws Exception {
+        Long c = id(postAs(staff(), "/api/training-programs/" + program + "/clients", client(true, "YES", false)), "$.id");
+        Long budget = id(getAs(viewer(), "/api/training-clients/" + c), "$.budgetId");
+        postAs(staff(), "/api/expenses", """
+                {"budgetId":%d,"date":"2026-09-01","amount":5000,"category":"TRAVEL","description":"Site visit"}"""
+                .formatted(budget)).andExpect(status().isCreated());
+
+        // used to fail with "already has expenses against it"; now the budget simply stays
+        putAs(staff(), "/api/training-clients/" + c, client(true, "NEEDS_REVISION", false))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.accepted").value("NEEDS_REVISION"))
+                .andExpect(jsonPath("$.budgetId").value(budget.intValue()));
+    }
 }

@@ -2,6 +2,7 @@ import { useState, type FormEvent } from 'react'
 import { Link } from 'react-router'
 import { api } from '../api'
 import { useAuth } from '../auth'
+import ImportBox from '../components/ImportBox'
 import CrudSection, { enumOptions, optionsOf, str, type CrudConfig } from '../components/CrudSection'
 import { Badge, ErrorBox } from '../components/ui'
 import type { AcademicYear, Section, Student } from '../lib/types'
@@ -15,6 +16,8 @@ export default function StudentsPage() {
   const [sectionId, setSectionId] = useState('')
   const [semester, setSemester] = useState('')
   const [showEnrol, setShowEnrol] = useState(false)
+  const [showImport, setShowImport] = useState(false)
+  const [version, setVersion] = useState(0) // bump to reload the list after an import
 
   const query = new URLSearchParams()
   if (sectionId) query.set('sectionId', sectionId)
@@ -43,6 +46,19 @@ export default function StudentsPage() {
       { name: 'status', label: 'Status', type: 'select', required: true, options: enumOptions(STUDENT_STATUSES) },
     ],
     empty: { rollNo: '', name: '', sectionId: '', currentSemester: '1', email: '', phone: '', status: 'ACTIVE' },
+    csv: {
+      fileName: 'students',
+      row: (s) => ({
+        roll_no: s.rollNo,
+        name: s.name,
+        programme: s.programme.code,
+        semester: s.currentSemester,
+        section: s.section.code,
+        email: s.email,
+        phone: s.phone,
+        status: s.status,
+      }),
+    },
     toForm: (s) => ({
       rollNo: s.rollNo,
       name: s.name,
@@ -75,9 +91,14 @@ export default function StudentsPage() {
           </select>
         </label>
         {canEdit && (
-          <button className="btn" type="button" onClick={() => setShowEnrol(!showEnrol)}>
-            Enrol a whole section
-          </button>
+          <>
+            <button className="btn" type="button" onClick={() => setShowEnrol(!showEnrol)}>
+              Enrol a whole section
+            </button>
+            <button className="btn" type="button" onClick={() => setShowImport(!showImport)}>
+              Import CSV
+            </button>
+          </>
         )}
       </div>
     ),
@@ -87,7 +108,18 @@ export default function StudentsPage() {
     <>
       <h1>Students</h1>
       {showEnrol && <SectionEnrol sections={sections.data ?? []} onClose={() => setShowEnrol(false)} />}
-      <CrudSection config={config} key={config.listPath} />
+      {showImport && (
+        <ImportBox
+          what="students"
+          endpoint="/students/import"
+          required={['roll_no', 'name', 'section', 'semester']}
+          optional={['email', 'phone', 'status']}
+          example={{ roll_no: '26CSE101', name: 'Asha Rao', section: 'CSE-A', semester: '1', email: 'asha@example.edu', status: 'ACTIVE' }}
+          onDone={() => setVersion((v) => v + 1)}
+          onClose={() => setShowImport(false)}
+        />
+      )}
+      <CrudSection config={config} key={config.listPath + version} />
     </>
   )
 }

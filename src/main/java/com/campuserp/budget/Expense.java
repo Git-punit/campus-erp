@@ -50,4 +50,13 @@ public class Expense extends BaseEntity {
 
     @Column(length = 300)
     private String decisionRemark;
+
+    /** Set when a receipt is attached; the file itself is in ReceiptFile. */
+    @Column(length = 200)
+    private String receiptName;
+
+    @Column(length = 50)
+    private String receiptType;
+
+    private Long receiptSize;
 }

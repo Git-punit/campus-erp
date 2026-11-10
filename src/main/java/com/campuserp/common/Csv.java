@@ -1,4 +1,4 @@
-package com.campuserp.seed;
+package com.campuserp.common;
 
 import org.springframework.core.io.ClassPathResource;
 
@@ -11,18 +11,24 @@ import java.util.List;
 import java.util.Map;
 
 /** Just enough CSV reading for the sample data: header row, commas, double-quoted fields. */
-final class Csv {
+public final class Csv {
 
     private Csv() {}
 
-    static List<Map<String, String>> read(String file) {
+    /** Reads src/main/resources/sample-data/<file>. */
+    public static List<Map<String, String>> read(String file) {
         String text;
         try (var in = new ClassPathResource("sample-data/" + file).getInputStream()) {
             text = new String(in.readAllBytes(), StandardCharsets.UTF_8);
         } catch (IOException e) {
             throw new UncheckedIOException("Can't read sample-data/" + file, e);
         }
-        List<List<String>> rows = parse(text);
+        return rows(text);
+    }
+
+    /** Header row + data rows as column -> value maps. Blank lines are skipped. */
+    public static List<Map<String, String>> rows(String text) {
+        List<List<String>> rows = parse(text.startsWith("\uFEFF") ? text.substring(1) : text);
         List<Map<String, String>> out = new ArrayList<>();
         if (rows.isEmpty()) {
             return out;

@@ -182,4 +182,27 @@ class AuthAndRolesTest {
         mvc.perform(delete("/api/users/" + adminId).header(HttpHeaders.AUTHORIZATION, bearer(token)))
                 .andExpect(status().isNoContent());
     }
+
+    // --- change own password ---
+
+    @Test
+    void anyoneCanChangeTheirOwnPassword() throws Exception {
+        String token = viewer(mvc);
+        mvc.perform(post("/api/auth/password").header(HttpHeaders.AUTHORIZATION, bearer(token))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"currentPassword\":\"wrong\",\"newPassword\":\"brand-new-pw\"}"))
+                .andExpect(status().isConflict())
+                .andExpect(jsonPath("$.message").value("Your current password is wrong"));
+        mvc.perform(post("/api/auth/password").header(HttpHeaders.AUTHORIZATION, bearer(token))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"currentPassword\":\"viewer-test-pw\",\"newPassword\":\"brand-new-pw\"}"))
+                .andExpect(status().isNoContent());
+
+        mvc.perform(post("/api/auth/login").contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"username\":\"viewer\",\"password\":\"viewer-test-pw\"}"))
+                .andExpect(status().isUnauthorized());
+        mvc.perform(post("/api/auth/login").contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"username\":\"viewer\",\"password\":\"brand-new-pw\"}"))
+                .andExpect(status().isOk());
+    }
 }

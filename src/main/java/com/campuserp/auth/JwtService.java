@@ -40,6 +40,26 @@ public class JwtService {
                 .compact();
     }
 
+    /**
+     * A short signature for text, made with the same secret as login tokens.
+     * Used for links that can't carry a login, like calendar feeds.
+     */
+    public String sign(String text) {
+        try {
+            javax.crypto.Mac mac = javax.crypto.Mac.getInstance(key.getAlgorithm());
+            mac.init(key);
+            byte[] sig = mac.doFinal(text.getBytes(StandardCharsets.UTF_8));
+            return java.util.Base64.getUrlEncoder().withoutPadding().encodeToString(java.util.Arrays.copyOf(sig, 24));
+        } catch (java.security.GeneralSecurityException e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
+    public boolean checkSignature(String text, String signature) {
+        return signature != null && java.security.MessageDigest.isEqual(
+                sign(text).getBytes(StandardCharsets.UTF_8), signature.getBytes(StandardCharsets.UTF_8));
+    }
+
     /** The username in the token, or empty if the token is bad or expired. */
     public Optional<String> readUsername(String token) {
         try {

@@ -123,6 +123,7 @@ function AllocationForm({ budget, onDone, onCancel }: { budget: BudgetSummary; o
 
 function ExpenseForm({ budgetId, onDone, onCancel }: { budgetId: number; onDone: () => void; onCancel: () => void }) {
   const [form, setForm] = useState({ date: todayIso(), amount: '', category: 'EQUIPMENT', description: '' })
+  const [receipt, setReceipt] = useState<File | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({})
 
@@ -131,7 +132,15 @@ function ExpenseForm({ budgetId, onDone, onCancel }: { budgetId: number; onDone:
     setError(null)
     setFieldErrors({})
     try {
-      await api.post('/expenses', { budgetId, ...form, amount: Number(form.amount) })
+      const created = await api.post<{ id: number }>('/expenses', { budgetId, ...form, amount: Number(form.amount) })
+      if (receipt) {
+        try {
+          await api.upload(`/expenses/${created.id}/receipt`, receipt)
+        } catch (err) {
+          // the request itself is saved, so close the form (no duplicate on retry) and say so
+          alert(`The request was saved, but the receipt wasn't: ${(err as Error).message}\nAttach it from the list.`)
+        }
+      }
       onDone()
     } catch (err) {
       setError((err as Error).message)
@@ -167,6 +176,14 @@ function ExpenseForm({ budgetId, onDone, onCancel }: { budgetId: number; onDone:
         <label className="wide">
           Description
           <input value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} required />
+        </label>
+        <label className="wide">
+          Receipt (optional: PDF, JPG or PNG, up to 5 MB)
+          <input
+            type="file"
+            accept="application/pdf,image/jpeg,image/png"
+            onChange={(e) => setReceipt(e.target.files?.[0] ?? null)}
+          />
         </label>
       </div>
       <div className="form-actions">

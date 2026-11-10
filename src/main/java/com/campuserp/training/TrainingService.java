@@ -166,9 +166,9 @@ public class TrainingService {
         if (c.getAccepted() == Acceptance.YES) {
             budgets.syncTrainingBudget(c);
         } else {
-            // no longer accepted: drop the budget if nothing was spent from it
+            // no longer accepted: drop the budget if no expense (even a pending one) uses it
             budgetRepo.findByTrainingClientId(c.getId())
-                    .filter(b -> budgets.approvedTotal(b).signum() == 0)
+                    .filter(b -> !budgets.hasExpenses(b))
                     .ifPresent(budgets::removeIfUnused);
         }
     }

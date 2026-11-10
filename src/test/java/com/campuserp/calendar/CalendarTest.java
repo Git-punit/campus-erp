@@ -19,6 +19,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 
 import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.containsString;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -114,5 +117,28 @@ class CalendarTest extends ApiTest {
                 .andExpect(jsonPath("$.entries[*].date", contains("2026-11-18")));
         getAs(viewer(), "/api/calendar/faculty/" + bina.getId() + "?from=2026-11-16&to=2026-11-22")
                 .andExpect(jsonPath("$.entries[*].date", contains("2026-11-20")));
+    }
+
+    @Test
+    void personalCalendarFeedWorksWithoutLoginButNeedsTheKey() throws Exception {
+        postAs(staff(), "/api/offerings/" + offering + "/exceptions",
+                "{\"date\":\"2026-11-20\",\"type\":\"CANCELLED\",\"startTime\":\"14:00\",\"reason\":\"Lab repair\"}");
+        String body = getAs(viewer(), "/api/calendar/feed-link/student/" + student.getId())
+                .andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+        String path = com.jayway.jsonpath.JsonPath.read(body, "$.path");
+
+        // no Authorization header: a calendar app can't send one
+        mvc.perform(get(path))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("BEGIN:VCALENDAR")))
+                .andExpect(content().string(containsString("SUMMARY:PH101 Course PH101")))
+                .andExpect(content().string(containsString("LOCATION:Lab 1")))
+                .andExpect(content().string(containsString("STATUS:CANCELLED")))
+                // Wed 18 Nov 09:00 in India is 03:30 UTC
+                .andExpect(content().string(containsString("DTSTART:20261118T033000Z")));
+
+        mvc.perform(get(path.replaceAll("key=.*", "key=not-the-right-key"))).andExpect(status().isForbidden());
+        mvc.perform(get(path.replace("/student/" + student.getId(), "/faculty/" + anil.getId())))
+                .andExpect(status().isForbidden());
     }
 }

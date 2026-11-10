@@ -1,9 +1,10 @@
 import { useState } from 'react'
 import { Link } from 'react-router'
-import { api } from '../api'
+import { api, openFile } from '../api'
 import { useAuth } from '../auth'
 import { date, label, money } from '../lib/format'
 import type { BudgetSummary, Expense } from '../lib/types'
+import { ExportButton } from '../lib/csv'
 import { useLoad } from '../lib/useLoad'
 import { Badge, Empty, ErrorBox, Loading, Money } from './ui'
 
@@ -67,6 +68,26 @@ export default function ExpenseTable({
     }
   }
 
+  async function attach(e: Expense, file: File) {
+    setError(null)
+    try {
+      await api.upload(`/expenses/${e.id}/receipt`, file)
+      changed()
+    } catch (err) {
+      setError((err as Error).message)
+    }
+  }
+
+  async function removeReceipt(e: Expense) {
+    if (!confirm(`Remove the receipt "${e.receiptName}"?`)) return
+    try {
+      await api.delete(`/expenses/${e.id}/receipt`)
+      changed()
+    } catch (err) {
+      setError((err as Error).message)
+    }
+  }
+
   async function remove(e: Expense) {
     if (!confirm('Delete this pending request?')) return
     try {
@@ -82,6 +103,28 @@ export default function ExpenseTable({
   return (
     <>
       <ErrorBox message={error ?? list.error} />
+      {list.data.length > 0 && (
+        <div className="section-head">
+          <span className="spacer" />
+          <ExportButton
+            fileName="expenses"
+            rows={() =>
+              list.data!.map((e) => ({
+                date: e.date,
+                budget: e.budgetName,
+                description: e.description,
+                category: e.category,
+                amount: e.amount,
+                status: e.status,
+                raised_by: e.raisedBy,
+                decided_by: e.decidedBy,
+                remark: e.decisionRemark,
+                receipt: e.receiptName,
+              }))
+            }
+          />
+        </div>
+      )}
       {list.data.length === 0 ? (
         <Empty>No expenses here.</Empty>
       ) : (
@@ -96,6 +139,7 @@ export default function ExpenseTable({
               <th>Status</th>
               <th>Raised by</th>
               <th>Decision</th>
+              <th>Receipt</th>
               <th></th>
             </tr>
           </thead>
@@ -129,6 +173,39 @@ export default function ExpenseTable({
                     ) : (
                       '-'
                     )}
+                  </td>
+                  <td className="small receipt-cell">
+                    {e.receiptName && (
+                      <button
+                        className="link-btn"
+                        title={e.receiptName}
+                        onClick={() => openFile(`/expenses/${e.id}/receipt`).catch((err) => setError(err.message))}
+                      >
+                        View
+                      </button>
+                    )}
+                    {e.status === 'PENDING' && canEdit && (
+                      <>
+                        <label className="link-btn file-btn">
+                          {e.receiptName ? 'Replace' : 'Attach'}
+                          <input
+                            type="file"
+                            accept="application/pdf,image/jpeg,image/png"
+                            onChange={(ev) => {
+                              const file = ev.target.files?.[0]
+                              ev.target.value = ''
+                              if (file) attach(e, file)
+                            }}
+                          />
+                        </label>
+                        {e.receiptName && (
+                          <button className="link-btn danger" onClick={() => removeReceipt(e)}>
+                            Remove
+                          </button>
+                        )}
+                      </>
+                    )}
+                    {!e.receiptName && !(e.status === 'PENDING' && canEdit) && '-'}
                   </td>
                   <td className="actions">
                     {e.status === 'PENDING' && isAdmin && (
