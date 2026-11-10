@@ -74,7 +74,7 @@ public class SecurityConfig {
                                 writeError(req, res, HttpStatus.FORBIDDEN, "You don't have permission to do that")))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/health").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/auth/login", "/api/auth/signup").permitAll()
                         // calendar apps can't log in; the feed checks its own signed key instead
                         .requestMatchers(HttpMethod.GET, "/api/calendar/feed/**").permitAll()
                         .requestMatchers("/api/users/**").hasRole("ADMIN")

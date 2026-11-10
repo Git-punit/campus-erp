@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from 'react'
-import { Navigate, useLocation } from 'react-router'
+import { Link, Navigate, useLocation } from 'react-router'
 import { useAuth } from '../auth'
 
 export default function LoginPage() {
@@ -36,7 +36,7 @@ export default function LoginPage() {
         <p className="muted">Sign in to continue</p>
         {error && <div className="error-box">{error}</div>}
         <label>
-          Username
+          Username or email
           <input value={username} onChange={(e) => setUsername(e.target.value)} autoFocus autoComplete="username" required />
         </label>
         <label>
@@ -52,6 +52,9 @@ export default function LoginPage() {
         <button className="btn primary" type="submit" disabled={busy}>
           {busy ? 'Signing in...' : 'Sign in'}
         </button>
+        <p className="small center">
+          New here? <Link to="/signup">Create an account</Link>
+        </p>
       </form>
     </div>
   )

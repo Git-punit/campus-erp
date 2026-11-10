@@ -51,8 +51,13 @@ public class ProfileController {
     @Transactional
     public UserResponse update(@Valid @RequestBody ProfileChange req, Authentication auth) {
         User user = current(auth);
+        String email = blank(req.email());
+        // emails also log people in, so two accounts can't share one
+        if (email != null && users.findFirstByEmailIgnoreCase(email).filter(u -> !u.getId().equals(user.getId())).isPresent()) {
+            throw new BusinessRuleException("Another account already uses this email");
+        }
         user.setFullName(req.fullName().trim());
-        user.setEmail(blank(req.email()));
+        user.setEmail(email);
         user.setPhone(blank(req.phone()));
         user.setDesignation(blank(req.designation()));
         return UserResponse.from(user);

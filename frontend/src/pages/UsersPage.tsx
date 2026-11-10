@@ -69,6 +69,12 @@ export default function UsersPage() {
         />
       )}
 
+      {users.some((u) => !u.enabled) && (
+        <div className="warning-box">
+          Accounts marked <strong>Not active</strong> can't sign in. New sign-ups wait here: click Edit, tick the
+          active box and pick their role to let them in.
+        </div>
+      )}
       <table className="table">
         <thead>
           <tr>
@@ -94,7 +100,7 @@ export default function UsersPage() {
               <td>
                 <span className={`badge role-${u.role.toLowerCase()}`}>{u.role}</span>
               </td>
-              <td>{u.enabled ? 'Active' : <span className="muted">Disabled</span>}</td>
+              <td>{u.enabled ? 'Active' : <span className="badge tone-pending">Not active</span>}</td>
               <td className="actions">
                 <button className="link-btn" onClick={() => openForm(u)}>
                   Edit

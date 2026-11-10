@@ -13,6 +13,7 @@ import EventsPage from './pages/EventsPage'
 import FacultyDetailPage from './pages/FacultyDetailPage'
 import FacultyPage from './pages/FacultyPage'
 import LoginPage from './pages/LoginPage'
+import SignupPage from './pages/SignupPage'
 import PlaceholderPage from './pages/PlaceholderPage'
 import ProjectsPage from './pages/ProjectsPage'
 import SetupPage from './pages/SetupPage'
@@ -42,6 +43,7 @@ export default function App() {
       <ThemeToggle />
       <Routes>
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/signup" element={<SignupPage />} />
         <Route
           element={
             <RequireLogin>

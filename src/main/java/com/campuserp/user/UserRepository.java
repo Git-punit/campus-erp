@@ -11,6 +11,11 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     boolean existsByUsername(String username);
 
+    // first match: emails aren't a database key, but sign-up and My account keep them unique
+    Optional<User> findFirstByEmailIgnoreCase(String email);
+
+    boolean existsByEmailIgnoreCase(String email);
+
     long countByRoleAndEnabledTrue(Role role);
 
     List<User> findAllByOrderByUsernameAsc();

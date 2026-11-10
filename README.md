@@ -121,6 +121,11 @@ Departments, programmes (like B.Tech CSE, with number of semesters), sections
 | VIEWER | read only |
 
 Faculty and students don't have logins. Admin/staff open their pages instead.
+Anyone can ask for an account with **Create an account** on the sign-in page.
+Sign-up takes only a name, email and password (anything else is refused); the
+server makes every new account a Viewer, switched off until an admin approves
+it on the Users page and picks its role. Users can sign in with their username
+or email.
 Everyone can change their own password under **My account** in the sidebar.
 Changing a password logs that account out everywhere else. After 5 wrong
 passwords in a row, a username is locked for 15 minutes.

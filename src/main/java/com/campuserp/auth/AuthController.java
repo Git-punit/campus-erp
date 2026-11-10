@@ -1,10 +1,13 @@
 package com.campuserp.auth;
 
+import com.campuserp.user.Role;
 import com.campuserp.user.User;
 import com.campuserp.user.UserRepository;
 import com.campuserp.user.UserResponse;
 import jakarta.validation.Valid;
 import com.campuserp.common.BusinessRuleException;
+import jakarta.validation.Validator;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -20,6 +23,11 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
+
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
@@ -27,6 +35,14 @@ public class AuthController {
     public record LoginRequest(@NotBlank String username, @NotBlank String password) {}
 
     public record LoginResponse(String token, UserResponse user) {}
+
+    /** Sign-up takes exactly these three things. Role and access are decided by the server. */
+    public record SignupRequest(
+            @NotBlank @Size(max = 100) String name,
+            @NotBlank @Email @Size(max = 100) String email,
+            @NotBlank @Size(min = 6, max = 100) String password) {}
+
+    static final Set<String> SIGNUP_FIELDS = Set.of("name", "email", "password");
 
     public record UsernameChange(
             @NotBlank @Size(min = 3, max = 50)
@@ -41,9 +57,11 @@ public class AuthController {
     private final PasswordEncoder encoder;
     private final JwtService jwtService;
     private final LoginAttempts attempts;
+    private final Validator validator;
 
     public AuthController(UserRepository users, PasswordEncoder encoder, JwtService jwtService,
-                          LoginAttempts attempts) {
+                          LoginAttempts attempts, Validator validator) {
+        this.validator = validator;
         this.attempts = attempts;
         this.users = users;
         this.encoder = encoder;
@@ -58,8 +76,9 @@ public class AuthController {
             throw new ResponseStatusException(HttpStatus.TOO_MANY_REQUESTS,
                     "Too many wrong passwords. Try again in " + locked + " minute" + (locked == 1 ? "" : "s") + ".");
         }
+        // log in with the username or the email address
         User user = users.findByUsername(username)
-                .filter(User::isEnabled)
+                .or(() -> users.findFirstByEmailIgnoreCase(username))
                 .filter(u -> encoder.matches(req.password(), u.getPasswordHash()))
                 .orElse(null);
         if (user == null) {
@@ -67,8 +86,56 @@ public class AuthController {
             // same message whether the username or the password was wrong
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Wrong username or password");
         }
+        // only said after the right password, so it doesn't reveal which accounts exist
+        if (!user.isEnabled()) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                    "This account isn't active. An admin has to approve or re-enable it.");
+        }
         attempts.succeeded(username);
         return new LoginResponse(jwtService.createToken(user), UserResponse.from(user));
+    }
+
+    /**
+     * Anyone can ask for an account, with a name, email and password only. Every new
+     * account is a Viewer and starts switched off, so it can see nothing until an admin
+     * approves it on the Users page (where the admin also picks the role).
+     */
+    @PostMapping("/signup")
+    @ResponseStatus(HttpStatus.CREATED)
+    @Transactional
+    public Map<String, String> signup(@RequestBody Map<String, Object> body) {
+        // read as a plain map so extra fields such as "role" or "enabled" are refused, not silently dropped
+        Set<String> extra = new TreeSet<>(body.keySet());
+        extra.removeAll(SIGNUP_FIELDS);
+        if (!extra.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "Only name, email and password can be sent. Not allowed: " + String.join(", ", extra));
+        }
+        SignupRequest req = new SignupRequest(text(body, "name"), text(body, "email"), text(body, "password"));
+        var problems = validator.validate(req);
+        if (!problems.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, problems.stream()
+                    .map(v -> v.getPropertyPath() + " " + v.getMessage()).sorted()
+                    .reduce((a, b) -> a + ", " + b).orElse("Invalid sign-up"));
+        }
+        String email = req.email().trim().toLowerCase(Locale.ROOT);
+        if (users.existsByUsername(email) || users.existsByEmailIgnoreCase(email)) {
+            throw new BusinessRuleException("An account with this email already exists");
+        }
+        // the server decides the role and access, never the request
+        User user = new User(email, encoder.encode(req.password()), req.name().trim(), Role.VIEWER);
+        user.setEmail(email);
+        user.setEnabled(false);
+        users.save(user);
+        return Map.of("message", "Account created. An admin has to approve it before you can log in.");
+    }
+
+    private static String text(Map<String, Object> body, String field) {
+        Object v = body.get(field);
+        if (v != null && !(v instanceof String)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, field + " must be text");
+        }
+        return (String) v;
     }
 
     @GetMapping("/me")

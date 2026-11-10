@@ -1210,3 +1210,18 @@ body,
     transition: none !important;
   }
 }
+
+/* sign-up / sign-in links */
+.center {
+  text-align: center;
+}
+
+.login-card .btn.primary {
+  text-align: center;
+  text-decoration: none;
+}
+
+.badge.tone-pending {
+  background: var(--warn-bg);
+  color: var(--warn-fg);
+}

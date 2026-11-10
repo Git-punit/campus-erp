@@ -74,6 +74,11 @@ class AuthAndRolesTest {
         staff.setEnabled(false);
         mvc.perform(post("/api/auth/login").contentType(MediaType.APPLICATION_JSON)
                         .content("{\"username\":\"staff\",\"password\":\"staff-test-pw\"}"))
+                .andExpect(status().isForbidden())
+                .andExpect(jsonPath("$.message").value("This account isn't active. An admin has to approve or re-enable it."));
+        // a wrong password still gets the usual answer, so it doesn't show the account exists
+        mvc.perform(post("/api/auth/login").contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"username\":\"staff\",\"password\":\"guess\"}"))
                 .andExpect(status().isUnauthorized());
     }
 
