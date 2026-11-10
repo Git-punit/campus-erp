@@ -32,7 +32,7 @@ export class ApiError extends Error {
 }
 
 const SERVER_DOWN =
-  "Can't reach the server. Check that the backend is running (./mvnw spring-boot:run) and didn't stop with an error."
+  "Can't reach the server. Check that the backend is running (./mvnw spring-boot:run -Dspring-boot.run.profiles=dev) and didn't stop with an error."
 
 async function request<T>(method: string, path: string, body?: unknown, contentType?: string): Promise<T> {
   const headers: Record<string, string> = {}
