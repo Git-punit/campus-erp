@@ -27,10 +27,12 @@ public class ExpenseService {
     private final ExpenseRepository expenses;
     private final BudgetRepository budgets;
     private final ReceiptFileRepository receipts;
+    private final com.campuserp.setup.AcademicCalendar calendar;
     private final Clock clock;
 
     public ExpenseService(ExpenseRepository expenses, BudgetRepository budgets, ReceiptFileRepository receipts,
-                          Clock clock) {
+                          com.campuserp.setup.AcademicCalendar calendar, Clock clock) {
+        this.calendar = calendar;
         this.expenses = expenses;
         this.budgets = budgets;
         this.receipts = receipts;
@@ -167,7 +169,14 @@ public class ExpenseService {
     }
 
     private void apply(Expense e, ExpenseRequest req) {
-        e.setBudget(Finder.find(budgets, req.budgetId(), "Budget"));
+        Budget budget = Finder.find(budgets, req.budgetId(), "Budget");
+        // a department budget is for one financial year; spending from another year doesn't belong in it
+        if (budget.getType() == BudgetType.DEPARTMENT
+                && !calendar.financialYear(req.date()).equals(budget.getFinancialYear())) {
+            throw new BusinessRuleException("The date " + req.date() + " is outside this budget's financial year ("
+                    + budget.getFinancialYear() + ")");
+        }
+        e.setBudget(budget);
         e.setDate(req.date());
         e.setAmount(req.amount());
         e.setCategory(req.category());

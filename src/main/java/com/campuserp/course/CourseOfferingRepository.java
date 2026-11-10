@@ -11,6 +11,10 @@ public interface CourseOfferingRepository extends JpaRepository<CourseOffering, 
     @Query("select o from CourseOffering o where o.academicYear.id = :yearId and mod(o.semester, 2) = :parity")
     List<CourseOffering> findRunningTogether(Long yearId, int parity);
 
+    /** Offerings whose academic year overlaps the dates, so old years aren't loaded at all. */
+    @Query("select o from CourseOffering o where o.academicYear.oddSemStart <= :to and o.academicYear.evenSemEnd >= :from")
+    List<CourseOffering> findInYearsOverlapping(java.time.LocalDate from, java.time.LocalDate to);
+
     @Query("select o from CourseOffering o where (:year is null or o.academicYear.name = :year) "
             + "and (:semester is null or o.semester = :semester) "
             + "and (:sectionId is null or o.section.id = :sectionId) "

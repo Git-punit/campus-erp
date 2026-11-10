@@ -196,7 +196,7 @@ class AuthAndRolesTest {
         mvc.perform(post("/api/auth/password").header(HttpHeaders.AUTHORIZATION, bearer(token))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"currentPassword\":\"viewer-test-pw\",\"newPassword\":\"brand-new-pw\"}"))
-                .andExpect(status().isNoContent());
+                .andExpect(status().isOk());
 
         mvc.perform(post("/api/auth/login").contentType(MediaType.APPLICATION_JSON)
                         .content("{\"username\":\"viewer\",\"password\":\"viewer-test-pw\"}"))
@@ -204,5 +204,34 @@ class AuthAndRolesTest {
         mvc.perform(post("/api/auth/login").contentType(MediaType.APPLICATION_JSON)
                         .content("{\"username\":\"viewer\",\"password\":\"brand-new-pw\"}"))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    void changingThePasswordLogsOutOldTokens() throws Exception {
+        String old = viewer(mvc);
+        String body = mvc.perform(post("/api/auth/password").header(HttpHeaders.AUTHORIZATION, bearer(old))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"currentPassword\":\"viewer-test-pw\",\"newPassword\":\"another-pw-1\"}"))
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
+        String fresh = com.jayway.jsonpath.JsonPath.read(body, "$.token");
+
+        mvc.perform(get("/api/auth/me").header(HttpHeaders.AUTHORIZATION, bearer(old)))
+                .andExpect(status().isUnauthorized());
+        mvc.perform(get("/api/auth/me").header(HttpHeaders.AUTHORIZATION, bearer(fresh)))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void tooManyWrongPasswordsLockTheUsername() throws Exception {
+        // a username no other test uses: the lock lives in memory for the whole test run
+        String wrong = "{\"username\":\"locked-out-test\",\"password\":\"guess\"}";
+        for (int i = 0; i < 5; i++) {
+            mvc.perform(post("/api/auth/login").contentType(MediaType.APPLICATION_JSON).content(wrong))
+                    .andExpect(status().isUnauthorized());
+        }
+        mvc.perform(post("/api/auth/login").contentType(MediaType.APPLICATION_JSON).content(wrong))
+                .andExpect(status().isTooManyRequests())
+                .andExpect(jsonPath("$.message").value("Too many wrong passwords. Try again in 15 minutes."));
     }
 }

@@ -120,6 +120,8 @@ Departments, programmes (like B.Tech CSE, with number of semesters), sections
 
 Faculty and students don't have logins. Admin/staff open their pages instead.
 Everyone can change their own password under **My account** in the sidebar.
+Changing a password logs that account out everywhere else. After 5 wrong
+passwords in a row, a username is locked for 15 minutes.
 
 ## Extras
 

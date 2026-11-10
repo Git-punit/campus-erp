@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from 'react'
-import { api } from '../api'
+import { api, setToken } from '../api'
 import { useAuth } from '../auth'
 import { ErrorBox } from '../components/ui'
 
@@ -21,7 +21,12 @@ export default function AccountPage() {
     }
     setBusy(true)
     try {
-      await api.post('/auth/password', { currentPassword: form.currentPassword, newPassword: form.newPassword })
+      // old logins elsewhere stop working; keep this tab logged in with the new token
+      const res = await api.post<{ token: string }>('/auth/password', {
+        currentPassword: form.currentPassword,
+        newPassword: form.newPassword,
+      })
+      setToken(res.token)
       setForm({ currentPassword: '', newPassword: '', repeat: '' })
       setDone(true)
     } catch (err) {
@@ -42,7 +47,7 @@ export default function AccountPage() {
       <form className="card form narrow-form" onSubmit={submit}>
         <h2>Change password</h2>
         <ErrorBox message={error} />
-        {done && <div className="ok-box">Password changed. Use the new one next time you log in.</div>}
+        {done && <div className="ok-box">Password changed. You've been logged out everywhere else.</div>}
         <label>
           Current password
           <input

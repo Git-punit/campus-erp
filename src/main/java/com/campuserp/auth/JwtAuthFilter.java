@@ -36,15 +36,16 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                                     FilterChain chain) throws ServletException, IOException {
         String header = request.getHeader("Authorization");
         if (header != null && header.startsWith("Bearer ")) {
-            jwtService.readUsername(header.substring(7))
-                    .flatMap(users::findByUsername)
+            jwtService.read(header.substring(7)).ifPresent(claims -> users.findByUsername(claims.getSubject())
                     .filter(u -> u.isEnabled())
+                    // a password change since the token was issued logs that token out
+                    .filter(u -> jwtService.matchesPassword(claims, u.getPasswordHash()))
                     .ifPresent(u -> {
                         var auth = new UsernamePasswordAuthenticationToken(
                                 u.getUsername(), null,
                                 List.of(new SimpleGrantedAuthority("ROLE_" + u.getRole().name())));
                         SecurityContextHolder.getContext().setAuthentication(auth);
-                    });
+                    }));
         }
         chain.doFilter(request, response);
     }

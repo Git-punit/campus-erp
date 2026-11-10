@@ -77,7 +77,7 @@ public class CalendarService {
 
     /** Everything on campus, used for "today's classes" on the dashboard. */
     public CalendarView forEveryone(LocalDate from, LocalDate to) {
-        return build(offerings.findAll(), slot -> true, from, to);
+        return build(offerings.findInYearsOverlapping(from, to), slot -> true, from, to);
     }
 
     CalendarView build(List<CourseOffering> offeringList, Predicate<TimetableSlot> include, LocalDate from, LocalDate to) {

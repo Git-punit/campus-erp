@@ -33,8 +33,11 @@ public class AuthController {
     private final UserRepository users;
     private final PasswordEncoder encoder;
     private final JwtService jwtService;
+    private final LoginAttempts attempts;
 
-    public AuthController(UserRepository users, PasswordEncoder encoder, JwtService jwtService) {
+    public AuthController(UserRepository users, PasswordEncoder encoder, JwtService jwtService,
+                          LoginAttempts attempts) {
+        this.attempts = attempts;
         this.users = users;
         this.encoder = encoder;
         this.jwtService = jwtService;
@@ -42,12 +45,23 @@ public class AuthController {
 
     @PostMapping("/login")
     public LoginResponse login(@Valid @RequestBody LoginRequest req) {
-        User user = users.findByUsername(req.username().trim())
+        String username = req.username().trim();
+        long locked = attempts.minutesLocked(username);
+        if (locked > 0) {
+            throw new ResponseStatusException(HttpStatus.TOO_MANY_REQUESTS,
+                    "Too many wrong passwords. Try again in " + locked + " minute" + (locked == 1 ? "" : "s") + ".");
+        }
+        User user = users.findByUsername(username)
                 .filter(User::isEnabled)
                 .filter(u -> encoder.matches(req.password(), u.getPasswordHash()))
-                // same message whether the username or the password was wrong
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Wrong username or password"));
-        return new LoginResponse(jwtService.createToken(user.getUsername()), UserResponse.from(user));
+                .orElse(null);
+        if (user == null) {
+            attempts.failed(username);
+            // same message whether the username or the password was wrong
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Wrong username or password");
+        }
+        attempts.succeeded(username);
+        return new LoginResponse(jwtService.createToken(user.getUsername(), user.getPasswordHash()), UserResponse.from(user));
     }
 
     @GetMapping("/me")
@@ -59,14 +73,15 @@ public class AuthController {
 
     /** Any logged-in user can change their own password. */
     @PostMapping("/password")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
     @Transactional
-    public void changePassword(@Valid @RequestBody PasswordChange req, Authentication auth) {
+    public LoginResponse changePassword(@Valid @RequestBody PasswordChange req, Authentication auth) {
         User user = users.findByUsername(auth.getName())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Not logged in"));
         if (!encoder.matches(req.currentPassword(), user.getPasswordHash())) {
             throw new BusinessRuleException("Your current password is wrong");
         }
         user.setPasswordHash(encoder.encode(req.newPassword()));
+        // older tokens (other devices, a stolen one) stop working; this tab gets a fresh one
+        return new LoginResponse(jwtService.createToken(user.getUsername(), user.getPasswordHash()), UserResponse.from(user));
     }
 }

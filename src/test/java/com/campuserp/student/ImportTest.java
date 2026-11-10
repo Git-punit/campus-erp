@@ -56,8 +56,8 @@ class ImportTest extends ApiTest {
         upload(staff(), "/api/students/import", csv)
                 .andExpect(status().isConflict())
                 .andExpect(jsonPath("$.message", containsString("Nothing was imported")))
-                .andExpect(jsonPath("$.message", containsString("Row 2: unknown section 'CSE-Z'")))
-                .andExpect(jsonPath("$.message", containsString("Row 3: roll number 26CSE101 appears twice")));
+                .andExpect(jsonPath("$.message", containsString("Line 3: unknown section 'CSE-Z'")))
+                .andExpect(jsonPath("$.message", containsString("Line 4: roll number 26CSE101 appears twice")));
         getAs(viewer(), "/api/students").andExpect(jsonPath("$", hasSize(0)));
     }
 

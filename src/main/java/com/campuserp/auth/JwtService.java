@@ -30,10 +30,15 @@ public class JwtService {
         this.lifetime = Duration.ofMinutes(expirationMinutes);
     }
 
-    public String createToken(String username) {
+    /**
+     * The token carries a signed fingerprint of the password hash, so changing
+     * the password makes every token issued before it stop working.
+     */
+    public String createToken(String username, String passwordHash) {
         Instant now = Instant.now();
         return Jwts.builder()
                 .subject(username)
+                .claim("pw", sign(passwordHash))
                 .issuedAt(Date.from(now))
                 .expiration(Date.from(now.plus(lifetime)))
                 .signWith(key)
@@ -60,14 +65,17 @@ public class JwtService {
                 sign(text).getBytes(StandardCharsets.UTF_8), signature.getBytes(StandardCharsets.UTF_8));
     }
 
-    /** The username in the token, or empty if the token is bad or expired. */
-    public Optional<String> readUsername(String token) {
+    /** The token's claims, or empty if the token is bad or expired. */
+    public Optional<Claims> read(String token) {
         try {
-            Claims claims = Jwts.parser().verifyWith(key).build()
-                    .parseSignedClaims(token).getPayload();
-            return Optional.ofNullable(claims.getSubject());
+            return Optional.of(Jwts.parser().verifyWith(key).build().parseSignedClaims(token).getPayload());
         } catch (JwtException | IllegalArgumentException e) {
             return Optional.empty();
         }
+    }
+
+    /** True if the token was issued for this password (false after a password change). */
+    public boolean matchesPassword(Claims claims, String passwordHash) {
+        return checkSignature(passwordHash, claims.get("pw", String.class));
     }
 }

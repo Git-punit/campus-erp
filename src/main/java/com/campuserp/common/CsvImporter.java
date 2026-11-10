@@ -54,13 +54,14 @@ public class CsvImporter {
             try {
                 out.add(build.apply(rows.get(i)));
             } catch (BusinessRuleException | NotFoundException | IllegalArgumentException e) {
-                errors.add("Row " + (i + 1) + ": " + e.getMessage());
+                // the header is line 1 in Excel, so the first data row is line 2
+                errors.add("Line " + (i + 2) + ": " + e.getMessage());
             }
         }
         if (!errors.isEmpty()) {
             String shown = String.join("\n", errors.subList(0, Math.min(errors.size(), MAX_ERRORS_SHOWN)));
             String more = errors.size() > MAX_ERRORS_SHOWN ? "\n...and " + (errors.size() - MAX_ERRORS_SHOWN) + " more" : "";
-            throw new BusinessRuleException("Nothing was imported. Fix these rows and upload again:\n" + shown + more);
+            throw new BusinessRuleException("Nothing was imported. Fix these lines and upload again:\n" + shown + more);
         }
         return out;
     }
