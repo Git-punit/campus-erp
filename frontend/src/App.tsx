@@ -2,8 +2,8 @@ import type { ReactNode } from 'react'
 import { Navigate, Route, Routes, useLocation } from 'react-router'
 import { useAuth } from './auth'
 import Layout from './layout/Layout'
-import ThemeToggle from './components/ThemeToggle'
 import AccountPage from './pages/AccountPage'
+import ChangePasswordPage from './pages/ChangePasswordPage'
 import BudgetDetailPage from './pages/BudgetDetailPage'
 import BudgetsPage from './pages/BudgetsPage'
 import CalendarPage from './pages/CalendarPage'
@@ -40,7 +40,6 @@ function RequireAdmin({ children }: { children: ReactNode }) {
 export default function App() {
   return (
     <>
-      <ThemeToggle />
       <Routes>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
@@ -54,6 +53,7 @@ export default function App() {
           <Route index element={<Navigate to="/dashboard" replace />} />
           <Route path="dashboard" element={<DashboardPage />} />
           <Route path="account" element={<AccountPage />} />
+          <Route path="account/password" element={<ChangePasswordPage />} />
           <Route path="faculty" element={<FacultyPage />} />
           <Route path="faculty/:id" element={<FacultyDetailPage />} />
           <Route path="courses" element={<CoursesPage />} />

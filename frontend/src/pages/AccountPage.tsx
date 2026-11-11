@@ -1,42 +1,14 @@
 import { useState, type FormEvent } from 'react'
+import { Link } from 'react-router'
 import { api, setToken } from '../api'
 import type { User } from '../auth'
 import { useAuth } from '../auth'
 import Avatar from '../components/Avatar'
 import { ErrorBox } from '../components/ui'
 
-/** Your own account: change your password. */
+/** Your own account: details, photo, username, password and other devices. */
 export default function AccountPage() {
   const { user } = useAuth()
-  const [form, setForm] = useState({ currentPassword: '', newPassword: '', repeat: '' })
-  const [error, setError] = useState<string | null>(null)
-  const [done, setDone] = useState(false)
-  const [busy, setBusy] = useState(false)
-
-  async function submit(e: FormEvent) {
-    e.preventDefault()
-    setError(null)
-    setDone(false)
-    if (form.newPassword !== form.repeat) {
-      setError("The two new passwords don't match")
-      return
-    }
-    setBusy(true)
-    try {
-      // old logins elsewhere stop working; keep this tab logged in with the new token
-      const res = await api.post<{ token: string }>('/auth/password', {
-        currentPassword: form.currentPassword,
-        newPassword: form.newPassword,
-      })
-      setToken(res.token)
-      setForm({ currentPassword: '', newPassword: '', repeat: '' })
-      setDone(true)
-    } catch (err) {
-      setError((err as Error).message)
-    } finally {
-      setBusy(false)
-    }
-  }
 
   return (
     <>
@@ -53,48 +25,15 @@ export default function AccountPage() {
       <ProfileForm />
       <PhotoCard />
       <UsernameForm />
-      <form className="card form narrow-form" onSubmit={submit}>
-        <h2>Change password</h2>
-        <ErrorBox message={error} />
-        {done && <div className="ok-box">Password changed. You've been logged out everywhere else.</div>}
-        <label>
-          Current password
-          <input
-            type="password"
-            autoComplete="current-password"
-            value={form.currentPassword}
-            onChange={(e) => setForm({ ...form, currentPassword: e.target.value })}
-            required
-          />
-        </label>
-        <label>
-          New password (6+ characters)
-          <input
-            type="password"
-            autoComplete="new-password"
-            minLength={6}
-            value={form.newPassword}
-            onChange={(e) => setForm({ ...form, newPassword: e.target.value })}
-            required
-          />
-        </label>
-        <label>
-          New password again
-          <input
-            type="password"
-            autoComplete="new-password"
-            minLength={6}
-            value={form.repeat}
-            onChange={(e) => setForm({ ...form, repeat: e.target.value })}
-            required
-          />
-        </label>
+      <div className="card form narrow-form">
+        <h2>Password</h2>
+        <p className="small muted">Changing it logs you out on every other device.</p>
         <div className="form-actions">
-          <button className="btn primary" type="submit" disabled={busy}>
-            {busy ? 'Saving...' : 'Change password'}
-          </button>
+          <Link className="btn" to="/account/password">
+            Change password
+          </Link>
         </div>
-      </form>
+      </div>
       <LogoutOthers />
     </>
   )

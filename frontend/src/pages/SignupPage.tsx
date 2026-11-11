@@ -2,6 +2,7 @@ import { useState, type FormEvent } from 'react'
 import { Link, Navigate } from 'react-router'
 import { api } from '../api'
 import { useAuth } from '../auth'
+import ThemeToggle from '../components/ThemeToggle'
 
 /** Ask for an account: name, email and password only. An admin approves it and picks the role. */
 export default function SignupPage() {
@@ -39,6 +40,7 @@ export default function SignupPage() {
   if (done) {
     return (
       <div className="login-page">
+      <ThemeToggle floating />
         <div className="card login-card">
           <h1>Request sent</h1>
           <div className="ok-box">{done}</div>
@@ -53,6 +55,7 @@ export default function SignupPage() {
 
   return (
     <div className="login-page">
+      <ThemeToggle floating />
       <form className="card login-card" onSubmit={submit}>
         <h1>Create an account</h1>
         <p className="muted">An admin approves new accounts before they can sign in.</p>

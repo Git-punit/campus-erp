@@ -126,7 +126,7 @@ Sign-up takes only a name, email and password (anything else is refused); the
 server makes every new account a Viewer, switched off until an admin approves
 it on the Users page and picks its role. Users can sign in with their username
 or email.
-Everyone can change their own password under **My account** in the sidebar.
+Everyone can change their own password under **My account** (click your avatar in the top bar).
 Changing a password logs that account out everywhere else. After 5 wrong
 passwords in a row, a username is locked for 15 minutes.
 
@@ -140,6 +140,8 @@ passwords in a row, a username is locked for 15 minutes.
 - **Add to phone calendar** on a student's or teacher's calendar gives a
   private link for Google Calendar, Outlook or a phone. It stays up to date
   by itself. Anyone with the link can see those classes.
+- **Works on phones and tablets:** the page links sit in a top bar, which folds
+  into a menu button on small screens; tables scroll sideways inside their card.
 - **Dark mode:** follows your computer's setting; the sun / moon button in the
   top-right corner switches it and remembers your choice.
 - **Receipts:** attach the bill (PDF, JPG or PNG, up to 5 MB) when raising an
@@ -391,7 +393,7 @@ flowchart TD
 
     APP --> LOGIN["/login - LoginPage"]
     APP --> REQ["RequireLogin"]
-    REQ --> LAYOUT["Layout.tsx - sidebar"]
+    REQ --> LAYOUT["Layout.tsx - top bar"]
 
     LAYOUT --> PAGES["Pages"]
     PAGES --> DASH["Dashboard"]

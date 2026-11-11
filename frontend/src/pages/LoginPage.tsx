@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from 'react'
 import { Link, Navigate, useLocation } from 'react-router'
 import { useAuth } from '../auth'
+import ThemeToggle from '../components/ThemeToggle'
 
 export default function LoginPage() {
   const { user, login } = useAuth()
@@ -31,6 +32,7 @@ export default function LoginPage() {
 
   return (
     <div className="login-page">
+      <ThemeToggle floating />
       <form className="card login-card" onSubmit={submit}>
         <h1>Campus ERP</h1>
         <p className="muted">Sign in to continue</p>

@@ -102,7 +102,8 @@ export default function CalendarView({ kind, id }: { kind: 'student' | 'faculty'
       <FullCalendar
         plugins={[dayGridPlugin, timeGridPlugin]}
         locale={enGb}
-        initialView="timeGridWeek"
+        // a whole week doesn't fit across a phone, so phones start on one day
+        initialView={window.matchMedia('(max-width: 700px)').matches ? 'timeGridDay' : 'timeGridWeek'}
         headerToolbar={{ left: 'prev,next today', center: 'title', right: 'timeGridDay,timeGridWeek,dayGridMonth' }}
         buttonText={{ today: 'Today', day: 'Day', week: 'Week', month: 'Month' }}
         firstDay={1}
