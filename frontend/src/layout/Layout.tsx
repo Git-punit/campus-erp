@@ -37,6 +37,14 @@ export default function Layout() {
     setUserOpen(false)
   }, [pathname])
 
+  // while the menu is open the page behind it shouldn't scroll
+  useEffect(() => {
+    document.body.style.overflow = menuOpen ? 'hidden' : ''
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [menuOpen])
+
   // a click outside the account panel, or Escape, closes it (and the page menu)
   useEffect(() => {
     if (!userOpen && !menuOpen) return
@@ -58,7 +66,7 @@ export default function Layout() {
   }, [userOpen, menuOpen])
 
   return (
-    <div className="app">
+    <div className={`app${menuOpen ? ' menu-open' : ''}`}>
       <header className="topbar">
         <button
           type="button"

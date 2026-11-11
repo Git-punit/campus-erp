@@ -125,6 +125,33 @@ h1 {
   justify-self: start;
 }
 
+/* opening the menu pushes the page right and shrinks it a little, like iOS */
+.app {
+  transition: background-color 0.35s ease;
+}
+
+.app.menu-open {
+  background: var(--sidebar);
+}
+
+.content {
+  transform-origin: left center;
+  transition:
+    transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
+    border-radius 0.35s ease,
+    box-shadow 0.35s ease;
+}
+
+.app.menu-open .content {
+  /* a short push, so most of the page stays behind the glass menu and shows through it */
+  transform: translateX(min(110px, 26vw)) scale(0.92);
+  border-radius: 18px;
+  background: var(--bg);
+  box-shadow: -14px 0 44px rgba(0, 0, 0, 0.35);
+  overflow: hidden;
+  height: calc(100vh - 56px);
+}
+
 /* the side panel with the page links */
 .drawer {
   position: fixed;
@@ -139,27 +166,40 @@ h1 {
   gap: 0.15rem;
   padding: 0.75rem 0.6rem;
   overflow-y: auto;
-  background: var(--sidebar);
-  box-shadow: 4px 0 24px rgba(0, 0, 0, 0.3);
+  /* frosted glass: see-through and blurred, like iOS */
+  background: rgba(22, 30, 44, 0.32);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  backdrop-filter: blur(16px) saturate(180%);
+  border-right: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 4px 0 30px rgba(0, 0, 0, 0.25);
   transform: translateX(-105%);
   visibility: hidden;
   transition:
-    transform 0.22s ease,
-    visibility 0s linear 0.22s;
+    transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
+    visibility 0s linear 0.35s;
 }
 
 .drawer.open {
   transform: none;
   visibility: visible;
-  transition: transform 0.22s ease;
+  transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .drawer {
+    background: var(--sidebar);
+  }
 }
 
 .drawer a {
   padding: 0.7rem 0.9rem;
   border-radius: 6px;
-  color: var(--sidebar-text);
+  color: #fff;
   text-decoration: none;
   font-size: 0.98rem;
+  font-weight: 500;
+  /* keeps the links readable over the light page showing through the glass */
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.55);
 }
 
 .drawer a:hover {
@@ -177,8 +217,9 @@ h1 {
   position: fixed;
   inset: 56px 0 0 0;
   z-index: 44;
-  background: rgba(0, 0, 0, 0.35);
-  animation: page-in 0.2s ease-out;
+  /* the page is already pushed aside, so only a light tint; it still catches the click that closes the menu */
+  background: rgba(0, 0, 0, 0.12);
+  animation: page-in 0.25s ease-out;
 }
 
 .topbar-right {
