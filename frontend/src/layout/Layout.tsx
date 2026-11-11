@@ -7,7 +7,6 @@ import { useAuth } from '../auth'
 export interface NavItem {
   path: string
   label: string
-  short?: string // shorter name for the top bar on wide screens
   adminOnly?: boolean
 }
 
@@ -18,17 +17,17 @@ export const NAV_ITEMS: NavItem[] = [
   { path: '/students', label: 'Students' },
   { path: '/calendar', label: 'Calendar' },
   { path: '/budgets', label: 'Budgets' },
-  { path: '/projects', label: 'Research projects', short: 'Projects' },
-  { path: '/training', label: 'Training programs', short: 'Training' },
+  { path: '/projects', label: 'Research projects' },
+  { path: '/training', label: 'Training programs' },
   { path: '/events', label: 'Events' },
-  { path: '/setup', label: 'Academic setup', short: 'Setup' },
+  { path: '/setup', label: 'Academic setup' },
   { path: '/users', label: 'Users', adminOnly: true },
 ]
 
 export default function Layout() {
   const { user, isAdmin, logout } = useAuth()
   const { pathname } = useLocation()
-  const [menuOpen, setMenuOpen] = useState(false) // the page links, on narrow screens
+  const [menuOpen, setMenuOpen] = useState(false) // the side panel with the page links
   const [userOpen, setUserOpen] = useState(false) // the account panel under the avatar
   const userBox = useRef<HTMLDivElement>(null)
 
@@ -61,18 +60,23 @@ export default function Layout() {
   return (
     <div className="app">
       <header className="topbar">
+        <button
+          type="button"
+          className="menu-btn"
+          aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+          aria-expanded={menuOpen}
+          aria-controls="main-nav"
+          onClick={() => setMenuOpen((o) => !o)}
+        >
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
+            strokeLinecap="round" aria-hidden="true">
+            {menuOpen ? <path d="M6 6l12 12M18 6L6 18" /> : <path d="M4 7h16M4 12h16M4 17h16" />}
+          </svg>
+        </button>
+
         <NavLink to="/dashboard" className="brand">
           Campus ERP
         </NavLink>
-
-        <nav id="main-nav" className={`topnav${menuOpen ? ' open' : ''}`} aria-label="Pages">
-          {NAV_ITEMS.filter((item) => !item.adminOnly || isAdmin).map((item) => (
-            <NavLink key={item.path} to={item.path} title={item.label}>
-              <span className="label-short">{item.short ?? item.label}</span>
-              <span className="label-full">{item.label}</span>
-            </NavLink>
-          ))}
-        </nav>
 
         <div className="topbar-right">
           <ThemeToggle />
@@ -107,21 +111,18 @@ export default function Layout() {
               )}
             </div>
           )}
-          <button
-            type="button"
-            className="menu-btn"
-            aria-label={menuOpen ? 'Close menu' : 'Open menu'}
-            aria-expanded={menuOpen}
-            aria-controls="main-nav"
-            onClick={() => setMenuOpen((o) => !o)}
-          >
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
-              strokeLinecap="round" aria-hidden="true">
-              {menuOpen ? <path d="M6 6l12 12M18 6L6 18" /> : <path d="M4 7h16M4 12h16M4 17h16" />}
-            </svg>
-          </button>
         </div>
       </header>
+
+      {/* the page links slide in from the left; clicking outside closes them */}
+      {menuOpen && <div className="drawer-backdrop" onClick={() => setMenuOpen(false)} aria-hidden="true" />}
+      <nav id="main-nav" className={`drawer${menuOpen ? ' open' : ''}`} aria-label="Pages" aria-hidden={!menuOpen}>
+        {NAV_ITEMS.filter((item) => !item.adminOnly || isAdmin).map((item) => (
+          <NavLink key={item.path} to={item.path} tabIndex={menuOpen ? undefined : -1}>
+            {item.label}
+          </NavLink>
+        ))}
+      </nav>
 
       <main className="content">
         {/* keyed by address so each page fades in when you open it */}

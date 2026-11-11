@@ -140,8 +140,9 @@ passwords in a row, a username is locked for 15 minutes.
 - **Add to phone calendar** on a student's or teacher's calendar gives a
   private link for Google Calendar, Outlook or a phone. It stays up to date
   by itself. Anyone with the link can see those classes.
-- **Works on phones and tablets:** the page links sit in a top bar, which folds
-  into a menu button on small screens; tables scroll sideways inside their card.
+- **Works on phones and tablets:** a top bar with the menu button on the left,
+  Campus ERP in the middle and your account on the right; the menu slides in
+  from the left. Tables scroll sideways inside their card.
 - **Dark mode:** follows your computer's setting; the sun / moon button in the
   top-right corner switches it and remembers your choice.
 - **Receipts:** attach the bill (PDF, JPG or PNG, up to 5 MB) when raising an
