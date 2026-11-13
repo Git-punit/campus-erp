@@ -1,6 +1,10 @@
 package com.campuserp.auth;
 
+import com.campuserp.user.LoginEvent;
+import com.campuserp.user.LoginEventRepository;
 import com.campuserp.user.Role;
+import jakarta.servlet.http.HttpServletRequest;
+import java.time.Instant;
 import com.campuserp.user.User;
 import com.campuserp.user.UserRepository;
 import com.campuserp.user.UserResponse;
@@ -58,9 +62,11 @@ public class AuthController {
     private final JwtService jwtService;
     private final LoginAttempts attempts;
     private final Validator validator;
+    private final LoginEventRepository loginEvents;
 
     public AuthController(UserRepository users, PasswordEncoder encoder, JwtService jwtService,
-                          LoginAttempts attempts, Validator validator) {
+                          LoginAttempts attempts, Validator validator, LoginEventRepository loginEvents) {
+        this.loginEvents = loginEvents;
         this.validator = validator;
         this.attempts = attempts;
         this.users = users;
@@ -69,29 +75,44 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public LoginResponse login(@Valid @RequestBody LoginRequest req) {
+    public LoginResponse login(@Valid @RequestBody LoginRequest req, HttpServletRequest http) {
         String username = req.username().trim();
+        // behind Railway's proxy the visitor's address is the first one in X-Forwarded-For
+        String forwarded = http.getHeader("X-Forwarded-For");
+        String ip = forwarded != null ? forwarded.split(",")[0].trim() : http.getRemoteAddr();
+        String device = http.getHeader("User-Agent");
         long locked = attempts.minutesLocked(username);
         if (locked > 0) {
+            loginEvents.save(new LoginEvent(username, null, LoginEvent.Outcome.LOCKED, ip, device));
             throw new ResponseStatusException(HttpStatus.TOO_MANY_REQUESTS,
                     "Too many wrong passwords. Try again in " + locked + " minute" + (locked == 1 ? "" : "s") + ".");
         }
         // log in with the username or the email address
-        User user = users.findByUsername(username)
+        User account = users.findByUsername(username)
                 .or(() -> users.findFirstByEmailIgnoreCase(username))
-                .filter(u -> encoder.matches(req.password(), u.getPasswordHash()))
                 .orElse(null);
+        User user = account != null && encoder.matches(req.password(), account.getPasswordHash()) ? account : null;
         if (user == null) {
             attempts.failed(username);
+            // the history names the account someone tried, so an admin can spot password guessing
+            loginEvents.save(account == null
+                    ? new LoginEvent(username, null, LoginEvent.Outcome.WRONG_PASSWORD, ip, device)
+                    : new LoginEvent(account.getUsername(), account.getFullName(), LoginEvent.Outcome.WRONG_PASSWORD, ip, device));
             // same message whether the username or the password was wrong
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Wrong username or password");
         }
         // only said after the right password, so it doesn't reveal which accounts exist
         if (!user.isEnabled()) {
+            loginEvents.save(new LoginEvent(user.getUsername(), user.getFullName(), LoginEvent.Outcome.NOT_ACTIVE, ip, device));
             throw new ResponseStatusException(HttpStatus.FORBIDDEN,
                     "This account isn't active. An admin has to approve or re-enable it.");
         }
         attempts.succeeded(username);
+        loginEvents.save(new LoginEvent(user.getUsername(), user.getFullName(), LoginEvent.Outcome.SUCCESS, ip, device));
+        Instant now = Instant.now();
+        users.markLogin(user.getId(), now);
+        user.setLastLoginAt(now);
+        user.setLastSeenAt(now);
         return new LoginResponse(jwtService.createToken(user), UserResponse.from(user));
     }
 

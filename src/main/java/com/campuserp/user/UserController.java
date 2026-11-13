@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.Instant;
 import java.util.List;
 
 /** Admin only (enforced in SecurityConfig). */
@@ -19,15 +20,29 @@ import java.util.List;
 @RequestMapping("/api/users")
 public class UserController {
 
-    private final UserService service;
+    public record LoginView(Instant at, String username, String fullName, LoginEvent.Outcome outcome,
+                            String ip, String userAgent) {}
 
-    public UserController(UserService service) {
+    private final UserService service;
+    private final LoginEventRepository loginEvents;
+
+    public UserController(UserService service, LoginEventRepository loginEvents) {
         this.service = service;
+        this.loginEvents = loginEvents;
     }
 
     @GetMapping
     public List<UserResponse> list() {
         return service.list().stream().map(UserResponse::from).toList();
+    }
+
+    /** The latest 200 sign-in attempts, newest first. */
+    @GetMapping("/logins")
+    public List<LoginView> logins() {
+        return loginEvents.findTop200ByOrderByIdDesc().stream()
+                .map(e -> new LoginView(e.getCreatedAt(), e.getUsername(), e.getFullName(), e.getOutcome(),
+                        e.getIp(), e.getUserAgent()))
+                .toList();
     }
 
     @PostMapping

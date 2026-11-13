@@ -14,9 +14,49 @@ interface FormState {
 
 const EMPTY: FormState = { username: '', fullName: '', role: 'STAFF', enabled: true, password: '' }
 
+interface Login {
+  at: string
+  username: string
+  fullName: string | null
+  outcome: 'SUCCESS' | 'WRONG_PASSWORD' | 'LOCKED' | 'NOT_ACTIVE'
+  ip: string | null
+  userAgent: string | null
+}
+
+const OUTCOME: Record<Login['outcome'], [string, string]> = {
+  SUCCESS: ['Signed in', 'tone-active'],
+  WRONG_PASSWORD: ['Wrong password', 'tone-rejected'],
+  LOCKED: ['Locked out', 'tone-rejected'],
+  NOT_ACTIVE: ['Not approved', 'tone-pending'],
+}
+
+// someone who used the app in the last 5 minutes counts as online
+const ONLINE_MS = 5 * 60_000
+
+/** "just now", "12 min ago", "3 h ago", or the date and time */
+function ago(iso: string | null): string {
+  if (!iso) return 'Never'
+  const ms = Date.now() - new Date(iso).getTime()
+  if (ms < 60_000) return 'just now'
+  if (ms < 3_600_000) return `${Math.floor(ms / 60_000)} min ago`
+  if (ms < 86_400_000) return `${Math.floor(ms / 3_600_000)} h ago`
+  return new Date(iso).toLocaleString('en-IN', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })
+}
+
+/** "Chrome on Mac" from a browser's user-agent text */
+function device(ua: string | null): string {
+  if (!ua) return '-'
+  const browser = /Edg\//.test(ua) ? 'Edge' : /Chrome\//.test(ua) ? 'Chrome' : /Firefox\//.test(ua) ? 'Firefox'
+    : /Safari\//.test(ua) ? 'Safari' : 'Other browser'
+  const os = /iPhone|iPad/.test(ua) ? 'iPhone/iPad' : /Android/.test(ua) ? 'Android' : /Mac OS/.test(ua) ? 'Mac'
+    : /Windows/.test(ua) ? 'Windows' : /Linux/.test(ua) ? 'Linux' : ''
+  return os ? `${browser} on ${os}` : browser
+}
+
 export default function UsersPage() {
   const { user: me } = useAuth()
   const [users, setUsers] = useState<User[]>([])
+  const [logins, setLogins] = useState<Login[]>([])
   const [error, setError] = useState<string | null>(null)
   // null = form closed, 'new' = adding, a User = editing that user
   const [editing, setEditing] = useState<User | 'new' | null>(null)
@@ -31,7 +71,13 @@ export default function UsersPage() {
       .get<User[]>('/users')
       .then(setUsers)
       .catch((e: Error) => setError(e.message))
+    api
+      .get<Login[]>('/users/logins')
+      .then(setLogins)
+      .catch((e: Error) => setError(e.message))
   }
+
+  const online = users.filter((u) => u.lastSeenAt && Date.now() - new Date(u.lastSeenAt).getTime() < ONLINE_MS)
 
   useEffect(load, [])
 
@@ -84,6 +130,7 @@ export default function UsersPage() {
             <th>Contact</th>
             <th>Role</th>
             <th>Status</th>
+            <th>Last active</th>
             <th></th>
           </tr>
         </thead>
@@ -101,6 +148,9 @@ export default function UsersPage() {
                 <span className={`badge role-${u.role.toLowerCase()}`}>{u.role}</span>
               </td>
               <td>{u.enabled ? 'Active' : <span className="badge tone-pending">Not active</span>}</td>
+              <td className="small">
+                {online.includes(u) ? <span className="badge tone-active">Online</span> : ago(u.lastSeenAt)}
+              </td>
               <td className="actions">
                 <button className="link-btn" onClick={() => openForm(u)}>
                   Edit
@@ -111,6 +161,47 @@ export default function UsersPage() {
               </td>
             </tr>
           ))}
+        </tbody>
+      </table>
+
+      <h2>Sign-in history</h2>
+      <p className="muted small">
+        {online.length} online now (active in the last 5 minutes). The latest 200 sign-in attempts, newest first.
+      </p>
+      <table className="table">
+        <thead>
+          <tr>
+            <th>When</th>
+            <th>User</th>
+            <th>Result</th>
+            <th>Device</th>
+            <th>IP address</th>
+          </tr>
+        </thead>
+        <tbody>
+          {logins.map((l, i) => (
+            <tr key={i}>
+              <td className="small">{ago(l.at)}</td>
+              <td>
+                {l.fullName ?? <span className="muted">no such account</span>}
+                <div className="small muted">{l.username}</div>
+              </td>
+              <td>
+                <span className={`badge ${OUTCOME[l.outcome][1]}`}>{OUTCOME[l.outcome][0]}</span>
+              </td>
+              <td className="small" title={l.userAgent ?? ''}>
+                {device(l.userAgent)}
+              </td>
+              <td className="small">{l.ip ?? '-'}</td>
+            </tr>
+          ))}
+          {logins.length === 0 && (
+            <tr>
+              <td colSpan={5} className="muted">
+                No sign-ins recorded yet.
+              </td>
+            </tr>
+          )}
         </tbody>
       </table>
     </>

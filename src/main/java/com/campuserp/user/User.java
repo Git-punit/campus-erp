@@ -10,6 +10,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.Instant;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -49,6 +51,11 @@ public class User extends BaseEntity {
 
     /** Raised by "log out of all other devices"; null on accounts made before it existed. */
     private Integer sessionVersion;
+
+    /** Last good sign-in, and last request with a valid token (updated at most once a minute). */
+    private Instant lastLoginAt;
+
+    private Instant lastSeenAt;
 
     public User(String username, String passwordHash, String fullName, Role role) {
         this.username = username;

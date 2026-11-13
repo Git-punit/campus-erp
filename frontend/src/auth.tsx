@@ -14,6 +14,8 @@ export interface User {
   phone: string | null
   designation: string | null
   hasPhoto: boolean
+  lastLoginAt: string | null
+  lastSeenAt: string | null
 }
 
 interface AuthState {

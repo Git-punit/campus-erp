@@ -11,6 +11,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.time.Instant;
 import java.util.List;
 
 /**
@@ -41,6 +42,11 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                     // a password change or "log out everywhere" since the token was issued ends it
                     .filter(u -> jwtService.isCurrent(claims, u))
                     .ifPresent(u -> {
+                        // "last active" for the Users page; at most one write a minute per user
+                        Instant now = Instant.now();
+                        if (u.getLastSeenAt() == null || u.getLastSeenAt().isBefore(now.minusSeconds(60))) {
+                            users.markSeen(u.getId(), now);
+                        }
                         var auth = new UsernamePasswordAuthenticationToken(
                                 u.getUsername(), null,
                                 List.of(new SimpleGrantedAuthority("ROLE_" + u.getRole().name())));
