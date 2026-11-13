@@ -12,4 +12,6 @@ public interface EventRepository extends JpaRepository<Event, Long> {
 
     List<Event> findByEndDateGreaterThanEqualAndStartDateLessThanEqualAndStatusInOrderByStartDateAsc(
             LocalDate from, LocalDate to, Collection<EventStatus> statuses);
+
+    List<Event> findTop5ByNameContainingIgnoreCaseOrderByStartDateDesc(String name);
 }

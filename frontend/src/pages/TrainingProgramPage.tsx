@@ -38,9 +38,6 @@ export default function TrainingProgramPage() {
 
   return (
     <>
-      <p className="crumbs">
-        <Link to="/training">Training programs</Link> /
-      </p>
       <h1>{p.name}</h1>
       {p.description && <p>{p.description}</p>}
       <div className="card facts">

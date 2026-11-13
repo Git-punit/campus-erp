@@ -37,9 +37,6 @@ export default function ChangePasswordPage() {
 
   return (
     <>
-      <p className="crumbs">
-        <Link to="/account">My account</Link> /
-      </p>
       <h1>Change password</h1>
       <form className="card form narrow-form" onSubmit={submit}>
         <ErrorBox message={error} />

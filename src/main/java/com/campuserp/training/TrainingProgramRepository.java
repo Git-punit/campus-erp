@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface TrainingProgramRepository extends JpaRepository<TrainingProgram, Long> {
     List<TrainingProgram> findAllByOrderByNameAsc();
+
+    List<TrainingProgram> findTop5ByNameContainingIgnoreCaseOrderByNameAsc(String name);
 }

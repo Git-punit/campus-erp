@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
-import { NavLink, Outlet, useLocation } from 'react-router'
+import { Link, NavLink, Outlet, useLocation } from 'react-router'
 import Avatar from '../components/Avatar'
 import ThemeToggle from '../components/ThemeToggle'
 import { useAuth } from '../auth'
+import SearchBox from './SearchBox'
 
 export interface NavItem {
   path: string
@@ -10,26 +11,52 @@ export interface NavItem {
   adminOnly?: boolean
 }
 
-export const NAV_ITEMS: NavItem[] = [
-  { path: '/dashboard', label: 'Dashboard' },
-  { path: '/faculty', label: 'Faculty' },
-  { path: '/courses', label: 'Courses' },
-  { path: '/students', label: 'Students' },
-  { path: '/calendar', label: 'Calendar' },
-  { path: '/budgets', label: 'Budgets' },
-  { path: '/projects', label: 'Research projects' },
-  { path: '/training', label: 'Training programs' },
-  { path: '/events', label: 'Events' },
-  { path: '/setup', label: 'Academic setup' },
-  { path: '/users', label: 'Users', adminOnly: true },
+interface NavGroup {
+  label: string
+  items: NavItem[]
+}
+
+// pages grouped like sections of a tutorial site: the strip shows the groups, the sidebar the pages of one group
+export const NAV_GROUPS: NavGroup[] = [
+  { label: 'Home', items: [{ path: '/dashboard', label: 'Dashboard' }, { path: '/calendar', label: 'Calendar' }] },
+  {
+    label: 'Academics',
+    items: [
+      { path: '/faculty', label: 'Faculty' },
+      { path: '/students', label: 'Students' },
+      { path: '/courses', label: 'Courses' },
+      { path: '/setup', label: 'Academic setup' },
+    ],
+  },
+  { label: 'Finance', items: [{ path: '/budgets', label: 'Budgets' }] },
+  {
+    label: 'Research & outreach',
+    items: [
+      { path: '/projects', label: 'Research projects' },
+      { path: '/training', label: 'Training programs' },
+      { path: '/events', label: 'Events' },
+    ],
+  },
+  { label: 'Admin', items: [{ path: '/users', label: 'Users', adminOnly: true }] },
 ]
+
+export const NAV_ITEMS: NavItem[] = NAV_GROUPS.flatMap((g) => g.items)
+
+const isUnder = (pathname: string, path: string) => pathname === path || pathname.startsWith(path + '/')
 
 export default function Layout() {
   const { user, isAdmin, logout } = useAuth()
   const { pathname } = useLocation()
-  const [menuOpen, setMenuOpen] = useState(false) // the side panel with the page links
+  const [menuOpen, setMenuOpen] = useState(false) // the slide-in page menu (phones and tablets)
   const [userOpen, setUserOpen] = useState(false) // the account panel under the avatar
   const userBox = useRef<HTMLDivElement>(null)
+
+  // only the groups and pages this user may open
+  const groups = NAV_GROUPS.map((g) => ({ ...g, items: g.items.filter((i) => !i.adminOnly || isAdmin) })).filter(
+    (g) => g.items.length > 0,
+  )
+  const group = groups.find((g) => g.items.some((i) => isUnder(pathname, i.path)))
+  const page = group?.items.find((i) => isUnder(pathname, i.path))
 
   // opening a page closes both menus
   useEffect(() => {
@@ -86,6 +113,8 @@ export default function Layout() {
           Campus ERP
         </NavLink>
 
+        <SearchBox />
+
         <div className="topbar-right">
           <ThemeToggle />
           {user && (
@@ -122,22 +151,96 @@ export default function Layout() {
         </div>
       </header>
 
-      {/* the page links slide in from the left; clicking outside closes them */}
+      {/* phones and tablets: every page, by section, slides in from the left */}
       {menuOpen && <div className="drawer-backdrop" onClick={() => setMenuOpen(false)} aria-hidden="true" />}
       <nav id="main-nav" className={`drawer${menuOpen ? ' open' : ''}`} aria-label="Pages" aria-hidden={!menuOpen}>
-        {NAV_ITEMS.filter((item) => !item.adminOnly || isAdmin).map((item) => (
-          <NavLink key={item.path} to={item.path} tabIndex={menuOpen ? undefined : -1}>
-            {item.label}
-          </NavLink>
+        {groups.map((g) => (
+          <div key={g.label} className="nav-group">
+            <div className="nav-group-label">{g.label}</div>
+            {g.items.map((item) => (
+              <NavLink key={item.path} to={item.path} tabIndex={menuOpen ? undefined : -1}>
+                {item.label}
+              </NavLink>
+            ))}
+          </div>
         ))}
       </nav>
 
-      <main className="content">
-        {/* keyed by address so each page fades in when you open it */}
-        <div className="page" key={pathname}>
-          <Outlet />
+      {/* everything under the top bar; this is what slides aside when the phone menu opens */}
+      <div className="main-area">
+        {/* the strip of sections under the top bar; scrolls sideways on phones */}
+        <nav className="strip" aria-label="Sections">
+          {groups.map((g) => (
+            <Link key={g.label} to={g.items[0].path} className={g === group ? 'active' : undefined}
+              aria-current={g === group ? 'true' : undefined}>
+              {g.label}
+            </Link>
+          ))}
+        </nav>
+
+        <div className="shell">
+          {/* desktop: the pages of the current section, always on screen */}
+          {group && (
+            <aside className="sidebar" aria-label={`${group.label} pages`}>
+              <div className="nav-group-label">{group.label}</div>
+              {group.items.map((item) => (
+                <NavLink key={item.path} to={item.path}>
+                  {item.label}
+                </NavLink>
+              ))}
+            </aside>
+          )}
+
+          <main className="content">
+            <Crumbs pathname={pathname} group={group} page={page} />
+            {/* keyed by address so each page fades in when you open it */}
+            <div className="page" key={pathname}>
+              <Outlet />
+            </div>
+          </main>
         </div>
-      </main>
+
+        <footer className="footer">
+          <div className="footer-cols">
+            {groups.map((g) => (
+              <div key={g.label}>
+                <div className="nav-group-label">{g.label}</div>
+                {g.items.map((item) => (
+                  <Link key={item.path} to={item.path}>
+                    {item.label}
+                  </Link>
+                ))}
+              </div>
+            ))}
+          </div>
+          <p className="small">Campus ERP · faculty, students, courses, budgets and research in one place</p>
+        </footer>
+      </div>
     </div>
+  )
+}
+
+/** Home › Academics › Students › Details */
+function Crumbs({ pathname, group, page }: { pathname: string; group?: NavGroup; page?: NavItem }) {
+  const trail: { label: string; to?: string }[] = [{ label: 'Home', to: '/dashboard' }]
+  if (pathname.startsWith('/account')) {
+    trail.push({ label: 'My account', to: '/account' })
+    if (pathname === '/account/password') trail.push({ label: 'Change password' })
+  } else if (group && page) {
+    if (group.label !== 'Home') trail.push({ label: group.label, to: group.items[0].path })
+    trail.push({ label: page.label, to: page.path })
+    if (pathname !== page.path) trail.push({ label: 'Details' })
+  }
+  if (trail.length < 2) return null
+  const last = trail.length - 1
+  return (
+    <nav className="crumbs" aria-label="Breadcrumb">
+      {trail.map((c, i) => (
+        <span key={i}>
+          {i > 0 && <span className="crumb-sep"> › </span>}
+          {i < last && c.to ? <Link to={c.to}>{c.label}</Link> : <span aria-current="page">{c.label}</span>}
+        </span>
+      ))}
+    </nav>
   )
 }

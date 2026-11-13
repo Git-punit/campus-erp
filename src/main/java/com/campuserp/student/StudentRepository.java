@@ -17,4 +17,6 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
     List<Student> findBySectionIdAndCurrentSemesterAndStatus(Long sectionId, int semester, StudentStatus status);
 
     long countByStatus(StudentStatus status);
+
+    List<Student> findTop5ByNameContainingIgnoreCaseOrRollNoContainingIgnoreCaseOrderByNameAsc(String name, String rollNo);
 }

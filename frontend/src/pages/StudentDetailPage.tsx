@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link, useParams, useSearchParams } from 'react-router'
+import { useParams, useSearchParams } from 'react-router'
 import { api } from '../api'
 import { useAuth } from '../auth'
 import CalendarView from '../components/CalendarView'
@@ -20,9 +20,6 @@ export default function StudentDetailPage() {
 
   return (
     <>
-      <p className="crumbs">
-        <Link to="/students">Students</Link> /
-      </p>
       <h1>{s.name}</h1>
       <div className="card facts">
         <div><span>Roll no</span>{s.rollNo}</div>

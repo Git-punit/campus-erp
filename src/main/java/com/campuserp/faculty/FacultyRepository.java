@@ -11,4 +11,6 @@ public interface FacultyRepository extends JpaRepository<Faculty, Long> {
     List<Faculty> findAllByOrderByNameAsc();
 
     long countByStatus(FacultyStatus status);
+
+    List<Faculty> findTop5ByNameContainingIgnoreCaseOrEmployeeIdContainingIgnoreCaseOrderByNameAsc(String name, String employeeId);
 }

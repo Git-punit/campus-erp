@@ -9,4 +9,6 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
     Optional<Course> findByCode(String code);
 
     List<Course> findAllByOrderByCodeAsc();
+
+    List<Course> findTop5ByNameContainingIgnoreCaseOrCodeContainingIgnoreCaseOrderByCodeAsc(String name, String code);
 }

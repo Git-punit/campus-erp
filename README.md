@@ -140,9 +140,13 @@ passwords in a row, a username is locked for 15 minutes.
 - **Add to phone calendar** on a student's or teacher's calendar gives a
   private link for Google Calendar, Outlook or a phone. It stays up to date
   by itself. Anyone with the link can see those classes.
-- **Works on phones and tablets:** a top bar with the menu button on the left,
-  Campus ERP in the middle and your account on the right; the menu slides in
-  from the left. Tables scroll sideways inside their card.
+- **Layout:** a top bar with a search box (faculty, students, courses,
+  projects, events, training programs), a strip of sections (Home, Academics,
+  Finance, Research & outreach, Admin), the section's pages in a sidebar,
+  a breadcrumb on every page and a footer with all the links.
+- **Works on phones and tablets:** the sidebar becomes a menu that slides in
+  from the left, the section strip scrolls sideways, and tables scroll
+  sideways inside their card.
 - **Dark mode:** follows your computer's setting; the sun / moon button in the
   top-right corner switches it and remembers your choice.
 - **Receipts:** attach the bill (PDF, JPG or PNG, up to 5 MB) when raising an
@@ -394,7 +398,7 @@ flowchart TD
 
     APP --> LOGIN["/login - LoginPage"]
     APP --> REQ["RequireLogin"]
-    REQ --> LAYOUT["Layout.tsx - top bar"]
+    REQ --> LAYOUT["Layout.tsx - top bar, sections, sidebar"]
 
     LAYOUT --> PAGES["Pages"]
     PAGES --> DASH["Dashboard"]

@@ -18,9 +18,6 @@ export default function FacultyDetailPage() {
 
   return (
     <>
-      <p className="crumbs">
-        <Link to="/faculty">Faculty</Link> /
-      </p>
       <h1>{f.name}</h1>
       <div className="card facts">
         <div><span>Employee ID</span>{f.employeeId}</div>

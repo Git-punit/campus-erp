@@ -11,4 +11,6 @@ public interface ResearchProjectRepository extends JpaRepository<ResearchProject
 
     @Query("select m.project from ProjectMember m where m.faculty.id = :facultyId order by m.project.sanctionDate desc")
     List<ResearchProject> findByMember(Long facultyId);
+
+    List<ResearchProject> findTop5ByTitleContainingIgnoreCaseOrderByTitleAsc(String title);
 }

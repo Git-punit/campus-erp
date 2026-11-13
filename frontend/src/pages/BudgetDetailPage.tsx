@@ -32,9 +32,6 @@ export default function BudgetDetailPage() {
 
   return (
     <>
-      <p className="crumbs">
-        <Link to="/budgets">Budgets</Link> /
-      </p>
       <h1>{b.name}</h1>
       <div className="card money-summary">
         <div>
