@@ -1,0 +1,1076 @@
+{
+  ".github/workflows/ci.yml": {
+    "mtime": 1794302752.603093,
+    "seen": 1794583244.53375,
+    "ast_hash": "64d8a5dfd7ad4ac5ccc98ca429903143",
+    "semantic_hash": ""
+  },
+  "frontend/package.json": {
+    "mtime": 1794302752.6048102,
+    "seen": 1794583244.5337532,
+    "ast_hash": "3e2a25f6b668e5ce710f8e3dc51197ab",
+    "semantic_hash": ""
+  },
+  "frontend/src/App.tsx": {
+    "mtime": 1794369751.8220258,
+    "seen": 1794583244.5337548,
+    "ast_hash": "323356feb675fe2f58bc94bcaa880ad2",
+    "semantic_hash": ""
+  },
+  "frontend/src/api.ts": {
+    "mtime": 1794305126.4757094,
+    "seen": 1794583244.533756,
+    "ast_hash": "1c2e3ea0ac8e5aedf39a05cc430e3953",
+    "semantic_hash": ""
+  },
+  "frontend/src/auth.tsx": {
+    "mtime": 1794500148.6207678,
+    "seen": 1794583244.533757,
+    "ast_hash": "3c2f3d83c6448f475e06848942ba5282",
+    "semantic_hash": ""
+  },
+  "frontend/src/components/Avatar.tsx": {
+    "mtime": 1794306346.4679887,
+    "seen": 1794583244.533757,
+    "ast_hash": "fc8b41010ae39a5514dadcf41b3e909b",
+    "semantic_hash": ""
+  },
+  "frontend/src/components/CalendarView.tsx": {
+    "mtime": 1794369751.8234153,
+    "seen": 1794583244.533758,
+    "ast_hash": "8e276b360049206af9339559dd61ed9b",
+    "semantic_hash": ""
+  },
+  "frontend/src/components/CrudSection.tsx": {
+    "mtime": 1794302752.6068196,
+    "seen": 1794583244.5337589,
+    "ast_hash": "f47707673565bd191bbef9d8d8845ba0",
+    "semantic_hash": ""
+  },
+  "frontend/src/components/ExpenseTable.tsx": {
+    "mtime": 1794302752.6071131,
+    "seen": 1794583244.53376,
+    "ast_hash": "65f9b67eb046889a7658728913997046",
+    "semantic_hash": ""
+  },
+  "frontend/src/components/ImportBox.tsx": {
+    "mtime": 1794302752.6073637,
+    "seen": 1794583244.53376,
+    "ast_hash": "e380287b1099a3378cb03fc339f0e7f8",
+    "semantic_hash": ""
+  },
+  "frontend/src/components/ThemeToggle.tsx": {
+    "mtime": 1794369751.8217862,
+    "seen": 1794583244.533761,
+    "ast_hash": "505a36deee197db04ffd24e85df6ea0a",
+    "semantic_hash": ""
+  },
+  "frontend/src/components/ui.tsx": {
+    "mtime": 1794302752.6080823,
+    "seen": 1794583244.533762,
+    "ast_hash": "b7772dc74dfe8214cd76e184d09a99cd",
+    "semantic_hash": ""
+  },
+  "frontend/src/layout/Layout.tsx": {
+    "mtime": 1794582616.235757,
+    "seen": 1794583244.533762,
+    "ast_hash": "afe9bcdff549c8c62252881bb573ae7b",
+    "semantic_hash": ""
+  },
+  "frontend/src/layout/SearchBox.tsx": {
+    "mtime": 1794582592.8677883,
+    "seen": 1794583244.5337632,
+    "ast_hash": "b4fec3554ed6b320f16a7744912afce5",
+    "semantic_hash": ""
+  },
+  "frontend/src/lib/csv.tsx": {
+    "mtime": 1794302752.6086152,
+    "seen": 1794583244.5337641,
+    "ast_hash": "9893b7a09860385768df556185a1e4b3",
+    "semantic_hash": ""
+  },
+  "frontend/src/lib/format.ts": {
+    "mtime": 1794302752.6088262,
+    "seen": 1794583244.5337641,
+    "ast_hash": "32fa7754cae76d573b23be148c224a51",
+    "semantic_hash": ""
+  },
+  "frontend/src/lib/theme.ts": {
+    "mtime": 1794315219.4666696,
+    "seen": 1794583244.533765,
+    "ast_hash": "aa6a1da803b7e137facc4b7734deff0b",
+    "semantic_hash": ""
+  },
+  "frontend/src/lib/types.ts": {
+    "mtime": 1794302752.6090257,
+    "seen": 1794583244.533765,
+    "ast_hash": "4c848fd7ed62af57b740d1f940d6c0cd",
+    "semantic_hash": ""
+  },
+  "frontend/src/lib/useLoad.ts": {
+    "mtime": 1794302752.6094158,
+    "seen": 1794583244.5337658,
+    "ast_hash": "f4d87eb0b90fe7bf88ea990ba839fa92",
+    "semantic_hash": ""
+  },
+  "frontend/src/main.tsx": {
+    "mtime": 1794302752.609871,
+    "seen": 1794583244.533767,
+    "ast_hash": "f1c150640c76f72a3522a2d09378069b",
+    "semantic_hash": ""
+  },
+  "frontend/src/pages/AccountPage.tsx": {
+    "mtime": 1794325226.246031,
+    "seen": 1794583244.533767,
+    "ast_hash": "be422ca530df1355da34dbd0da9d4cc5",
+    "semantic_hash": ""
+  },
+  "frontend/src/pages/BudgetDetailPage.tsx": {
+    "mtime": 1794582598.3976638,
+    "seen": 1794583244.533768,
+    "ast_hash": "0233a336975e7929fd845aa9b11d9b06",
+    "semantic_hash": ""
+  },
+  "frontend/src/pages/BudgetsPage.tsx": {
+    "mtime": 1794302752.611486,
+    "seen": 1794583244.533769,
+    "ast_hash": "c847903b1586222db94e7872db6fb257",
+    "semantic_hash": ""
+  },
+  "frontend/src/pages/CalendarPage.tsx": {
+    "mtime": 1794302752.6119618,
+    "seen": 1794583244.53377,
+    "ast_hash": "641469f20e0dcca2489c99a2d0431ae1",
+    "semantic_hash": ""
+  },
+  "frontend/src/pages/ChangePasswordPage.tsx": {
+    "mtime": 1794582598.3986163,
+    "seen": 1794583244.53377,
+    "ast_hash": "d685ac9f0e84b3b5bf02f2514645c252",
+    "semantic_hash": ""
+  },
+  "frontend/src/pages/CoursesPage.tsx": {
+    "mtime": 1794302752.613048,
+    "seen": 1794583244.533771,
+    "ast_hash": "80e6003a449e61082c46382d2a780970",
+    "semantic_hash": ""
+  },
+  "frontend/src/pages/DashboardPage.tsx": {
+    "mtime": 1794302752.61379,
+    "seen": 1794583244.533771,
+    "ast_hash": "78fa8991ed115f2de0d02ca3d1ca0975",
+    "semantic_hash": ""
+  },
+  "frontend/src/pages/EventsPage.tsx": {
+    "mtime": 1794302752.6142309,
+    "seen": 1794583244.533772,
+    "ast_hash": "332f0cd4ac9d0b709890844772d725dc",
+    "semantic_hash": ""
+  },
+  "frontend/src/pages/FacultyDetailPage.tsx": {
+    "mtime": 1794582598.397071,
+    "seen": 1794583244.533773,
+    "ast_hash": "014ca19fb6d39ea069288e4e41a0c83e",
+    "semantic_hash": ""
+  },
+  "frontend/src/pages/FacultyPage.tsx": {
+    "mtime": 1794302752.6147373,
+    "seen": 1794583244.533773,
+    "ast_hash": "3eecfefee77f53ed1e8257d3e98d4b78",
+    "semantic_hash": ""
+  },
+  "frontend/src/pages/LoginPage.tsx": {
+    "mtime": 1794369760.28036,
+    "seen": 1794583244.5337741,
+    "ast_hash": "afae04dedb86a86851e2c8bf3223b56a",
+    "semantic_hash": ""
+  },
+  "frontend/src/pages/PlaceholderPage.tsx": {
+    "mtime": 1794302752.6152859,
+    "seen": 1794583244.533775,
+    "ast_hash": "54229e06376f06a94157b0eccc0aa2a0",
+    "semantic_hash": ""
+  },
+  "frontend/src/pages/ProjectsPage.tsx": {
+    "mtime": 1794302752.6156018,
+    "seen": 1794583244.533775,
+    "ast_hash": "ea62b3e70879cba8a65fa506e6275f4d",
+    "semantic_hash": ""
+  },
+  "frontend/src/pages/SetupPage.tsx": {
+    "mtime": 1794302752.6166,
+    "seen": 1794583244.5337758,
+    "ast_hash": "fa953e66084d5c747e66b71e3a01e064",
+    "semantic_hash": ""
+  },
+  "frontend/src/pages/SignupPage.tsx": {
+    "mtime": 1794369760.2804813,
+    "seen": 1794583244.533777,
+    "ast_hash": "1c09f83025ff5b0a0043e14a3c1b4f08",
+    "semantic_hash": ""
+  },
+  "frontend/src/pages/StudentDetailPage.tsx": {
+    "mtime": 1794582604.6918473,
+    "seen": 1794583244.533777,
+    "ast_hash": "7f799783c0588c880e3fd9aa77296246",
+    "semantic_hash": ""
+  },
+  "frontend/src/pages/StudentsPage.tsx": {
+    "mtime": 1794302752.6188734,
+    "seen": 1794583244.533778,
+    "ast_hash": "723406794064c96b67061755f0497181",
+    "semantic_hash": ""
+  },
+  "frontend/src/pages/TrainingPage.tsx": {
+    "mtime": 1794302752.61913,
+    "seen": 1794583244.533778,
+    "ast_hash": "ee5b0ed6c6a3ea92770a41a9adae378c",
+    "semantic_hash": ""
+  },
+  "frontend/src/pages/TrainingProgramPage.tsx": {
+    "mtime": 1794582598.3981416,
+    "seen": 1794583244.533779,
+    "ast_hash": "88d7f663c7a1c02937f4cc63c2cc61d3",
+    "semantic_hash": ""
+  },
+  "frontend/src/pages/UsersPage.tsx": {
+    "mtime": 1794500165.8074064,
+    "seen": 1794583244.5337799,
+    "ast_hash": "4ddb9b1c8a7f751d4b177c840a07a504",
+    "semantic_hash": ""
+  },
+  "frontend/tsconfig.json": {
+    "mtime": 1794302752.6214206,
+    "seen": 1794583244.5337799,
+    "ast_hash": "5dd13afec0245c7b4b63ed781c244371",
+    "semantic_hash": ""
+  },
+  "frontend/vite.config.ts": {
+    "mtime": 1794302752.621733,
+    "seen": 1794583244.533781,
+    "ast_hash": "1fc710a9de81bf3c0573d59095a70a85",
+    "semantic_hash": ""
+  },
+  "mvnw": {
+    "mtime": 1793904405.0,
+    "seen": 1794583244.533782,
+    "ast_hash": "ab50dd89da7da2346b28003352eeeeeb",
+    "semantic_hash": ""
+  },
+  "pom.xml": {
+    "mtime": 1794302752.6222842,
+    "seen": 1794583244.533783,
+    "ast_hash": "84a9800f19c43166bfc4dcbffa3b20a2",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/CampusErpApplication.java": {
+    "mtime": 1793904405.0,
+    "seen": 1794583244.533783,
+    "ast_hash": "b2e07bf993f7e16d215978ee27e695a7",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/auth/AuthController.java": {
+    "mtime": 1794500383.1406536,
+    "seen": 1794583244.5337842,
+    "ast_hash": "fbee88c1f2965d67778868e465806689",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/auth/JwtAuthFilter.java": {
+    "mtime": 1794500119.2695472,
+    "seen": 1794583244.5337842,
+    "ast_hash": "a2508f53fac8bf2ed753f2e7ee4886ec",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/auth/JwtService.java": {
+    "mtime": 1794305882.7106981,
+    "seen": 1794583244.533785,
+    "ast_hash": "7ea619d4d0aef9c75a473302ffb56f9e",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/auth/LoginAttempts.java": {
+    "mtime": 1794304900.9726937,
+    "seen": 1794583244.533786,
+    "ast_hash": "3cad2837c8f2be6655168f7bcae0de87",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/budget/Budget.java": {
+    "mtime": 1794302752.6237254,
+    "seen": 1794583244.533786,
+    "ast_hash": "c81d1781e8b9c169e671d80b1e60a272",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/budget/BudgetController.java": {
+    "mtime": 1794302752.6240618,
+    "seen": 1794583244.5337868,
+    "ast_hash": "f93995c23028416e92674a9e00497251",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/budget/BudgetDtos.java": {
+    "mtime": 1794302752.6243746,
+    "seen": 1794583244.533788,
+    "ast_hash": "5a235f969774425bd52922910c009afc",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/budget/BudgetRepository.java": {
+    "mtime": 1794302752.6246593,
+    "seen": 1794583244.533788,
+    "ast_hash": "bb603e9d286ddbfad80031367dda4e01",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/budget/BudgetService.java": {
+    "mtime": 1794302752.625002,
+    "seen": 1794583244.533789,
+    "ast_hash": "98f7434c3d93ca98412f3cca22c56d3a",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/budget/BudgetType.java": {
+    "mtime": 1794302752.6252856,
+    "seen": 1794583244.533789,
+    "ast_hash": "f575c732811b53b94216331e7ea0ecce",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/budget/Expense.java": {
+    "mtime": 1794302752.6255984,
+    "seen": 1794583244.5337899,
+    "ast_hash": "c8547791d941a10cd59764df06286fc9",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/budget/ExpenseCategory.java": {
+    "mtime": 1794302752.6258307,
+    "seen": 1794583244.533791,
+    "ast_hash": "04cdf7d61574b4a3fc70df4eae43c726",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/budget/ExpenseRepository.java": {
+    "mtime": 1794302752.6260922,
+    "seen": 1794583244.533791,
+    "ast_hash": "ad337ef8683020791ea347fffacd5972",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/budget/ExpenseService.java": {
+    "mtime": 1794306222.2270756,
+    "seen": 1794583244.533792,
+    "ast_hash": "1b03b5942633015f67d6a68fbb1ca592",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/budget/ExpenseStatus.java": {
+    "mtime": 1794302752.626673,
+    "seen": 1794583244.533793,
+    "ast_hash": "a22a4d16b1bbf283afc729739017c07b",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/budget/ReceiptFile.java": {
+    "mtime": 1794302752.6269321,
+    "seen": 1794583244.533793,
+    "ast_hash": "c326977dbafdece87c786178753399bb",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/budget/ReceiptFileRepository.java": {
+    "mtime": 1794302752.6272466,
+    "seen": 1794583244.5337942,
+    "ast_hash": "074c586dcd561b01f18a7466a3a83bcf",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/calendar/CalendarController.java": {
+    "mtime": 1794302752.628215,
+    "seen": 1794583244.5337942,
+    "ast_hash": "4cc89833493515d2d75afe2d5c823a55",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/calendar/CalendarEntry.java": {
+    "mtime": 1794302752.6284714,
+    "seen": 1794583244.533795,
+    "ast_hash": "e6a0f283bb16574dd0d9d685791f2f6f",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/calendar/CalendarFeedController.java": {
+    "mtime": 1794304900.9731483,
+    "seen": 1794583244.533796,
+    "ast_hash": "6de55320061134a40b0a4669be9acbaf",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/calendar/CalendarService.java": {
+    "mtime": 1794304900.973356,
+    "seen": 1794583244.533796,
+    "ast_hash": "542155aa9ba0ed76ab79be1c7d686266",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/common/ApiError.java": {
+    "mtime": 1794302752.6293445,
+    "seen": 1794583244.533797,
+    "ast_hash": "e9ae727ac00d5e367c850bd0a72b5874",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/common/BaseEntity.java": {
+    "mtime": 1794302752.629607,
+    "seen": 1794583244.533798,
+    "ast_hash": "6f8074e252ecfebb88129ecd78240e36",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/common/BusinessRuleException.java": {
+    "mtime": 1794302752.6300836,
+    "seen": 1794583244.533798,
+    "ast_hash": "ff840e921234f8764ff63c1cf0bf3799",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/common/Csv.java": {
+    "mtime": 1794302752.6304615,
+    "seen": 1794583244.533799,
+    "ast_hash": "d897f94ea476df17dcfc4d59575cc947",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/common/CsvImporter.java": {
+    "mtime": 1794304900.973567,
+    "seen": 1794583244.5338,
+    "ast_hash": "4f6621e1cc58246cbcb4be417f144cad",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/common/Finder.java": {
+    "mtime": 1794302752.634304,
+    "seen": 1794583244.5338,
+    "ast_hash": "f0e3c33aaa552d532c8083672ffc8801",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/common/GlobalExceptionHandler.java": {
+    "mtime": 1794302752.6345663,
+    "seen": 1794583244.533801,
+    "ast_hash": "28f3fe5eef1264013fc649ba4a0c1794",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/common/HealthController.java": {
+    "mtime": 1794302752.634787,
+    "seen": 1794583244.533801,
+    "ast_hash": "f1626b272e349d306807e711a6b14c76",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/common/Money.java": {
+    "mtime": 1794302752.6349986,
+    "seen": 1794583244.533802,
+    "ast_hash": "f117c778751de96997ec41a41142a6be",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/common/NotFoundException.java": {
+    "mtime": 1794302752.635207,
+    "seen": 1794583244.533803,
+    "ast_hash": "7fbe6a32589eca86be7916d52e5741ff",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/common/Ref.java": {
+    "mtime": 1794302752.6354036,
+    "seen": 1794583244.533803,
+    "ast_hash": "01b073a9ee8476a043fad67d049d1c39",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/config/ClockConfig.java": {
+    "mtime": 1794302752.6355789,
+    "seen": 1794583244.533804,
+    "ast_hash": "18087d95e2b846cbc7226bc3109b9da1",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/config/SecurityConfig.java": {
+    "mtime": 1794324010.1036062,
+    "seen": 1794583244.5338051,
+    "ast_hash": "4f38135a7abb73571b571e64bab9b3bd",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/config/SpaForwardController.java": {
+    "mtime": 1794302752.6363754,
+    "seen": 1794583244.5338051,
+    "ast_hash": "ceaf74a608c407e282e3bb178442a052",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/course/ClassException.java": {
+    "mtime": 1794302752.6366987,
+    "seen": 1794583244.533806,
+    "ast_hash": "b5f223c210a793f2d1777c9510c3fef0",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/course/ClassExceptionRepository.java": {
+    "mtime": 1794302752.6369412,
+    "seen": 1794583244.533807,
+    "ast_hash": "a69e49b0c56926684ce0b827c18c72d8",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/course/Course.java": {
+    "mtime": 1794302752.6371827,
+    "seen": 1794583244.5338082,
+    "ast_hash": "ca29b8b9b7e480cbf58e79bafc1e1c6d",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/course/CourseController.java": {
+    "mtime": 1794302752.6374645,
+    "seen": 1794583244.5338082,
+    "ast_hash": "600381dc01cceb415b727266e399726c",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/course/CourseOffering.java": {
+    "mtime": 1794302752.6377053,
+    "seen": 1794583244.533809,
+    "ast_hash": "e32118d9d1bc011a8908a4bcb2d9c7ed",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/course/CourseOfferingRepository.java": {
+    "mtime": 1794304900.9737403,
+    "seen": 1794583244.53381,
+    "ast_hash": "b018ab7a84995fe7cba8fa07bf2acc1d",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/course/CourseRepository.java": {
+    "mtime": 1794582474.8072836,
+    "seen": 1794583244.5338109,
+    "ast_hash": "12e938466cfcbe3f0a45a851da25bfd6",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/course/ExceptionType.java": {
+    "mtime": 1794302752.6384957,
+    "seen": 1794583244.5338109,
+    "ast_hash": "4414fb83bef1c88d5b5dea672671d2c0",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/course/OfferingController.java": {
+    "mtime": 1794302752.6387756,
+    "seen": 1794583244.533812,
+    "ast_hash": "5e74527e94472c15bf2b4f33eb342f13",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/course/OfferingDtos.java": {
+    "mtime": 1794302752.639115,
+    "seen": 1794583244.533813,
+    "ast_hash": "fdebccc974ec56aff1b9900cf27ab6ec",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/course/OfferingService.java": {
+    "mtime": 1794304900.9739373,
+    "seen": 1794583244.533813,
+    "ast_hash": "a4a24bd38854ffc4cd001dd5b8e57181",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/course/OfferingTeacher.java": {
+    "mtime": 1794302752.639721,
+    "seen": 1794583244.533814,
+    "ast_hash": "47a1351369554d906bca9fbc7b1a39d4",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/course/OfferingTeacherRepository.java": {
+    "mtime": 1794302752.6399755,
+    "seen": 1794583244.533814,
+    "ast_hash": "6e241e0660590c7c661d1f65d9bcfb42",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/course/TeachingRole.java": {
+    "mtime": 1794302752.640239,
+    "seen": 1794583244.5338151,
+    "ast_hash": "b989f8347db1c23d16077c079ad9b914",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/course/TimetableSlot.java": {
+    "mtime": 1794302752.6405046,
+    "seen": 1794583244.533816,
+    "ast_hash": "397ddbf497b4153c98b862f9ed5bb04b",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/dashboard/DashboardController.java": {
+    "mtime": 1794302752.640835,
+    "seen": 1794583244.533816,
+    "ast_hash": "adb714600b68b685bcc0c8a391f043fd",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/event/Event.java": {
+    "mtime": 1794302752.641098,
+    "seen": 1794583244.533817,
+    "ast_hash": "f106783671cfec4c456992f5a1cc5525",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/event/EventController.java": {
+    "mtime": 1794302752.6414163,
+    "seen": 1794583244.533818,
+    "ast_hash": "7a934c942e7ffe599540e2c9e65a4efc",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/event/EventRepository.java": {
+    "mtime": 1794582474.8078485,
+    "seen": 1794583244.533818,
+    "ast_hash": "a28737d20ee336e5c904ae00b2f77836",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/event/EventStatus.java": {
+    "mtime": 1794302752.6419156,
+    "seen": 1794583244.533819,
+    "ast_hash": "0994af68c8b865c4f573b92106376006",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/faculty/Faculty.java": {
+    "mtime": 1794302752.6421864,
+    "seen": 1794583244.53382,
+    "ast_hash": "b429773e20d6943665c5bdbbb02f178e",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/faculty/FacultyController.java": {
+    "mtime": 1794302752.6425304,
+    "seen": 1794583244.53382,
+    "ast_hash": "a21e52f456ba5dc0c7cf52063587329a",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/faculty/FacultyRepository.java": {
+    "mtime": 1794582474.8066678,
+    "seen": 1794583244.5338209,
+    "ast_hash": "daeac8855eb3a3ea129b8b6b487c9e86",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/faculty/FacultyStatus.java": {
+    "mtime": 1794302752.6429884,
+    "seen": 1794583244.5338209,
+    "ast_hash": "265a35e92a3555547b2585c5454526d2",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/project/MemberRole.java": {
+    "mtime": 1794302752.643293,
+    "seen": 1794583244.533822,
+    "ast_hash": "af441eda41650c695028ccb2278a8a6f",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/project/ProjectController.java": {
+    "mtime": 1794302752.6435506,
+    "seen": 1794583244.533823,
+    "ast_hash": "606d918d1602bae95e3ec104358e2e04",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/project/ProjectMember.java": {
+    "mtime": 1794302752.6437771,
+    "seen": 1794583244.533823,
+    "ast_hash": "d1631ed83582fa8ad0f008c252c6599d",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/project/ProjectMemberRepository.java": {
+    "mtime": 1794302752.6440477,
+    "seen": 1794583244.533824,
+    "ast_hash": "f32c9965ddb63965b82e7267a7a45a73",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/project/ProjectStatus.java": {
+    "mtime": 1794302752.6442852,
+    "seen": 1794583244.533825,
+    "ast_hash": "6d7f7ec2b8d39e374a2d5f71f8c2f399",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/project/ResearchProject.java": {
+    "mtime": 1794302752.6444635,
+    "seen": 1794583244.533825,
+    "ast_hash": "f54c7eb9c7992307ae15ded3d8bb7c57",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/project/ResearchProjectRepository.java": {
+    "mtime": 1794582474.8076358,
+    "seen": 1794583244.533826,
+    "ast_hash": "c1a4c44b264d5ecabfb46ca1dc70baa7",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/search/SearchController.java": {
+    "mtime": 1794582485.0468745,
+    "seen": 1794583244.533827,
+    "ast_hash": "ac67cfad551313191b8b2c7df326fcff",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/seed/DemoAccountsSeeder.java": {
+    "mtime": 1794302752.6448157,
+    "seen": 1794583244.533827,
+    "ast_hash": "fec5b560fd506f9cfbb9b6e93c94ed6e",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/seed/DemoDataSeeder.java": {
+    "mtime": 1794302752.6451855,
+    "seen": 1794583244.533828,
+    "ast_hash": "4278cc4a1c54a6617527ecece2935a65",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/setup/AcademicCalendar.java": {
+    "mtime": 1794302752.6455877,
+    "seen": 1794583244.5338292,
+    "ast_hash": "30b5946c0b72abeb720342e70401b74b",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/setup/AcademicYear.java": {
+    "mtime": 1794302752.6461651,
+    "seen": 1794583244.5338292,
+    "ast_hash": "11f49b22528cc4fe2c5ba3073162f362",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/setup/AcademicYearRepository.java": {
+    "mtime": 1794302752.6463306,
+    "seen": 1794583244.53383,
+    "ast_hash": "697a173b474bdb6e2d34e652273711a8",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/setup/Department.java": {
+    "mtime": 1794302752.6465442,
+    "seen": 1794583244.533831,
+    "ast_hash": "adf38a7fcf359cee67e9fcbdd6673f1c",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/setup/DepartmentRepository.java": {
+    "mtime": 1794302752.646756,
+    "seen": 1794583244.533831,
+    "ast_hash": "b8d40a99da8283c7a8368b789f86fc4c",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/setup/Holiday.java": {
+    "mtime": 1794302752.64702,
+    "seen": 1794583244.5338318,
+    "ast_hash": "5c4585012d6125e7a532ec4dc1026361",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/setup/HolidayRepository.java": {
+    "mtime": 1794302752.647469,
+    "seen": 1794583244.5338318,
+    "ast_hash": "459a1cbd60b4f11abaced494f712e616",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/setup/Programme.java": {
+    "mtime": 1794302752.647898,
+    "seen": 1794583244.533833,
+    "ast_hash": "41c1024caf94c59b1443546681b269e7",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/setup/ProgrammeRepository.java": {
+    "mtime": 1794302752.6483283,
+    "seen": 1794583244.533834,
+    "ast_hash": "130bc4c7167de758fd2212830790288e",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/setup/Section.java": {
+    "mtime": 1794302752.6487973,
+    "seen": 1794583244.533834,
+    "ast_hash": "0aced062e4cb1056f5ec4f1f0722958f",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/setup/SectionRepository.java": {
+    "mtime": 1794302752.6492379,
+    "seen": 1794583244.533835,
+    "ast_hash": "792d75ea3c3e6381282303fe73983e05",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/setup/SetupController.java": {
+    "mtime": 1794302752.6497655,
+    "seen": 1794583244.5338361,
+    "ast_hash": "463bed2cbc273ca23e35b557ace2e314",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/student/Enrolment.java": {
+    "mtime": 1794302752.6500363,
+    "seen": 1794583244.5338361,
+    "ast_hash": "d4681a40842bcb0140f6b739e11a76b0",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/student/EnrolmentRepository.java": {
+    "mtime": 1794304900.974107,
+    "seen": 1794583244.533837,
+    "ast_hash": "758a9f720dc07569a2eb3607d3873019",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/student/Student.java": {
+    "mtime": 1794302752.6504626,
+    "seen": 1794583244.533838,
+    "ast_hash": "37fdeb5fa7a7d04462dcfaf2766522d9",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/student/StudentController.java": {
+    "mtime": 1794304900.9742827,
+    "seen": 1794583244.533838,
+    "ast_hash": "ae34772963b61b4878118115b71d7846",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/student/StudentRepository.java": {
+    "mtime": 1794582474.8070745,
+    "seen": 1794583244.533839,
+    "ast_hash": "556a82c5744e9bb46353ffa1ffd50395",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/student/StudentStatus.java": {
+    "mtime": 1794302752.6512544,
+    "seen": 1794583244.53384,
+    "ast_hash": "99512f83ed3e879753c8455d284f4128",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/training/Acceptance.java": {
+    "mtime": 1794302752.6515145,
+    "seen": 1794583244.53384,
+    "ast_hash": "5aa2391adc596f179ae1beb81b85e191",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/training/AcceptanceChange.java": {
+    "mtime": 1794302752.6517425,
+    "seen": 1794583244.533841,
+    "ast_hash": "94efe8d70cd44127d0916b237d9b42cc",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/training/AcceptanceChangeRepository.java": {
+    "mtime": 1794302752.65194,
+    "seen": 1794583244.533841,
+    "ast_hash": "bd651d71540120af119580f26118d42a",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/training/TrainingClient.java": {
+    "mtime": 1794302752.652136,
+    "seen": 1794583244.5338418,
+    "ast_hash": "51a8c304d5aa769c8721664b5561c686",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/training/TrainingClientRepository.java": {
+    "mtime": 1794302752.6523595,
+    "seen": 1794583244.533843,
+    "ast_hash": "d5c50f6cafa3aa9d481b733bd61cc542",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/training/TrainingController.java": {
+    "mtime": 1794302752.6525905,
+    "seen": 1794583244.533843,
+    "ast_hash": "eee3d73ad9381d9b09117d734e2653ea",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/training/TrainingDtos.java": {
+    "mtime": 1794302752.6528296,
+    "seen": 1794583244.533844,
+    "ast_hash": "9a57163c962e9915e846b515512c15f6",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/training/TrainingProgram.java": {
+    "mtime": 1794302752.653029,
+    "seen": 1794583244.533845,
+    "ast_hash": "d9c082a9934076da0d0c4c572a11627e",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/training/TrainingProgramRepository.java": {
+    "mtime": 1794582474.8082101,
+    "seen": 1794583244.533845,
+    "ast_hash": "f419e8ed7762874830f453c7a2514d54",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/training/TrainingService.java": {
+    "mtime": 1794302752.6536157,
+    "seen": 1794583244.533846,
+    "ast_hash": "fc0426034dff844878726746b00e655c",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/user/LoginEvent.java": {
+    "mtime": 1794500097.952977,
+    "seen": 1794583244.533846,
+    "ast_hash": "0f56a08020d3760f9e8a2cbc545af3a1",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/user/LoginEventRepository.java": {
+    "mtime": 1794500099.5313332,
+    "seen": 1794583244.533847,
+    "ast_hash": "58dbc5f11980eb486379ecbb404e11b2",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/user/ProfileController.java": {
+    "mtime": 1794324010.1027942,
+    "seen": 1794583244.533848,
+    "ast_hash": "02d392ed5ade6f3b767c8ca5926b7e68",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/user/Role.java": {
+    "mtime": 1794302752.654086,
+    "seen": 1794583244.533848,
+    "ast_hash": "e0f3b22109b7702885c38103d2c27258",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/user/User.java": {
+    "mtime": 1794500104.345026,
+    "seen": 1794583244.533849,
+    "ast_hash": "238c95a83cd7f9cb7e33dd8565a035fc",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/user/UserController.java": {
+    "mtime": 1794500140.174091,
+    "seen": 1794583244.5338502,
+    "ast_hash": "4c30c16c779bd070158a58007796a63a",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/user/UserPhoto.java": {
+    "mtime": 1794306246.175548,
+    "seen": 1794583244.5338502,
+    "ast_hash": "735695bda500db300bf371f489e767db",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/user/UserPhotoRepository.java": {
+    "mtime": 1794306246.1788054,
+    "seen": 1794583244.533851,
+    "ast_hash": "b4abb60c2ed01e620beb1eb63ae5c433",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/user/UserRepository.java": {
+    "mtime": 1794500108.5143259,
+    "seen": 1794583244.5338519,
+    "ast_hash": "c8592eb0deb47695be79fd54f3224fab",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/user/UserRequests.java": {
+    "mtime": 1794302752.6549711,
+    "seen": 1794583244.5338519,
+    "ast_hash": "27fe6a1a1c49bf779f5809f7188d5463",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/user/UserResponse.java": {
+    "mtime": 1794500111.3275876,
+    "seen": 1794583244.5338528,
+    "ast_hash": "e434cacad900011d6f20a4b217244455",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/user/UserService.java": {
+    "mtime": 1794306254.7985895,
+    "seen": 1794583244.533854,
+    "ast_hash": "2173555330931c02f7f2415c9cd80d3d",
+    "semantic_hash": ""
+  },
+  "src/test/java/com/campuserp/ApiTest.java": {
+    "mtime": 1794302752.6611643,
+    "seen": 1794583244.533854,
+    "ast_hash": "0a4c808786434dd2f65c1c0f1c7a3b73",
+    "semantic_hash": ""
+  },
+  "src/test/java/com/campuserp/CampusErpApplicationTests.java": {
+    "mtime": 1793904405.0,
+    "seen": 1794583244.533855,
+    "ast_hash": "eaf1289c3c25f25753c2c1dd504222c1",
+    "semantic_hash": ""
+  },
+  "src/test/java/com/campuserp/Fixtures.java": {
+    "mtime": 1794302752.6613858,
+    "seen": 1794583244.533856,
+    "ast_hash": "145a7984f0e59b9de3b36466dcc66d98",
+    "semantic_hash": ""
+  },
+  "src/test/java/com/campuserp/TestClock.java": {
+    "mtime": 1794302752.6615844,
+    "seen": 1794583244.533856,
+    "ast_hash": "1374fd5e8434d1f6da3de0dd8c57101f",
+    "semantic_hash": ""
+  },
+  "src/test/java/com/campuserp/TestLogins.java": {
+    "mtime": 1794302752.6617866,
+    "seen": 1794583244.533857,
+    "ast_hash": "95ac727c79a01d9668a5133704846a35",
+    "semantic_hash": ""
+  },
+  "src/test/java/com/campuserp/auth/LoginAttemptsTest.java": {
+    "mtime": 1794304900.9746418,
+    "seen": 1794583244.533857,
+    "ast_hash": "039608fb3fdff005a69942c04223c4f7",
+    "semantic_hash": ""
+  },
+  "src/test/java/com/campuserp/budget/BudgetAndExpenseTest.java": {
+    "mtime": 1794304900.974834,
+    "seen": 1794583244.533858,
+    "ast_hash": "8d020cfda490c81b44e8a1af48548cf9",
+    "semantic_hash": ""
+  },
+  "src/test/java/com/campuserp/calendar/CalendarTest.java": {
+    "mtime": 1794302752.6623955,
+    "seen": 1794583244.533859,
+    "ast_hash": "1e7264cee552233d13620a919b9149a5",
+    "semantic_hash": ""
+  },
+  "src/test/java/com/campuserp/common/HealthAndErrorsTest.java": {
+    "mtime": 1794302752.6626585,
+    "seen": 1794583244.533859,
+    "ast_hash": "c686b6de93dca69893ece47034ae5bd7",
+    "semantic_hash": ""
+  },
+  "src/test/java/com/campuserp/common/SearchTest.java": {
+    "mtime": 1794582497.7633579,
+    "seen": 1794583244.5338602,
+    "ast_hash": "6bdd0721d8563b5f7d292c63b71184e7",
+    "semantic_hash": ""
+  },
+  "src/test/java/com/campuserp/config/SpaForwardTest.java": {
+    "mtime": 1794302752.6629174,
+    "seen": 1794583244.5338612,
+    "ast_hash": "f37f41d56baf05a7e26619b4b432f0c3",
+    "semantic_hash": ""
+  },
+  "src/test/java/com/campuserp/course/OfferingsTest.java": {
+    "mtime": 1794302752.6631749,
+    "seen": 1794583244.5338612,
+    "ast_hash": "ce63024feda09afef0fa8e725734a125",
+    "semantic_hash": ""
+  },
+  "src/test/java/com/campuserp/seed/DemoAccountsSeederTest.java": {
+    "mtime": 1794302752.6633313,
+    "seen": 1794583244.5338619,
+    "ast_hash": "f0291bde14397bd98bda05fa01f977da",
+    "semantic_hash": ""
+  },
+  "src/test/java/com/campuserp/seed/SampleDataTest.java": {
+    "mtime": 1794302752.663589,
+    "seen": 1794583244.5338628,
+    "ast_hash": "188d569a52195c3861858fa16af869e5",
+    "semantic_hash": ""
+  },
+  "src/test/java/com/campuserp/student/EnrolmentTest.java": {
+    "mtime": 1794304900.9750245,
+    "seen": 1794583244.5338628,
+    "ast_hash": "39796c327cfe8e43ea2cfc24361e1246",
+    "semantic_hash": ""
+  },
+  "src/test/java/com/campuserp/student/ImportTest.java": {
+    "mtime": 1794304900.9751878,
+    "seen": 1794583244.533864,
+    "ast_hash": "b10f230d8e1de6a45c9a8e2d9c1ca12a",
+    "semantic_hash": ""
+  },
+  "src/test/java/com/campuserp/training/TrainingTest.java": {
+    "mtime": 1794302752.6642976,
+    "seen": 1794583244.533865,
+    "ast_hash": "50a908d4286c49190ba1aa0226b7e962",
+    "semantic_hash": ""
+  },
+  "src/test/java/com/campuserp/user/AuthAndRolesTest.java": {
+    "mtime": 1794324382.3334155,
+    "seen": 1794583244.533866,
+    "ast_hash": "f393ca9d3d79c4435e707b78ca1839e4",
+    "semantic_hash": ""
+  },
+  "src/test/java/com/campuserp/user/LoginHistoryTest.java": {
+    "mtime": 1794500384.7254348,
+    "seen": 1794583244.5338671,
+    "ast_hash": "4224c44c939f50b6ecf68716b2ce82cc",
+    "semantic_hash": ""
+  },
+  "src/test/java/com/campuserp/user/ProfileTest.java": {
+    "mtime": 1794306316.246433,
+    "seen": 1794583244.5338671,
+    "ast_hash": "28877e83f8d197b65ac3cc025487f36b",
+    "semantic_hash": ""
+  },
+  "src/test/java/com/campuserp/user/SignupTest.java": {
+    "mtime": 1794324069.894928,
+    "seen": 1794583244.533868,
+    "ast_hash": "cb4c81b6a2d298bb3f0ab549a48f7c19",
+    "semantic_hash": ""
+  },
+  "README.md": {
+    "mtime": 1794583234.5602996,
+    "seen": 1794583244.533869,
+    "ast_hash": "1b8aa03da8146827f6513e3db4a5c6ab",
+    "semantic_hash": ""
+  },
+  "frontend/index.html": {
+    "mtime": 1794315219.4615924,
+    "seen": 1794583244.533869,
+    "ast_hash": "8bcf023bea016dd40a00c42e7d7a1bef",
+    "semantic_hash": ""
+  },
+  "src/main/resources/sample-data/README.md": {
+    "mtime": 1794302752.656066,
+    "seen": 1794583244.53387,
+    "ast_hash": "177fe40aa25bdfbd9f60ac87f5dbb7de",
+    "semantic_hash": ""
+  },
+  "frontend/package-lock.json": {
+    "mtime": 1794500712.0825443,
+    "seen": 1794583244.5338712,
+    "ast_hash": "ff849ae710cb60df124508a812461317",
+    "semantic_hash": ""
+  }
+}
