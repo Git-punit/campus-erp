@@ -5,6 +5,8 @@ import type { User } from '../auth'
 import { useAuth } from '../auth'
 import Avatar from '../components/Avatar'
 import { ErrorBox } from '../components/ui'
+import { ago, device, OUTCOME, type Login } from '../lib/logins'
+import { useLoad } from '../lib/useLoad'
 
 /** Your own account: details, photo, username, password and other devices. */
 export default function AccountPage() {
@@ -35,7 +37,54 @@ export default function AccountPage() {
         </div>
       </div>
       <LogoutOthers />
+      <MySignIns lastLoginAt={user?.lastLoginAt ?? null} />
     </>
+  )
+}
+
+/** Your own latest sign-ins, so you can spot a login or a password guess that wasn't you. */
+function MySignIns({ lastLoginAt }: { lastLoginAt: string | null }) {
+  const { data, error } = useLoad<Login[]>('/auth/logins')
+  return (
+    <div className="card">
+      <h2>My sign-ins</h2>
+      <p className="small muted">
+        Last sign-in: {ago(lastLoginAt)}. Your latest 20 attempts, newest first. If one wasn't you, change your
+        password and log out other devices.
+      </p>
+      <ErrorBox message={error} />
+      <table className="table">
+        <thead>
+          <tr>
+            <th>When</th>
+            <th>Result</th>
+            <th>Device</th>
+            <th>IP address</th>
+          </tr>
+        </thead>
+        <tbody>
+          {data?.map((l, i) => (
+            <tr key={i}>
+              <td className="small">{ago(l.at)}</td>
+              <td>
+                <span className={`badge ${OUTCOME[l.outcome][1]}`}>{OUTCOME[l.outcome][0]}</span>
+              </td>
+              <td className="small" title={l.userAgent ?? ''}>
+                {device(l.userAgent)}
+              </td>
+              <td className="small">{l.ip ?? '-'}</td>
+            </tr>
+          ))}
+          {data?.length === 0 && (
+            <tr>
+              <td colSpan={4} className="muted">
+                No sign-ins recorded yet.
+              </td>
+            </tr>
+          )}
+        </tbody>
+      </table>
+    </div>
   )
 }
 

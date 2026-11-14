@@ -21,7 +21,12 @@ import java.util.List;
 public class UserController {
 
     public record LoginView(Instant at, String username, String fullName, LoginEvent.Outcome outcome,
-                            String ip, String userAgent) {}
+                            String ip, String userAgent) {
+        public static LoginView from(LoginEvent e) {
+            return new LoginView(e.getCreatedAt(), e.getUsername(), e.getFullName(), e.getOutcome(), e.getIp(),
+                    e.getUserAgent());
+        }
+    }
 
     private final UserService service;
     private final LoginEventRepository loginEvents;
@@ -39,10 +44,7 @@ public class UserController {
     /** The latest 200 sign-in attempts, newest first. */
     @GetMapping("/logins")
     public List<LoginView> logins() {
-        return loginEvents.findTop200ByOrderByIdDesc().stream()
-                .map(e -> new LoginView(e.getCreatedAt(), e.getUsername(), e.getFullName(), e.getOutcome(),
-                        e.getIp(), e.getUserAgent()))
-                .toList();
+        return loginEvents.findTop200ByOrderByIdDesc().stream().map(LoginView::from).toList();
     }
 
     @PostMapping

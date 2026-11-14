@@ -3,6 +3,8 @@ package com.campuserp.auth;
 import com.campuserp.user.LoginEvent;
 import com.campuserp.user.LoginEventRepository;
 import com.campuserp.user.Role;
+import com.campuserp.user.UserController;
+import java.util.List;
 import jakarta.servlet.http.HttpServletRequest;
 import java.time.Instant;
 import com.campuserp.user.User;
@@ -164,6 +166,13 @@ public class AuthController {
         return users.findByUsername(auth.getName())
                 .map(UserResponse::from)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Not logged in"));
+    }
+
+    /** Your own latest 20 sign-in attempts, including wrong passwords typed for your account. */
+    @GetMapping("/logins")
+    public List<UserController.LoginView> myLogins(Authentication auth) {
+        return loginEvents.findTop20ByUsernameOrderByIdDesc(auth.getName()).stream()
+                .map(UserController.LoginView::from).toList();
     }
 
     /** Any logged-in user can change their own password. */

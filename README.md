@@ -127,6 +127,8 @@ server makes every new account a Viewer, switched off until an admin approves
 it on the Users page and picks its role. Users can sign in with their username
 or email.
 Everyone can change their own password under **My account** (click your avatar in the top bar).
+**My account** also lists your own latest 20 sign-ins (time, result, device, IP), including wrong
+passwords typed for your account; admins see everyone's on the Users page.
 Changing a password logs that account out everywhere else. After 5 wrong
 passwords in a row, a username is locked for 15 minutes.
 

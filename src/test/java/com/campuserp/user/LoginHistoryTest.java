@@ -9,6 +9,9 @@ import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.everyItem;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -45,5 +48,20 @@ class LoginHistoryTest extends ApiTest {
 
         // only admins can see who signed in
         getAs(staff, "/api/users/logins").andExpect(status().isForbidden());
+    }
+
+    @Test
+    void everyoneSeesOnlyTheirOwnSignIns() throws Exception {
+        mvc.perform(post("/api/auth/login").contentType(MediaType.APPLICATION_JSON)
+                .content("{\"username\":\"viewer\",\"password\":\"not-the-password\"}"));
+        String viewer = viewer();
+        admin();
+
+        // the viewer's good sign-in, then the wrong password; nobody else's
+        getAs(viewer, "/api/auth/logins").andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(2)))
+                .andExpect(jsonPath("$[0].outcome").value("SUCCESS"))
+                .andExpect(jsonPath("$[1].outcome").value("WRONG_PASSWORD"))
+                .andExpect(jsonPath("$[*].username", everyItem(is("viewer"))));
     }
 }
