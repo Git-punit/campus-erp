@@ -182,7 +182,6 @@ export default function Layout() {
           {/* desktop: the pages of the current section, always on screen */}
           {group && (
             <aside className="sidebar" aria-label={`${group.label} pages`}>
-              <div className="nav-group-label">{group.label}</div>
               {group.items.map((item) => (
                 <NavLink key={item.path} to={item.path}>
                   {item.label}
