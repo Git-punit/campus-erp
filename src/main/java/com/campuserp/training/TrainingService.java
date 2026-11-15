@@ -85,6 +85,25 @@ public class TrainingService {
         return clients.findByProgramIdOrderByDateContactedDesc(programId).stream().map(this::view).toList();
     }
 
+    /**
+     * Clients of every program at one step of the pipeline, matching the dashboard's counts:
+     * reached = all, proposals = proposal submitted, accepted = said yes, conducted = training held.
+     */
+    @Transactional(readOnly = true)
+    public List<ClientView> clientsAtStage(String stage) {
+        java.util.function.Predicate<TrainingClient> keep = switch (stage) {
+            case "reached" -> c -> true;
+            case "proposals" -> TrainingClient::isProposalSubmitted;
+            case "accepted" -> c -> c.getAccepted() == Acceptance.YES;
+            case "conducted" -> TrainingClient::isConducted;
+            default -> throw new org.springframework.web.server.ResponseStatusException(
+                    org.springframework.http.HttpStatus.BAD_REQUEST,
+                    "stage must be reached, proposals, accepted or conducted");
+        };
+        // shortcut: filters in memory and loads each client's budget, fine for hundreds of clients
+        return clients.findAllByOrderByDateContactedDesc().stream().filter(keep).map(this::view).toList();
+    }
+
     @Transactional(readOnly = true)
     public ClientView client(Long id) {
         return view(Finder.find(clients, id, "Client"));

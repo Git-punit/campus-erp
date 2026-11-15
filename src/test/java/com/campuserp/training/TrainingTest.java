@@ -48,6 +48,27 @@ class TrainingTest extends ApiTest {
     }
 
     @Test
+    void dashboardPipelineNumbersOpenTheMatchingClients() throws Exception {
+        String url = "/api/training-programs/" + program + "/clients";
+        postAs(staff(), url, client(false, null, false)).andExpect(status().isCreated());
+        postAs(staff(), url, client(true, "NEEDS_REVISION", false)).andExpect(status().isCreated());
+        postAs(staff(), url, client(true, "YES", false)).andExpect(status().isCreated());
+        postAs(staff(), url, client(true, "YES", true)).andExpect(status().isCreated());
+
+        // each list has as many clients as its number on the dashboard
+        getAs(viewer(), "/api/dashboard").andExpect(jsonPath("$.training.clientsReached").value(4))
+                .andExpect(jsonPath("$.training.proposals").value(3))
+                .andExpect(jsonPath("$.training.accepted").value(2))
+                .andExpect(jsonPath("$.training.conducted").value(1));
+        getAs(viewer(), "/api/training-clients?stage=reached").andExpect(jsonPath("$", hasSize(4)));
+        getAs(viewer(), "/api/training-clients?stage=proposals").andExpect(jsonPath("$", hasSize(3)));
+        getAs(viewer(), "/api/training-clients?stage=accepted").andExpect(jsonPath("$", hasSize(2)))
+                .andExpect(jsonPath("$[0].programName").value("Industrial IoT"));
+        getAs(viewer(), "/api/training-clients?stage=conducted").andExpect(jsonPath("$", hasSize(1)));
+        getAs(viewer(), "/api/training-clients?stage=nonsense").andExpect(status().isBadRequest());
+    }
+
+    @Test
     void stepsMustGoInOrder() throws Exception {
         String url = "/api/training-programs/" + program + "/clients";
         postAs(staff(), url, client(false, "YES", false))

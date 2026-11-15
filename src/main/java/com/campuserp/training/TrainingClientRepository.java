@@ -9,6 +9,8 @@ public interface TrainingClientRepository extends JpaRepository<TrainingClient, 
 
     List<TrainingClient> findByProgramId(Long programId);
 
+    List<TrainingClient> findAllByOrderByDateContactedDesc();
+
     long countByProposalSubmittedTrue();
 
     long countByAccepted(Acceptance accepted);

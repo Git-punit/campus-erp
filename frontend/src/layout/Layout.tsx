@@ -228,7 +228,7 @@ function Crumbs({ pathname, group, page }: { pathname: string; group?: NavGroup;
   } else if (group && page) {
     if (group.label !== 'Home') trail.push({ label: group.label, to: group.items[0].path })
     trail.push({ label: page.label, to: page.path })
-    if (pathname !== page.path) trail.push({ label: 'Details' })
+    if (pathname !== page.path) trail.push({ label: pathname === '/training/clients' ? 'Clients' : 'Details' })
   }
   if (trail.length < 2) return null
   const last = trail.length - 1

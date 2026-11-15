@@ -21,6 +21,7 @@ import StudentDetailPage from './pages/StudentDetailPage'
 import StudentsPage from './pages/StudentsPage'
 import TrainingPage from './pages/TrainingPage'
 import TrainingProgramPage from './pages/TrainingProgramPage'
+import TrainingClientsPage from './pages/TrainingClientsPage'
 import UsersPage from './pages/UsersPage'
 
 function RequireLogin({ children }: { children: ReactNode }) {
@@ -64,6 +65,7 @@ export default function App() {
           <Route path="budgets/:id" element={<BudgetDetailPage />} />
           <Route path="projects" element={<ProjectsPage />} />
           <Route path="training" element={<TrainingPage />} />
+          <Route path="training/clients" element={<TrainingClientsPage />} />
           <Route path="training/:id" element={<TrainingProgramPage />} />
           <Route path="events" element={<EventsPage />} />
           <Route path="setup" element={<SetupPage />} />

@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import org.springframework.web.bind.annotation.RequestParam;
+
 import java.util.List;
 
 @RestController
@@ -65,6 +67,12 @@ public class TrainingController {
     @ResponseStatus(HttpStatus.CREATED)
     public ClientView addClient(@PathVariable Long id, @Valid @RequestBody ClientRequest req, Authentication auth) {
         return service.addClient(id, req, auth.getName());
+    }
+
+    /** The dashboard's training pipeline numbers open this list. */
+    @GetMapping("/training-clients")
+    public List<ClientView> clientsAtStage(@RequestParam(defaultValue = "reached") String stage) {
+        return service.clientsAtStage(stage);
     }
 
     @GetMapping("/training-clients/{id}")

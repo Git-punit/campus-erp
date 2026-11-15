@@ -103,10 +103,11 @@ export default function DashboardPage() {
           <section className="card">
             <h2>Training pipeline</h2>
             <div className="pipeline">
-              <div><strong>{d.training.clientsReached}</strong><span>reached</span></div>
-              <div><strong>{d.training.proposals}</strong><span>proposals</span></div>
-              <div><strong>{d.training.accepted}</strong><span>accepted</span></div>
-              <div><strong>{d.training.conducted}</strong><span>conducted</span></div>
+              {/* each number opens the clients it counts */}
+              <Link to="/training/clients?stage=reached"><strong>{d.training.clientsReached}</strong><span>reached</span></Link>
+              <Link to="/training/clients?stage=proposals"><strong>{d.training.proposals}</strong><span>proposals</span></Link>
+              <Link to="/training/clients?stage=accepted"><strong>{d.training.accepted}</strong><span>accepted</span></Link>
+              <Link to="/training/clients?stage=conducted"><strong>{d.training.conducted}</strong><span>conducted</span></Link>
             </div>
             <Link className="small" to="/training">Training programs</Link>
           </section>
