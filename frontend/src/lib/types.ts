@@ -243,7 +243,7 @@ export interface TrainingClient {
   history: { date: string; accepted: Acceptance; remarks: string | null; changedBy: string | null }[]
 }
 
-export type EventStatus = 'PLANNED' | 'ONGOING' | 'COMPLETED' | 'CANCELLED'
+export type EventStatus = 'PLANNED' | 'ONGOING' | 'COMPLETED' | 'CANCELLED' | 'POSTPONED'
 
 export interface CampusEvent {
   id: number

@@ -12,15 +12,15 @@
     "semantic_hash": ""
   },
   "frontend/src/App.tsx": {
-    "mtime": 1794369751.8220258,
-    "seen": 1794583244.5337548,
-    "ast_hash": "323356feb675fe2f58bc94bcaa880ad2",
+    "mtime": 1794729465.1052067,
+    "seen": 1794939130.1103182,
+    "ast_hash": "f3e7b47696ed9498791fb3b94da91daa",
     "semantic_hash": ""
   },
   "frontend/src/api.ts": {
-    "mtime": 1794305126.4757094,
-    "seen": 1794583244.533756,
-    "ast_hash": "1c2e3ea0ac8e5aedf39a05cc430e3953",
+    "mtime": 1794631289.932526,
+    "seen": 1794939130.1103191,
+    "ast_hash": "2f920df617465f451ad42f3355721cc4",
     "semantic_hash": ""
   },
   "frontend/src/auth.tsx": {
@@ -72,9 +72,9 @@
     "semantic_hash": ""
   },
   "frontend/src/layout/Layout.tsx": {
-    "mtime": 1794582616.235757,
-    "seen": 1794583244.533762,
-    "ast_hash": "afe9bcdff549c8c62252881bb573ae7b",
+    "mtime": 1794729471.2644908,
+    "seen": 1794939130.1103292,
+    "ast_hash": "12fcadd703e997e5bb915a174b4eabdf",
     "semantic_hash": ""
   },
   "frontend/src/layout/SearchBox.tsx": {
@@ -102,9 +102,9 @@
     "semantic_hash": ""
   },
   "frontend/src/lib/types.ts": {
-    "mtime": 1794302752.6090257,
-    "seen": 1794583244.533765,
-    "ast_hash": "4c848fd7ed62af57b740d1f940d6c0cd",
+    "mtime": 1794939079.1072931,
+    "seen": 1794939130.110334,
+    "ast_hash": "ad1de58910ff28996ebce380fffff52c",
     "semantic_hash": ""
   },
   "frontend/src/lib/useLoad.ts": {
@@ -120,9 +120,9 @@
     "semantic_hash": ""
   },
   "frontend/src/pages/AccountPage.tsx": {
-    "mtime": 1794325226.246031,
-    "seen": 1794583244.533767,
-    "ast_hash": "be422ca530df1355da34dbd0da9d4cc5",
+    "mtime": 1794629817.5332968,
+    "seen": 1794939130.110336,
+    "ast_hash": "ca949ef442cc7135f2d95a737093fe10",
     "semantic_hash": ""
   },
   "frontend/src/pages/BudgetDetailPage.tsx": {
@@ -156,15 +156,15 @@
     "semantic_hash": ""
   },
   "frontend/src/pages/DashboardPage.tsx": {
-    "mtime": 1794302752.61379,
-    "seen": 1794583244.533771,
-    "ast_hash": "78fa8991ed115f2de0d02ca3d1ca0975",
+    "mtime": 1794729784.8137252,
+    "seen": 1794939130.110341,
+    "ast_hash": "4e9c05114e182ebb19c8bcaa66f0c901",
     "semantic_hash": ""
   },
   "frontend/src/pages/EventsPage.tsx": {
-    "mtime": 1794302752.6142309,
-    "seen": 1794583244.533772,
-    "ast_hash": "332f0cd4ac9d0b709890844772d725dc",
+    "mtime": 1794939080.640546,
+    "seen": 1794939130.110341,
+    "ast_hash": "9f11b2dd68793627fe8948ac84ffe72c",
     "semantic_hash": ""
   },
   "frontend/src/pages/FacultyDetailPage.tsx": {
@@ -234,9 +234,9 @@
     "semantic_hash": ""
   },
   "frontend/src/pages/UsersPage.tsx": {
-    "mtime": 1794500165.8074064,
-    "seen": 1794583244.5337799,
-    "ast_hash": "4ddb9b1c8a7f751d4b177c840a07a504",
+    "mtime": 1794629806.6326392,
+    "seen": 1794939130.1103518,
+    "ast_hash": "bf277021b4ce4cc3f21ad0aaf7349f2e",
     "semantic_hash": ""
   },
   "frontend/tsconfig.json": {
@@ -246,9 +246,9 @@
     "semantic_hash": ""
   },
   "frontend/vite.config.ts": {
-    "mtime": 1794302752.621733,
-    "seen": 1794583244.533781,
-    "ast_hash": "1fc710a9de81bf3c0573d59095a70a85",
+    "mtime": 1794631208.7028348,
+    "seen": 1794939130.110353,
+    "ast_hash": "a01c81241aa0aa7defb8da0e709023a4",
     "semantic_hash": ""
   },
   "mvnw": {
@@ -270,9 +270,9 @@
     "semantic_hash": ""
   },
   "src/main/java/com/campuserp/auth/AuthController.java": {
-    "mtime": 1794500383.1406536,
-    "seen": 1794583244.5337842,
-    "ast_hash": "fbee88c1f2965d67778868e465806689",
+    "mtime": 1794629783.6052053,
+    "seen": 1794939130.110357,
+    "ast_hash": "eacfbee530046ec82d5628ce6cf9dfeb",
     "semantic_hash": ""
   },
   "src/main/java/com/campuserp/auth/JwtAuthFilter.java": {
@@ -594,9 +594,9 @@
     "semantic_hash": ""
   },
   "src/main/java/com/campuserp/event/EventStatus.java": {
-    "mtime": 1794302752.6419156,
-    "seen": 1794583244.533819,
-    "ast_hash": "0994af68c8b865c4f573b92106376006",
+    "mtime": 1794939068.9553804,
+    "seen": 1794939130.1104,
+    "ast_hash": "c82e7a3aaafee8fdfe6aa7b2185d8b58",
     "semantic_hash": ""
   },
   "src/main/java/com/campuserp/faculty/Faculty.java": {
@@ -816,15 +816,15 @@
     "semantic_hash": ""
   },
   "src/main/java/com/campuserp/training/TrainingClientRepository.java": {
-    "mtime": 1794302752.6523595,
-    "seen": 1794583244.533843,
-    "ast_hash": "d5c50f6cafa3aa9d481b733bd61cc542",
+    "mtime": 1794729399.7709162,
+    "seen": 1794939130.11043,
+    "ast_hash": "a64b8cbb698010ecbe44b6eaab1f4ef3",
     "semantic_hash": ""
   },
   "src/main/java/com/campuserp/training/TrainingController.java": {
-    "mtime": 1794302752.6525905,
-    "seen": 1794583244.533843,
-    "ast_hash": "eee3d73ad9381d9b09117d734e2653ea",
+    "mtime": 1794729413.504089,
+    "seen": 1794939130.110431,
+    "ast_hash": "7c9b845976ac1e0e69cd439e39a00e39",
     "semantic_hash": ""
   },
   "src/main/java/com/campuserp/training/TrainingDtos.java": {
@@ -846,9 +846,9 @@
     "semantic_hash": ""
   },
   "src/main/java/com/campuserp/training/TrainingService.java": {
-    "mtime": 1794302752.6536157,
-    "seen": 1794583244.533846,
-    "ast_hash": "fc0426034dff844878726746b00e655c",
+    "mtime": 1794729403.8571818,
+    "seen": 1794939130.110434,
+    "ast_hash": "6c2b62cad11683f406187366a94ab0c6",
     "semantic_hash": ""
   },
   "src/main/java/com/campuserp/user/LoginEvent.java": {
@@ -858,9 +858,9 @@
     "semantic_hash": ""
   },
   "src/main/java/com/campuserp/user/LoginEventRepository.java": {
-    "mtime": 1794500099.5313332,
-    "seen": 1794583244.533847,
-    "ast_hash": "58dbc5f11980eb486379ecbb404e11b2",
+    "mtime": 1794629780.5168028,
+    "seen": 1794939130.1104362,
+    "ast_hash": "4847d7478a173e7ea2b2e890ce292823",
     "semantic_hash": ""
   },
   "src/main/java/com/campuserp/user/ProfileController.java": {
@@ -882,9 +882,9 @@
     "semantic_hash": ""
   },
   "src/main/java/com/campuserp/user/UserController.java": {
-    "mtime": 1794500140.174091,
-    "seen": 1794583244.5338502,
-    "ast_hash": "4c30c16c779bd070158a58007796a63a",
+    "mtime": 1794629778.875467,
+    "seen": 1794939130.1104388,
+    "ast_hash": "610d79d8fa7d024a3875f05368284c1e",
     "semantic_hash": ""
   },
   "src/main/java/com/campuserp/user/UserPhoto.java": {
@@ -1020,9 +1020,9 @@
     "semantic_hash": ""
   },
   "src/test/java/com/campuserp/training/TrainingTest.java": {
-    "mtime": 1794302752.6642976,
-    "seen": 1794583244.533865,
-    "ast_hash": "50a908d4286c49190ba1aa0226b7e962",
+    "mtime": 1794729421.638415,
+    "seen": 1794939130.1104581,
+    "ast_hash": "c5ef84e855741b68ac8db1fbba898d38",
     "semantic_hash": ""
   },
   "src/test/java/com/campuserp/user/AuthAndRolesTest.java": {
@@ -1032,9 +1032,9 @@
     "semantic_hash": ""
   },
   "src/test/java/com/campuserp/user/LoginHistoryTest.java": {
-    "mtime": 1794500384.7254348,
-    "seen": 1794583244.5338671,
-    "ast_hash": "4224c44c939f50b6ecf68716b2ce82cc",
+    "mtime": 1794629848.5327075,
+    "seen": 1794939130.1104598,
+    "ast_hash": "faf6b20b865288d3f22e6620003d783f",
     "semantic_hash": ""
   },
   "src/test/java/com/campuserp/user/ProfileTest.java": {
@@ -1050,9 +1050,9 @@
     "semantic_hash": ""
   },
   "README.md": {
-    "mtime": 1794583234.5602996,
-    "seen": 1794583244.533869,
-    "ast_hash": "1b8aa03da8146827f6513e3db4a5c6ab",
+    "mtime": 1794937573.3061163,
+    "seen": 1794939130.110462,
+    "ast_hash": "4e4d6707f231c2dbaf83c3a7b1b4ac68",
     "semantic_hash": ""
   },
   "frontend/index.html": {
@@ -1067,9 +1067,39 @@
     "ast_hash": "177fe40aa25bdfbd9f60ac87f5dbb7de",
     "semantic_hash": ""
   },
+  "frontend/src/env.d.ts": {
+    "mtime": 1794631209.5243857,
+    "seen": 1794939130.110328,
+    "ast_hash": "bb3291e41f76ce577521f40ebeb2bcf2",
+    "semantic_hash": ""
+  },
+  "frontend/src/lib/logins.ts": {
+    "mtime": 1794629806.6319592,
+    "seen": 1794939130.110332,
+    "ast_hash": "ca7ed0efec8b01bc9da6dea8a4117e49",
+    "semantic_hash": ""
+  },
+  "frontend/src/pages/TrainingClientsPage.tsx": {
+    "mtime": 1794729459.1882918,
+    "seen": 1794939130.110349,
+    "ast_hash": "8c1e7bab0d4a4f11d4671c737b2e2bd2",
+    "semantic_hash": ""
+  },
+  "src/main/java/com/campuserp/event/EventStatusColumn.java": {
+    "mtime": 1794939072.8729672,
+    "seen": 1794939130.110401,
+    "ast_hash": "d24d75e0d9501777582cb88eeb01ae78",
+    "semantic_hash": ""
+  },
+  "src/test/java/com/campuserp/event/EventStatusTest.java": {
+    "mtime": 1794939077.5946999,
+    "seen": 1794939130.110454,
+    "ast_hash": "1859f00945f4b55cbbc959870101c2d0",
+    "semantic_hash": ""
+  },
   "frontend/package-lock.json": {
-    "mtime": 1794500712.0825443,
-    "seen": 1794583244.5338712,
+    "mtime": 1794728880.5217204,
+    "seen": 1794939130.110465,
     "ast_hash": "ff849ae710cb60df124508a812461317",
     "semantic_hash": ""
   }

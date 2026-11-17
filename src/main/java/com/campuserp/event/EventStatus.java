@@ -1,5 +1,5 @@
 package com.campuserp.event;
 
 public enum EventStatus {
-    PLANNED, ONGOING, COMPLETED, CANCELLED
+    PLANNED, ONGOING, COMPLETED, CANCELLED, POSTPONED
 }

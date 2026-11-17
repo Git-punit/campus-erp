@@ -4,7 +4,7 @@ import { Badge, Money, UsageBar } from '../components/ui'
 import { date } from '../lib/format'
 import type { CampusEvent } from '../lib/types'
 
-const STATUSES = ['PLANNED', 'ONGOING', 'COMPLETED', 'CANCELLED']
+const STATUSES = ['PLANNED', 'ONGOING', 'COMPLETED', 'CANCELLED', 'POSTPONED']
 
 export default function EventsPage() {
   const config: CrudConfig<CampusEvent> = {
