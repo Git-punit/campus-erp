@@ -462,48 +462,7 @@ flowchart TB
     D4 --> DB[("MySQL")]
 ```
 
-### 5. Login and access checks
-
-The password is checked against the BCrypt hash in the database. After that,
-every request carries the token, and the user's role is looked up again each
-time, so a role change or disabled account takes effect straight away.
-
-```mermaid
-sequenceDiagram
-    actor User
-    participant FE as React frontend
-    participant AC as AuthController
-    participant DB as UserRepository
-    participant JS as JwtService
-    participant SF as JwtAuthFilter
-    participant SC as Spring Security
-    participant API as Controller
-
-    User->>FE: Username and password
-    FE->>AC: POST /api/auth/login
-    AC->>DB: Find user (must be enabled)
-    AC->>AC: Check password (BCrypt)
-    AC->>JS: Create token
-    JS-->>AC: JWT
-    AC-->>FE: Token + user
-    FE->>FE: Keep token in localStorage
-
-    User->>FE: Open a page
-    FE->>SF: Request with Authorization: Bearer token
-    SF->>JS: Read token
-    JS-->>SF: Username (or invalid)
-    SF->>DB: Load user and current role
-    SF->>SC: Mark request as logged in with that role
-    SC->>SC: Check role rules (viewer reads, staff writes, admin users/approvals)
-    alt Allowed
-        SC->>API: Handle request
-        API-->>FE: JSON
-    else Not logged in or not allowed
-        SC-->>FE: 401 or 403 with an error message
-    end
-```
-
-### 6. One request from click to database
+### 5. One request from click to database
 
 ```mermaid
 flowchart TD
@@ -526,7 +485,7 @@ flowchart TD
     X -. JSON .-> C
 ```
 
-### 7. Academic structure
+### 6. Academic structure
 
 ```mermaid
 flowchart TB
@@ -550,7 +509,7 @@ flowchart TB
     ENR --> CAL
 ```
 
-### 8. Database tables and links
+### 7. Database tables and links
 
 Every table also has `id`, `created_at` and `updated_at`. App users are
 separate from faculty and students.
